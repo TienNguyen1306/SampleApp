@@ -538,7 +538,49 @@
       "totalPrice": 199000,
       "status": "confirmed",
       "createdAt": "2026-03-23T04:58:30.685Z"
+    },
+    {
+      "id": 26,
+      "userId": 2,
+      "items": [
+        {
+          "id": 1,
+          "name": "Áo thun nam",
+          "price": 199000,
+          "emoji": "👕",
+          "quantity": 1
+        }
+      ],
+      "recipientName": "Trần Thị B",
+      "recipientPhone": "0987654321",
+      "address": "456 Đường Nguyễn Huệ, TP. HCM",
+      "paymentMethod": "cash",
+      "paymentIntentId": null,
+      "totalPrice": 199000,
+      "status": "confirmed",
+      "createdAt": "2026-03-23T07:57:30.500Z"
+    },
+    {
+      "id": 27,
+      "userId": 1,
+      "items": [
+        {
+          "id": 1,
+          "name": "Áo thun nam",
+          "price": 199000,
+          "emoji": "👕",
+          "quantity": 1
+        }
+      ],
+      "recipientName": "Nguyễn Văn A",
+      "recipientPhone": "0912345678",
+      "address": "123 Đường Lê Lợi, TP. HCM",
+      "paymentMethod": "cash",
+      "paymentIntentId": null,
+      "totalPrice": 199000,
+      "status": "confirmed",
+      "createdAt": "2026-03-23T07:57:32.357Z"
     }
   ],
-  "nextId": 26
+  "nextId": 28
 }
