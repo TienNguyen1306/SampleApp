@@ -1,0 +1,188 @@
+.admin-products-wrapper {
+  min-height: 100vh;
+  background: #f8f9fa;
+}
+
+.admin-header {
+  background: #fff;
+  border-bottom: 1px solid #e9ecef;
+  padding: 0 24px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+}
+
+.admin-header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.admin-logo {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 17px;
+  color: #e85d04;
+}
+
+.admin-main {
+  max-width: 1100px;
+  margin: 32px auto;
+  padding: 0 16px;
+}
+
+.admin-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #1a1a2e;
+}
+
+.admin-error {
+  background: #fff5f5;
+  color: #c0392b;
+  border: 1px solid #f5c6cb;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+}
+
+.admin-state {
+  color: #6c757d;
+  font-size: 15px;
+}
+
+.admin-table-wrapper {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  overflow: hidden;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.admin-table thead {
+  background: #f1f3f5;
+}
+
+.admin-table th {
+  padding: 12px 14px;
+  text-align: left;
+  font-weight: 600;
+  color: #495057;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.admin-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #f1f3f5;
+  vertical-align: middle;
+}
+
+.admin-table tbody tr:hover {
+  background: #fafafa;
+}
+
+.td-id { color: #adb5bd; font-size: 13px; }
+.td-emoji { font-size: 22px; }
+.td-name { font-weight: 600; color: #1a1a2e; }
+.td-price { font-weight: 600; color: #e85d04; }
+
+.tag {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.tag-mới { background: #e3f2fd; color: #1565c0; }
+.tag-hot { background: #fce4ec; color: #c62828; }
+.tag-sale { background: #e8f5e9; color: #2e7d32; }
+
+.td-actions { width: 160px; }
+
+.btn-delete {
+  padding: 6px 14px;
+  background: #fff;
+  border: 1.5px solid #e74c3c;
+  color: #e74c3c;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.btn-delete:hover {
+  background: #e74c3c;
+  color: #fff;
+}
+
+.confirm-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.confirm-text {
+  font-size: 13px;
+  color: #495057;
+}
+
+.btn-confirm-delete {
+  padding: 5px 12px;
+  background: #e74c3c;
+  border: none;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.btn-cancel {
+  padding: 5px 12px;
+  background: #f1f3f5;
+  border: none;
+  color: #495057;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.btn-add {
+  padding: 8px 18px;
+  background: #e85d04;
+  border: none;
+  color: #fff;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+
+.btn-add:hover {
+  background: #c94e00;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: #6c757d;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px 0;
+  white-space: nowrap;
+}
+
+.back-btn:hover { color: #343a40; }

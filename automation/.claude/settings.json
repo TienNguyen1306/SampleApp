@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm init:*)",
+      "Bash(npx create-playwright@latest .)",
+      "Bash(printf \"\\\\n\\\\n\\\\ny\\\\n\")",
+      "Bash(npm install:*)",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_fill_form"
+    ]
+  }
+}

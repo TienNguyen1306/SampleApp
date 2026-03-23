@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run server)",
+      "Bash(curl -s -X POST http://localhost:3001/api/login -H \"Content-Type: application/json\" -d \"{\"\"username\"\":\"\"admin\"\",\"\"password\"\":\"\"wrong\"\"}\")",
+      "Bash(npm install jsonwebtoken)",
+      "Bash(curl -s -X POST http://localhost:3001/api/auth/login -H \"Content-Type: application/json\" -d \"{\"\"username\"\":\"\"admin\"\",\"\"password\"\":\"\"password123\"\"}\")",
+      "Bash(netstat -ano)",
+      "Bash(powershell \"netstat -ano | Select-String '':3001''\")",
+      "Bash(taskkill /PID 11824 /F)",
+      "Bash(powershell \"Stop-Process -Id 11824 -Force\")",
+      "Bash(node server.js)",
+      "Bash(TOKEN=\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MzA1NTcxOCwiZXhwIjoxNzczNjYwNTE4fQ.EMu7lZXbjw9ksD8MEi_6qZD_sbZ_u1Y4p7UAy5hrKkg\")",
+      "Bash(curl -s \"http://localhost:3001/api/products\" -H \"Authorization: Bearer $TOKEN\")",
+      "Bash(python -m json.tool)",
+      "Bash(curl -s \"http://localhost:3001/api/products\" -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MzA1NTcxOCwiZXhwIjoxNzczNjYwNTE4fQ.EMu7lZXbjw9ksD8MEi_6qZD_sbZ_u1Y4p7UAy5hrKkg\")",
+      "Bash(curl -sv -X POST http://localhost:3001/api/auth/login -H \"Content-Type: application/json\" -H \"Origin: http://localhost:5174\" -d \"{\"\"username\"\":\"\"admin\"\",\"\"password\"\":\"\"password123\"\"}\")",
+      "Bash(curl -sv -X OPTIONS http://localhost:3001/api/auth/login -H \"Origin: http://localhost:5173\" -H \"Access-Control-Request-Method: POST\")",
+      "Bash(powershell \"Get-NetTCPConnection -LocalPort 3001 -State Listen | Select-Object -ExpandProperty OwningProcess | ForEach-Object { Stop-Process -Id $_-Force }\")",
+      "Bash(powershell \"Get-NetTCPConnection -LocalPort 3001,5173,5174 -State Listen -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess | Sort-Object -Unique | ForEach-Object { Stop-Process -Id $_-Force -ErrorAction SilentlyContinue; Write-Host \"\"Killed PID $_\" }\")",
+      "Bash(npm run dev)"
+    ]
+  }
+}

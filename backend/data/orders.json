@@ -1,0 +1,544 @@
+{
+  "orders": [
+    {
+      "id": 1,
+      "userId": 1,
+      "items": [
+        {
+          "id": 2,
+          "name": "Giày sneaker",
+          "price": 599000,
+          "emoji": "👟",
+          "quantity": 1
+        },
+        {
+          "id": 3,
+          "name": "Túi xách nữ",
+          "price": 349000,
+          "emoji": "👜",
+          "quantity": 2
+        },
+        {
+          "id": 4,
+          "name": "Đồng hồ thời trang",
+          "price": 899000,
+          "emoji": "⌚",
+          "quantity": 2
+        }
+      ],
+      "recipientName": "av",
+      "recipientPhone": "0915799732",
+      "address": "417 Quang Trung, P Gò Vấp, TP Hồ Chí Minh",
+      "paymentMethod": "cash",
+      "paymentIntentId": null,
+      "totalPrice": 3095000,
+      "status": "confirmed",
+      "createdAt": "2026-03-23T04:39:03.469Z"
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "items": [
+        {
+          "id": 1,
+          "name": "Áo thun nam",
+          "price": 199000,
+          "emoji": "👕",
+          "quantity": 1
+        }
+      ],
+      "recipientName": "Nguyễn Văn A",
+      "recipientPhone": "0912345678",
+      "address": "123 Đường Lê Lợi, TP. HCM",
+      "paymentMethod": "cash",
+      "paymentIntentId": null,
+      "totalPrice": 199000,
+      "status": "confirmed",
+      "createdAt": "2026-03-23T04:46:03.954Z"
+    },
+    {
+      "id": 3,
+      "userId": 2,
+      "items": [
+        {
+          "id": 1,
+          "name": "Áo thun nam",
+          "price": 199000,
+          "emoji": "👕",
+          "quantity": 1
+        }
+      ],
+      "recipientName": "Trần Thị B",
+      "recipientPhone": "0987654321",
+      "address": "456 Đường Nguyễn Huệ, TP. HCM",
+      "paymentMethod": "cash",
+      "paymentIntentId": null,
+      "totalPrice": 199000,
+      "status": "confirmed",
+      "createdAt": "2026-03-23T04:46:14.862Z"
+    },
+    {
+      "id": 4,
+      "userId": 2,
+      "items": [
+        {
+          "id": 1,
+          "name": "Áo thun nam",
+          "price": 199000,
+          "emoji": "👕",
+          "quantity": 1
+        }
+      ],
+      "recipientName": "Trần Thị B",
+      "recipientPhone": "0987654321",
+      "address": "456 Đường Nguyễn Huệ, TP. HCM",
+      "paymentMethod": "cash",
+      "paymentIntentId": null,
+      "totalPrice": 199000,
+      "status": "confirmed",
+      "createdAt": "2026-03-23T04:47:03.965Z"
+    },
+    {
+      "id": 5,
+      "userId": 1,
+      "items": [
+        {
+          "id": 1,
+          "name": "Áo thun nam",
+          "price": 199000,
+          "emoji": "👕",
+          "quantity": 1
+        }
+      ],
+      "recipientName": "Nguyễn Văn A",
+      "recipientPhone": "0912345678",
+      "address": "123 Đường Lê Lợi, TP. HCM",
+      "paymentMethod": "cash",
+      "paymentIntentId": null,
+      "totalPrice": 199000,
+      "status": "confirmed",
+      "createdAt": "2026-03-23T04:47:04.233Z"
+    },
+    {
+      "id": 6,
+      "userId": 2,
+      "items": [
+        {
+          "id": 1,
+          "name": "Áo thun nam",
+          "price": 199000,
+          "emoji": "👕",
+          "quantity": 1
+        }
+      ],
+      "recipientName": "Trần Thị B",
+      "recipientPhone": "0987654321",
+      "address": "456 Đường Nguyễn Huệ, TP. HCM",
+      "paymentMethod": "cash",
+      "paymentIntentId": null,
+      "totalPrice": 199000,
+      "status": "confirmed",
+      "createdAt": "2026-03-23T04:48:02.163Z"
+    },
+    {
+      "id": 7,
+      "userId": 1,
+      "items": [
+        {
+          "id": 1,
+          "name": "Áo thun nam",
+          "price": 199000,
+          "emoji": "👕",
+          "quantity": 1
+        }
+      ],
+      "recipientName": "Nguyễn Văn A",
+      "recipientPhone": "0912345678",
+      "address": "123 Đường Lê Lợi, TP. HCM",
+      "paymentMethod": "cash",
+      "paymentIntentId": null,
+      "totalPrice": 199000,
+      "status": "confirmed",
+      "createdAt": "2026-03-23T04:48:02.392Z"
+    },
+    {
+      "id": 8,
+      "userId": 1,
+      "items": [
+        {
+          "id": 1,
+          "name": "Áo thun nam",
+          "price": 199000,
+          "emoji": "👕",
+          "quantity": 1
+        }
+      ],
+      "recipientName": "Nguyễn Văn A",
+      "recipientPhone": "0912345678",
+      "address": "123 Đường Lê Lợi, TP. HCM",
+      "paymentMethod": "cash",
+      "paymentIntentId": null,
+      "totalPrice": 199000,
+      "status": "confirmed",
+      "createdAt": "2026-03-23T04:48:37.325Z"
+    },
+    {
+      "id": 9,
+      "userId": 2,
+      "items": [
+        {
+          "id": 1,
+          "name": "Áo thun nam",
+          "price": 199000,
+          "emoji": "👕",
+          "quantity": 1
+        }
+      ],
+      "recipientName": "Trần Thị B",
+      "recipientPhone": "0987654321",
+      "address": "456 Đường Nguyễn Huệ, TP. HCM",
+      "paymentMethod": "cash",
+      "paymentIntentId": null,
+      "totalPrice": 199000,
+      "status": "confirmed",
+      "createdAt": "2026-03-23T04:48:39.935Z"
+    },
+    {
+      "id": 10,
+      "userId": 2,
+      "items": [
+        {
+          "id": 1,
+          "name": "Áo thun nam",
+          "price": 199000,
+          "emoji": "👕",
+          "quantity": 1
+        }
+      ],
+      "recipientName": "Trần Thị B",
+      "recipientPhone": "0987654321",
+      "address": "456 Đường Nguyễn Huệ, TP. HCM",
+      "paymentMethod": "cash",
+      "paymentIntentId": null,
+      "totalPrice": 199000,
+      "status": "confirmed",
+      "createdAt": "2026-03-23T04:50:05.009Z"
+    },
+    {
+      "id": 11,
+      "userId": 1,
+      "items": [
+        {
+          "id": 1,
+          "name": "Áo thun nam",
+          "price": 199000,
+          "emoji": "👕",
+          "quantity": 1
+        }
+      ],
+      "recipientName": "Nguyễn Văn A",
+      "recipientPhone": "0912345678",
+      "address": "123 Đường Lê Lợi, TP. HCM",
+      "paymentMethod": "cash",
+      "paymentIntentId": null,
+      "totalPrice": 199000,
+      "status": "confirmed",
+      "createdAt": "2026-03-23T04:50:05.510Z"
+    },
+    {
+      "id": 12,
+      "userId": 1,
+      "items": [
+        {
+          "id": 1,
+          "name": "Áo thun nam",
+          "price": 199000,
+          "emoji": "👕",
+          "quantity": 1
+        }
+      ],
+      "recipientName": "Nguyễn Văn A",
+      "recipientPhone": "0912345678",
+      "address": "123 Đường Lê Lợi, TP. HCM",
+      "paymentMethod": "cash",
+      "paymentIntentId": null,
+      "totalPrice": 199000,
+      "status": "confirmed",
+      "createdAt": "2026-03-23T04:50:31.822Z"
+    },
+    {
+      "id": 13,
+      "userId": 2,
+      "items": [
+        {
+          "id": 1,
+          "name": "Áo thun nam",
+          "price": 199000,
+          "emoji": "👕",
+          "quantity": 1
+        }
+      ],
+      "recipientName": "Trần Thị B",
+      "recipientPhone": "0987654321",
+      "address": "456 Đường Nguyễn Huệ, TP. HCM",
+      "paymentMethod": "cash",
+      "paymentIntentId": null,
+      "totalPrice": 199000,
+      "status": "confirmed",
+      "createdAt": "2026-03-23T04:50:31.839Z"
+    },
+    {
+      "id": 14,
+      "userId": 2,
+      "items": [
+        {
+          "id": 1,
+          "name": "Áo thun nam",
+          "price": 199000,
+          "emoji": "👕",
+          "quantity": 1
+        }
+      ],
+      "recipientName": "Trần Thị B",
+      "recipientPhone": "0987654321",
+      "address": "456 Đường Nguyễn Huệ, TP. HCM",
+      "paymentMethod": "cash",
+      "paymentIntentId": null,
+      "totalPrice": 199000,
+      "status": "confirmed",
+      "createdAt": "2026-03-23T04:52:54.331Z"
+    },
+    {
+      "id": 15,
+      "userId": 1,
+      "items": [
+        {
+          "id": 1,
+          "name": "Áo thun nam",
+          "price": 199000,
+          "emoji": "👕",
+          "quantity": 1
+        }
+      ],
+      "recipientName": "Nguyễn Văn A",
+      "recipientPhone": "0912345678",
+      "address": "123 Đường Lê Lợi, TP. HCM",
+      "paymentMethod": "cash",
+      "paymentIntentId": null,
+      "totalPrice": 199000,
+      "status": "confirmed",
+      "createdAt": "2026-03-23T04:52:54.458Z"
+    },
+    {
+      "id": 16,
+      "userId": 2,
+      "items": [
+        {
+          "id": 1,
+          "name": "Áo thun nam",
+          "price": 199000,
+          "emoji": "👕",
+          "quantity": 1
+        }
+      ],
+      "recipientName": "Trần Thị B",
+      "recipientPhone": "0987654321",
+      "address": "456 Đường Nguyễn Huệ, TP. HCM",
+      "paymentMethod": "cash",
+      "paymentIntentId": null,
+      "totalPrice": 199000,
+      "status": "confirmed",
+      "createdAt": "2026-03-23T04:54:26.463Z"
+    },
+    {
+      "id": 17,
+      "userId": 1,
+      "items": [
+        {
+          "id": 1,
+          "name": "Áo thun nam",
+          "price": 199000,
+          "emoji": "👕",
+          "quantity": 1
+        }
+      ],
+      "recipientName": "Nguyễn Văn A",
+      "recipientPhone": "0912345678",
+      "address": "123 Đường Lê Lợi, TP. HCM",
+      "paymentMethod": "cash",
+      "paymentIntentId": null,
+      "totalPrice": 199000,
+      "status": "confirmed",
+      "createdAt": "2026-03-23T04:54:27.074Z"
+    },
+    {
+      "id": 18,
+      "userId": 1,
+      "items": [
+        {
+          "id": 1,
+          "name": "Áo thun nam",
+          "price": 199000,
+          "emoji": "👕",
+          "quantity": 1
+        }
+      ],
+      "recipientName": "Nguyễn Văn A",
+      "recipientPhone": "0912345678",
+      "address": "123 Đường Lê Lợi, TP. HCM",
+      "paymentMethod": "cash",
+      "paymentIntentId": null,
+      "totalPrice": 199000,
+      "status": "confirmed",
+      "createdAt": "2026-03-23T04:55:11.824Z"
+    },
+    {
+      "id": 19,
+      "userId": 2,
+      "items": [
+        {
+          "id": 1,
+          "name": "Áo thun nam",
+          "price": 199000,
+          "emoji": "👕",
+          "quantity": 1
+        }
+      ],
+      "recipientName": "Trần Thị B",
+      "recipientPhone": "0987654321",
+      "address": "456 Đường Nguyễn Huệ, TP. HCM",
+      "paymentMethod": "cash",
+      "paymentIntentId": null,
+      "totalPrice": 199000,
+      "status": "confirmed",
+      "createdAt": "2026-03-23T04:55:16.335Z"
+    },
+    {
+      "id": 20,
+      "userId": 2,
+      "items": [
+        {
+          "id": 1,
+          "name": "Áo thun nam",
+          "price": 199000,
+          "emoji": "👕",
+          "quantity": 1
+        }
+      ],
+      "recipientName": "Trần Thị B",
+      "recipientPhone": "0987654321",
+      "address": "456 Đường Nguyễn Huệ, TP. HCM",
+      "paymentMethod": "cash",
+      "paymentIntentId": null,
+      "totalPrice": 199000,
+      "status": "confirmed",
+      "createdAt": "2026-03-23T04:56:19.235Z"
+    },
+    {
+      "id": 21,
+      "userId": 1,
+      "items": [
+        {
+          "id": 1,
+          "name": "Áo thun nam",
+          "price": 199000,
+          "emoji": "👕",
+          "quantity": 1
+        }
+      ],
+      "recipientName": "Nguyễn Văn A",
+      "recipientPhone": "0912345678",
+      "address": "123 Đường Lê Lợi, TP. HCM",
+      "paymentMethod": "cash",
+      "paymentIntentId": null,
+      "totalPrice": 199000,
+      "status": "confirmed",
+      "createdAt": "2026-03-23T04:56:20.662Z"
+    },
+    {
+      "id": 22,
+      "userId": 1,
+      "items": [
+        {
+          "id": 1,
+          "name": "Áo thun nam",
+          "price": 199000,
+          "emoji": "👕",
+          "quantity": 1
+        }
+      ],
+      "recipientName": "Nguyễn Văn A",
+      "recipientPhone": "0912345678",
+      "address": "123 Đường Lê Lợi, TP. HCM",
+      "paymentMethod": "cash",
+      "paymentIntentId": null,
+      "totalPrice": 199000,
+      "status": "confirmed",
+      "createdAt": "2026-03-23T04:56:46.943Z"
+    },
+    {
+      "id": 23,
+      "userId": 2,
+      "items": [
+        {
+          "id": 1,
+          "name": "Áo thun nam",
+          "price": 199000,
+          "emoji": "👕",
+          "quantity": 1
+        }
+      ],
+      "recipientName": "Trần Thị B",
+      "recipientPhone": "0987654321",
+      "address": "456 Đường Nguyễn Huệ, TP. HCM",
+      "paymentMethod": "cash",
+      "paymentIntentId": null,
+      "totalPrice": 199000,
+      "status": "confirmed",
+      "createdAt": "2026-03-23T04:56:49.893Z"
+    },
+    {
+      "id": 24,
+      "userId": 1,
+      "items": [
+        {
+          "id": 1,
+          "name": "Áo thun nam",
+          "price": 199000,
+          "emoji": "👕",
+          "quantity": 1
+        }
+      ],
+      "recipientName": "Nguyễn Văn A",
+      "recipientPhone": "0912345678",
+      "address": "123 Đường Lê Lợi, TP. HCM",
+      "paymentMethod": "cash",
+      "paymentIntentId": null,
+      "totalPrice": 199000,
+      "status": "confirmed",
+      "createdAt": "2026-03-23T04:58:27.971Z"
+    },
+    {
+      "id": 25,
+      "userId": 2,
+      "items": [
+        {
+          "id": 1,
+          "name": "Áo thun nam",
+          "price": 199000,
+          "emoji": "👕",
+          "quantity": 1
+        }
+      ],
+      "recipientName": "Trần Thị B",
+      "recipientPhone": "0987654321",
+      "address": "456 Đường Nguyễn Huệ, TP. HCM",
+      "paymentMethod": "cash",
+      "paymentIntentId": null,
+      "totalPrice": 199000,
+      "status": "confirmed",
+      "createdAt": "2026-03-23T04:58:30.685Z"
+    }
+  ],
+  "nextId": 26
+}

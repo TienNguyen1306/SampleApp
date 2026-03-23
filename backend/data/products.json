@@ -1,0 +1,86 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Áo thun nam",
+      "price": 199000,
+      "emoji": "👕",
+      "tag": "Mới",
+      "category": "Thời trang",
+      "stock": 50
+    },
+    {
+      "id": 2,
+      "name": "Giày sneaker",
+      "price": 599000,
+      "emoji": "👟",
+      "tag": "Hot",
+      "category": "Giày dép",
+      "stock": 30
+    },
+    {
+      "id": 3,
+      "name": "Túi xách nữ",
+      "price": 349000,
+      "emoji": "👜",
+      "tag": "Sale",
+      "category": "Phụ kiện",
+      "stock": 20
+    },
+    {
+      "id": 4,
+      "name": "Đồng hồ thời trang",
+      "price": 899000,
+      "emoji": "⌚",
+      "tag": "Mới",
+      "category": "Phụ kiện",
+      "stock": 15
+    },
+    {
+      "id": 5,
+      "name": "Kính mát",
+      "price": 249000,
+      "emoji": "🕶️",
+      "tag": "Hot",
+      "category": "Phụ kiện",
+      "stock": 40
+    },
+    {
+      "id": 6,
+      "name": "Mũ bucket",
+      "price": 149000,
+      "emoji": "🧢",
+      "tag": "Sale",
+      "category": "Thời trang",
+      "stock": 60
+    },
+    {
+      "id": 7,
+      "name": "Váy hoa",
+      "price": 279000,
+      "emoji": "👗",
+      "tag": "Mới",
+      "category": "Thời trang",
+      "stock": 25
+    },
+    {
+      "id": 8,
+      "name": "Balo du lịch",
+      "price": 459000,
+      "emoji": "🎒",
+      "tag": "Hot",
+      "category": "Phụ kiện",
+      "stock": 18
+    },
+    {
+      "id": 10,
+      "name": "Áo khoác",
+      "price": 200000,
+      "emoji": "👕",
+      "tag": "Mới",
+      "category": "Thời trang",
+      "stock": 70
+    }
+  ],
+  "nextId": 11
+}
