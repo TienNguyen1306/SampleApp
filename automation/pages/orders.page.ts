@@ -30,9 +30,9 @@ export class OrdersPage {
     return this.orderCards.nth(index);
   }
 
-  getOrderById(orderId: number): Locator {
+  getOrderById(orderId: string): Locator {
     return this.orderCards.filter({
-      has: this.page.locator('.order-id').filter({ hasText: new RegExp(`^Đơn hàng #${orderId}$`) }),
+      has: this.page.locator('.order-id').filter({ hasText: new RegExp(`Đơn hàng #${orderId}`) }),
     });
   }
 }

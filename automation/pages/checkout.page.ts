@@ -81,9 +81,9 @@ export class CheckoutPage {
     return this.successHeading.isVisible();
   }
 
-  async getSuccessOrderId(): Promise<number> {
+  async getSuccessOrderId(): Promise<string> {
     const text = await this.successOrderId.innerText();
-    const match = text.match(/#(\d+)/);
-    return match ? Number(match[1]) : NaN;
+    const match = text.match(/#([a-fA-F0-9]+)/);
+    return match ? match[1] : '';
   }
 }
