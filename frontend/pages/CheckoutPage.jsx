@@ -265,13 +265,9 @@ export default function CheckoutPage() {
         <div className="checkout-grid">
           <div className="checkout-left">
             <h1 className="checkout-title">Thanh toán</h1>
-            {isMockMode ? (
+            <Elements stripe={stripePromise}>
               <CheckoutForm onSuccess={setSuccessOrder} />
-            ) : (
-              <Elements stripe={stripePromise}>
-                <CheckoutForm onSuccess={setSuccessOrder} />
-              </Elements>
-            )}
+            </Elements>
           </div>
 
           <div className="checkout-right">
