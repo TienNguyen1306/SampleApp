@@ -71,7 +71,7 @@ function CheckoutForm({ onSuccess }) {
 
       const order = await placeOrder({
         items: items.map((i) => ({
-          id: i.product.id,
+          productId: i.product._id || i.product.id,
           name: i.product.name,
           price: i.product.price,
           emoji: i.product.emoji,

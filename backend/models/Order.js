@@ -18,6 +18,6 @@ const orderSchema = new mongoose.Schema({
   paymentIntentId: { type: String, default: null },
   totalPrice:      { type: Number, required: true },
   status:          { type: String, enum: ['pending', 'confirmed', 'shipped', 'delivered'], default: 'confirmed' },
-}, { timestamps: true })
+}, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } })
 
 export const Order = mongoose.model('Order', orderSchema)
