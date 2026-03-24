@@ -7,9 +7,9 @@ import { createPaymentIntent, placeOrder } from '../api/orders'
 import './CheckoutPage.css'
 
 // Thay bằng publishable key từ https://dashboard.stripe.com/test/apikeys
-const stripePromise = loadStripe(
-  import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 'pk_test_YOUR_PUBLISHABLE_KEY'
-)
+const STRIPE_PK = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY
+const isMockMode = !STRIPE_PK || STRIPE_PK.includes('YOUR_PUBLISHABLE_KEY')
+const stripePromise = isMockMode ? null : loadStripe(STRIPE_PK)
 
 const CARD_ELEMENT_OPTIONS = {
   style: {
@@ -161,10 +161,23 @@ function CheckoutForm({ onSuccess }) {
           <div className="card-element-wrapper">
             <label>Thông tin thẻ</label>
             <div className="card-element-container">
-              <CardElement options={CARD_ELEMENT_OPTIONS} />
+              {isMockMode ? (
+                <input
+                  type="text"
+                  defaultValue="4242 4242 4242 4242"
+                  placeholder="Card number (mock mode)"
+                  disabled
+                  style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', background: '#f9f9f9', color: '#888' }}
+                />
+              ) : (
+                <CardElement options={CARD_ELEMENT_OPTIONS} />
+              )}
             </div>
             <p className="card-hint">
-              Test: <code>4242 4242 4242 4242</code> · MM/YY bất kỳ · CVC bất kỳ
+              {isMockMode
+                ? <>🧪 Mock mode — thanh toán sẽ được xử lý tự động, không cần thẻ thật</>
+                : <>Test: <code>4242 4242 4242 4242</code> · MM/YY bất kỳ · CVC bất kỳ</>
+              }
             </p>
           </div>
         )}
@@ -252,9 +265,13 @@ export default function CheckoutPage() {
         <div className="checkout-grid">
           <div className="checkout-left">
             <h1 className="checkout-title">Thanh toán</h1>
-            <Elements stripe={stripePromise}>
+            {isMockMode ? (
               <CheckoutForm onSuccess={setSuccessOrder} />
-            </Elements>
+            ) : (
+              <Elements stripe={stripePromise}>
+                <CheckoutForm onSuccess={setSuccessOrder} />
+              </Elements>
+            )}
           </div>
 
           <div className="checkout-right">
