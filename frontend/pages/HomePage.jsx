@@ -26,7 +26,7 @@ export default function HomePage() {
 
   const handleAddToCart = (product) => {
     addToCart(product)
-    setAddedId(product.id)
+    setAddedId(product._id || product.id)
     setTimeout(() => setAddedId(null), 800)
   }
 
@@ -82,16 +82,16 @@ export default function HomePage() {
         {!loading && !error && (
           <div className="product-grid">
             {products.map((p) => (
-              <div key={p.id} className="product-card">
+              <div key={p._id || p.id} className="product-card">
                 <div className="product-img">{p.emoji}</div>
                 <span className={`product-tag tag-${p.tag.toLowerCase()}`}>{p.tag}</span>
                 <h3 className="product-name">{p.name}</h3>
                 <p className="product-price">{formatPrice(p.price)}</p>
                 <button
-                  className={`add-to-cart ${addedId === p.id ? 'added' : ''}`}
+                  className={`add-to-cart ${addedId === (p._id || p.id) ? 'added' : ''}`}
                   onClick={() => handleAddToCart(p)}
                 >
-                  {addedId === p.id ? '✓ Đã thêm' : 'Thêm vào giỏ 🛒'}
+                  {addedId === (p._id || p.id) ? '✓ Đã thêm' : 'Thêm vào giỏ 🛒'}
                 </button>
               </div>
             ))}
