@@ -165,9 +165,8 @@ function CheckoutForm({ onSuccess }) {
                 <input
                   type="text"
                   defaultValue="4242 4242 4242 4242"
-                  placeholder="Card number (mock mode)"
-                  disabled
-                  style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', background: '#f9f9f9', color: '#888' }}
+                  placeholder="4242 4242 4242 4242"
+                  style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px' }}
                 />
               ) : (
                 <CardElement options={CARD_ELEMENT_OPTIONS} />
@@ -175,7 +174,7 @@ function CheckoutForm({ onSuccess }) {
             </div>
             <p className="card-hint">
               {isMockMode
-                ? <>🧪 Mock mode — thanh toán sẽ được xử lý tự động, không cần thẻ thật</>
+                ? <>🧪 Mock mode: nhập <code>4242 4242 4242 4242</code> để thanh toán thử</>
                 : <>Test: <code>4242 4242 4242 4242</code> · MM/YY bất kỳ · CVC bất kỳ</>
               }
             </p>
