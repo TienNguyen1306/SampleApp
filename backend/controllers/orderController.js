@@ -1,6 +1,6 @@
 import Stripe from 'stripe'
 import { STRIPE_SECRET_KEY } from '../config.js'
-import { createOrder, getOrdersByUserId } from '../data/orders.js'
+import { Order } from '../models/Order.js'
 
 const isMockMode = STRIPE_SECRET_KEY.startsWith('sk_test_YOUR')
 const stripe = isMockMode ? null : new Stripe(STRIPE_SECRET_KEY)
@@ -9,13 +9,11 @@ const stripe = isMockMode ? null : new Stripe(STRIPE_SECRET_KEY)
 export async function createPaymentIntent(req, res) {
   const { amount } = req.body
 
-  // Mock mode: trả về clientSecret giả để frontend bỏ qua Stripe confirmation
   if (isMockMode) {
     return res.json({ clientSecret: `mock_pi_${Date.now()}_secret_mock` })
   }
 
   try {
-    // VND is a zero-decimal currency — pass amount directly
     const intent = await stripe.paymentIntents.create({
       amount: Math.round(amount),
       currency: 'vnd',
@@ -27,9 +25,10 @@ export async function createPaymentIntent(req, res) {
 }
 
 // POST /api/orders
-export function placeOrder(req, res) {
+export async function placeOrder(req, res) {
   const { items, recipientName, recipientPhone, address, paymentMethod, paymentIntentId, totalPrice } = req.body
-  const order = createOrder({
+
+  const order = await Order.create({
     userId: req.user.id,
     items,
     recipientName,
@@ -40,10 +39,12 @@ export function placeOrder(req, res) {
     totalPrice,
     status: 'confirmed',
   })
+
   res.status(201).json(order)
 }
 
 // GET /api/orders
-export function getOrders(req, res) {
-  res.json(getOrdersByUserId(req.user.id))
+export async function getOrders(req, res) {
+  const orders = await Order.find({ userId: req.user.id }).sort({ createdAt: -1 })
+  res.json(orders)
 }

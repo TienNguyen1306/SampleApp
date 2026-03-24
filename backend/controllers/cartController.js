@@ -1,12 +1,19 @@
-import { getCart, saveCart } from '../data/carts.js'
+import { Cart } from '../models/Cart.js'
 
-export function getCartItems(req, res) {
-  res.json(getCart(req.user.id))
+export async function getCartItems(req, res) {
+  const cart = await Cart.findOne({ userId: req.user.id })
+  res.json(cart ? cart.items : [])
 }
 
-export function updateCart(req, res) {
+export async function updateCart(req, res) {
   const { items } = req.body
   if (!Array.isArray(items)) return res.status(400).json({ message: 'items must be an array' })
-  saveCart(req.user.id, items)
+
+  await Cart.findOneAndUpdate(
+    { userId: req.user.id },
+    { items },
+    { upsert: true, new: true }
+  )
+
   res.json({ ok: true })
 }
