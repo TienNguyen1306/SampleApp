@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { useNavigate, Navigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { useCart } from '../context/CartContext'
 import { createPaymentIntent, placeOrder } from '../api/orders'
+import LanguageSwitcher from '../components/LanguageSwitcher'
 import './CheckoutPage.css'
 
 // Thay bằng publishable key từ https://dashboard.stripe.com/test/apikeys
@@ -29,6 +31,7 @@ function formatPrice(price) {
 
 function CheckoutForm({ onSuccess }) {
   const { items, totalPrice, clearCart } = useCart()
+  const { t } = useTranslation()
   const stripe = useStripe()
   const elements = useElements()
 
@@ -55,7 +58,7 @@ function CheckoutForm({ onSuccess }) {
           paymentIntentId = clientSecret
         } else {
           if (!stripe || !elements) {
-            setError('Stripe chưa sẵn sàng, vui lòng thử lại.')
+            setError(t('checkout.stripeNotReady'))
             return
           }
           const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
@@ -97,32 +100,32 @@ function CheckoutForm({ onSuccess }) {
   return (
     <form className="checkout-form" onSubmit={handleSubmit}>
       <div className="checkout-section">
-        <h2>Thông tin người nhận</h2>
+        <h2>{t('checkout.recipientInfo')}</h2>
         <div className="form-group">
-          <label>Họ và tên</label>
+          <label>{t('checkout.fullName')}</label>
           <input
             name="recipientName"
-            placeholder="Nguyễn Văn A"
+            placeholder={t('checkout.fullNamePlaceholder')}
             value={form.recipientName}
             onChange={handleChange}
             required
           />
         </div>
         <div className="form-group">
-          <label>Số điện thoại</label>
+          <label>{t('checkout.phone')}</label>
           <input
             name="recipientPhone"
-            placeholder="0912 345 678"
+            placeholder={t('checkout.phonePlaceholder')}
             value={form.recipientPhone}
             onChange={handleChange}
             required
           />
         </div>
         <div className="form-group">
-          <label>Địa chỉ nhận hàng</label>
+          <label>{t('checkout.address')}</label>
           <input
             name="address"
-            placeholder="123 Đường ABC, Phường XYZ, TP. HCM"
+            placeholder={t('checkout.addressPlaceholder')}
             value={form.address}
             onChange={handleChange}
             required
@@ -131,7 +134,7 @@ function CheckoutForm({ onSuccess }) {
       </div>
 
       <div className="checkout-section">
-        <h2>Phương thức thanh toán</h2>
+        <h2>{t('checkout.paymentMethod')}</h2>
         <div className="payment-methods">
           <label className={`payment-option ${paymentMethod === 'cash' ? 'selected' : ''}`}>
             <input
@@ -142,7 +145,7 @@ function CheckoutForm({ onSuccess }) {
               onChange={() => setPaymentMethod('cash')}
             />
             <span className="payment-icon">💵</span>
-            <span>Thanh toán khi nhận hàng (COD)</span>
+            <span>{t('checkout.cod')}</span>
           </label>
           <label className={`payment-option ${paymentMethod === 'card' ? 'selected' : ''}`}>
             <input
@@ -153,13 +156,13 @@ function CheckoutForm({ onSuccess }) {
               onChange={() => setPaymentMethod('card')}
             />
             <span className="payment-icon">💳</span>
-            <span>Thanh toán bằng thẻ (Stripe)</span>
+            <span>{t('checkout.stripe')}</span>
           </label>
         </div>
 
         {paymentMethod === 'card' && (
           <div className="card-element-wrapper">
-            <label>Thông tin thẻ</label>
+            <label>{t('checkout.cardInfo')}</label>
             <div className="card-element-container">
               {isMockMode ? (
                 <input
@@ -174,8 +177,8 @@ function CheckoutForm({ onSuccess }) {
             </div>
             <p className="card-hint">
               {isMockMode
-                ? <>🧪 Mock mode: nhập <code>4242 4242 4242 4242</code> để thanh toán thử</>
-                : <>Test: <code>4242 4242 4242 4242</code> · MM/YY bất kỳ · CVC bất kỳ</>
+                ? <>🧪 Mock mode: <code>4242 4242 4242 4242</code></>
+                : <>Test: <code>4242 4242 4242 4242</code> · MM/YY · CVC</>
               }
             </p>
           </div>
@@ -186,34 +189,34 @@ function CheckoutForm({ onSuccess }) {
 
       <button type="submit" className="btn-checkout" disabled={loading}>
         {loading
-          ? 'Đang xử lý...'
+          ? t('checkout.processing')
           : paymentMethod === 'card'
-          ? `Thanh toán ${formatPrice(totalPrice)}`
-          : `Đặt hàng ${formatPrice(totalPrice)}`}
+          ? `${t('checkout.submitCard')} ${formatPrice(totalPrice)}`
+          : `${t('checkout.submit')} ${formatPrice(totalPrice)}`}
       </button>
     </form>
   )
 }
 
 function OrderSuccess({ order, onContinue }) {
+  const { t } = useTranslation()
   return (
     <div className="checkout-success">
       <div className="success-icon">✅</div>
-      <h2>Đặt hàng thành công!</h2>
+      <h2>{t('checkout.success')}</h2>
       <p>
-        Mã đơn hàng: <strong>#{order.id}</strong>
+        {t('checkout.orderId')}: <strong>#{order._id || order.id}</strong>
       </p>
       <p>
-        Người nhận: <strong>{order.recipientName}</strong>
+        {t('checkout.recipient')}: <strong>{order.recipientName}</strong>
       </p>
-      <p>Địa chỉ: {order.address}</p>
+      <p>{order.address}</p>
       <p>
-        Thanh toán:{' '}
-        <strong>{order.paymentMethod === 'card' ? '💳 Thẻ' : '💵 Tiền mặt khi nhận hàng'}</strong>
+        <strong>{order.paymentMethod === 'card' ? t('checkout.paymentCard') : t('checkout.paymentCash')}</strong>
       </p>
-      <p className="success-total">Tổng: {formatPrice(order.totalPrice)}</p>
+      <p className="success-total">{formatPrice(order.totalPrice)}</p>
       <button className="btn-primary" onClick={onContinue}>
-        Tiếp tục mua sắm
+        {t('checkout.continueShopping')}
       </button>
     </div>
   )
@@ -221,6 +224,7 @@ function OrderSuccess({ order, onContinue }) {
 
 export default function CheckoutPage() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const { items, totalPrice } = useCart()
   const [successOrder, setSuccessOrder] = useState(null)
 
@@ -251,19 +255,20 @@ export default function CheckoutPage() {
       <header className="checkout-header">
         <div className="checkout-header-inner">
           <button className="back-btn" onClick={() => navigate('/cart')}>
-            ← Quay lại giỏ hàng
+            {t('checkout.back')}
           </button>
           <div className="checkout-logo">
             <span>🛍️</span>
             <span>ShopVN</span>
           </div>
+          <LanguageSwitcher />
         </div>
       </header>
 
       <main className="checkout-main">
         <div className="checkout-grid">
           <div className="checkout-left">
-            <h1 className="checkout-title">Thanh toán</h1>
+            <h1 className="checkout-title">{t('checkout.title')}</h1>
             <Elements stripe={stripePromise}>
               <CheckoutForm onSuccess={setSuccessOrder} />
             </Elements>
@@ -271,7 +276,7 @@ export default function CheckoutPage() {
 
           <div className="checkout-right">
             <div className="order-summary">
-              <h2>Đơn hàng của bạn</h2>
+              <h2>{t('checkout.yourOrder')}</h2>
               {items.map(({ product, quantity }) => (
                 <div key={product.id} className="summary-item">
                   <span className="summary-emoji">{product.emoji}</span>
@@ -283,11 +288,11 @@ export default function CheckoutPage() {
               ))}
               <div className="summary-divider" />
               <div className="summary-row">
-                <span>Phí vận chuyển</span>
-                <span className="free">Miễn phí</span>
+                <span>{t('cart.shipping')}</span>
+                <span className="free">{t('cart.free')}</span>
               </div>
               <div className="summary-total-row">
-                <span>Tổng cộng</span>
+                <span>{t('cart.total')}</span>
                 <span className="summary-total-price">{formatPrice(totalPrice)}</span>
               </div>
             </div>
