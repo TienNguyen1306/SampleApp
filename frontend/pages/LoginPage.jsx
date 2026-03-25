@@ -1,10 +1,13 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { loginRequest } from '../api/auth'
+import LanguageSwitcher from '../components/LanguageSwitcher'
 import './LoginPage.css'
 
 export default function LoginPage() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -29,22 +32,26 @@ export default function LoginPage() {
 
   return (
     <div className="login-bg">
-      <div className="login-card">
+      <div className="login-card" style={{ position: 'relative' }}>
+        <div style={{ position: 'absolute', top: '1rem', right: '1rem' }}>
+          <LanguageSwitcher />
+        </div>
+
         <div className="login-logo">
           <span className="logo-icon">🛍️</span>
           <h1 className="logo-name">ShopVN</h1>
         </div>
 
-        <h2 className="login-title">Đăng nhập</h2>
-        <p className="login-subtitle">Chào mừng bạn quay lại!</p>
+        <h2 className="login-title">{t('login.title')}</h2>
+        <p className="login-subtitle">{t('login.title')} — ShopVN</p>
 
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-group">
-            <label htmlFor="username">Tài khoản</label>
+            <label htmlFor="username">{t('login.username')}</label>
             <input
               id="username"
               type="text"
-              placeholder="Nhập tài khoản"
+              placeholder={t('login.username')}
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               autoComplete="username"
@@ -52,11 +59,11 @@ export default function LoginPage() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Mật khẩu</label>
+            <label htmlFor="password">{t('login.password')}</label>
             <input
               id="password"
               type="password"
-              placeholder="Nhập mật khẩu"
+              placeholder={t('login.password')}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="current-password"
@@ -70,17 +77,17 @@ export default function LoginPage() {
           )}
 
           <button type="submit" className="login-btn" disabled={loading}>
-            {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
+            {loading ? '...' : t('login.submit')}
           </button>
         </form>
 
         <p className="login-hint">
-          Demo: <strong>admin</strong> / <strong>password123</strong> hoặc <strong>user</strong> / <strong>123456</strong>
+          Demo: <strong>admin</strong> / <strong>password123</strong>
         </p>
         <p className="login-hint">
-          Chưa có tài khoản?{' '}
+          {t('login.noAccount')}{' '}
           <a href="/register" onClick={(e) => { e.preventDefault(); navigate('/register') }}>
-            Đăng ký ngay
+            {t('login.register')}
           </a>
         </p>
       </div>

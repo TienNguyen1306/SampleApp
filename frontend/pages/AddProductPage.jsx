@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { createProductRequest } from '../api/products'
 import './AddProductPage.css'
 
@@ -9,6 +10,7 @@ const EMOJIS = ['👕', '👗', '👟', '👜', '🎒', '⌚', '🕶️', '🧢'
 
 export default function AddProductPage() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const [form, setForm] = useState({
     name: '',
     price: '',
@@ -42,7 +44,7 @@ export default function AddProductPage() {
     <div className="add-product-wrapper">
       <header className="add-product-header">
         <div className="add-product-header-inner">
-          <button className="back-btn" onClick={() => navigate('/home')}>← Trang chủ</button>
+          <button className="back-btn" onClick={() => navigate('/home')}>{t('admin.back')}</button>
           <div className="add-product-logo">
             <span>🛍️</span>
             <span>ShopVN</span>
@@ -52,15 +54,15 @@ export default function AddProductPage() {
 
       <main className="add-product-main">
         <div className="add-product-card">
-          <h1 className="add-product-title">Thêm sản phẩm mới</h1>
+          <h1 className="add-product-title">{t('addProduct.title')}</h1>
 
           <form onSubmit={handleSubmit} className="add-product-form">
             <div className="form-group">
-              <label>Tên sản phẩm</label>
+              <label>{t('addProduct.name')}</label>
               <input
                 name="name"
                 type="text"
-                placeholder="Nhập tên sản phẩm"
+                placeholder={t('addProduct.name')}
                 value={form.name}
                 onChange={handleChange}
               />
@@ -68,7 +70,7 @@ export default function AddProductPage() {
 
             <div className="form-row">
               <div className="form-group">
-                <label>Giá (VNĐ)</label>
+                <label>{t('addProduct.price')}</label>
                 <input
                   name="price"
                   type="number"
@@ -79,7 +81,7 @@ export default function AddProductPage() {
                 />
               </div>
               <div className="form-group">
-                <label>Tồn kho</label>
+                <label>{t('addProduct.stock')}</label>
                 <input
                   name="stock"
                   type="number"
@@ -92,7 +94,7 @@ export default function AddProductPage() {
             </div>
 
             <div className="form-group">
-              <label>Emoji đại diện</label>
+              <label>{t('addProduct.emoji')}</label>
               <div className="emoji-picker">
                 {EMOJIS.map((e) => (
                   <button
@@ -109,13 +111,13 @@ export default function AddProductPage() {
 
             <div className="form-row">
               <div className="form-group">
-                <label>Tag</label>
+                <label>{t('addProduct.tag')}</label>
                 <select name="tag" value={form.tag} onChange={handleChange}>
-                  {TAGS.map((t) => <option key={t} value={t}>{t}</option>)}
+                  {TAGS.map((tag) => <option key={tag} value={tag}>{tag}</option>)}
                 </select>
               </div>
               <div className="form-group">
-                <label>Danh mục</label>
+                <label>{t('addProduct.category')}</label>
                 <select name="category" value={form.category} onChange={handleChange}>
                   {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
                 </select>
@@ -125,7 +127,7 @@ export default function AddProductPage() {
             {error && <div className="error-message" role="alert">⚠️ {error}</div>}
 
             <button type="submit" className="btn-primary" disabled={loading}>
-              {loading ? 'Đang thêm...' : '+ Thêm sản phẩm'}
+              {loading ? '...' : t('addProduct.submit')}
             </button>
           </form>
         </div>

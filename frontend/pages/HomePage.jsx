@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { fetchProducts } from '../api/products'
 import { useCart } from '../context/CartContext'
+import LanguageSwitcher from '../components/LanguageSwitcher'
 import './HomePage.css'
 
 function formatPrice(price) {
@@ -10,6 +12,7 @@ function formatPrice(price) {
 
 export default function HomePage() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const { addToCart, totalCount } = useCart()
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
@@ -44,39 +47,40 @@ export default function HomePage() {
             <span className="header-logo-name">ShopVN</span>
           </div>
           <nav className="header-nav">
-            <a href="#">Trang chủ</a>
-            <a href="#">Sản phẩm</a>
-            <a href="#">Khuyến mãi</a>
+            <a href="#">{t('home.nav.home')}</a>
+            <a href="#">{t('home.nav.products')}</a>
+            <a href="#">{t('home.nav.promotions')}</a>
           </nav>
           <div className="header-right">
-            {user && <span className="header-user">Xin chào, <strong>{user.name}</strong></span>}
+            {user && <span className="header-user">{t('home.greeting')} <strong>{user.name}</strong></span>}
             {user?.role === 'admin' && (
               <button className="admin-btn" onClick={() => navigate('/admin/products')}>
-                ⚙️ Quản lý SP
+                {t('home.adminProducts')}
               </button>
             )}
-            <button className="orders-btn" onClick={() => navigate('/orders')}>📦 Đơn hàng</button>
+            <button className="orders-btn" onClick={() => navigate('/orders')}>{t('home.orders')}</button>
             <button className="cart-btn" onClick={() => navigate('/cart')}>
               🛒
               {totalCount > 0 && <span className="cart-badge">{totalCount}</span>}
             </button>
-            <button className="logout-btn" onClick={handleLogout}>Đăng xuất</button>
+            <button className="logout-btn" onClick={handleLogout}>{t('home.logout')}</button>
+            <LanguageSwitcher />
           </div>
         </div>
       </header>
 
       <section className="home-banner">
         <div className="banner-content">
-          <h1>Mua sắm thả ga 🎉</h1>
-          <p>Hàng ngàn sản phẩm chính hãng, giao hàng toàn quốc</p>
-          <button className="banner-btn">Khám phá ngay</button>
+          <h1>{t('home.hero.title')}</h1>
+          <p>{t('home.hero.subtitle')}</p>
+          <button className="banner-btn">{t('home.hero.cta')}</button>
         </div>
       </section>
 
       <main className="home-main">
-        <h2 className="section-title">Sản phẩm nổi bật</h2>
+        <h2 className="section-title">{t('home.featured')}</h2>
 
-        {loading && <p className="state-msg">Đang tải sản phẩm...</p>}
+        {loading && <p className="state-msg">{t('home.loading')}</p>}
         {error && <p className="state-msg error">{error}</p>}
 
         {!loading && !error && (
@@ -91,7 +95,7 @@ export default function HomePage() {
                   className={`add-to-cart ${addedId === (p._id || p.id) ? 'added' : ''}`}
                   onClick={() => handleAddToCart(p)}
                 >
-                  {addedId === (p._id || p.id) ? '✓ Đã thêm' : 'Thêm vào giỏ 🛒'}
+                  {addedId === (p._id || p.id) ? t('home.added') : t('home.addToCart')}
                 </button>
               </div>
             ))}
@@ -100,7 +104,7 @@ export default function HomePage() {
       </main>
 
       <footer className="home-footer">
-        <p>© 2024 ShopVN. All rights reserved.</p>
+        <p>{t('home.footer')}</p>
       </footer>
     </div>
   )

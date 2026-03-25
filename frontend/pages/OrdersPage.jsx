@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { fetchOrders } from '../api/orders'
 import './OrdersPage.css'
 
@@ -16,6 +17,7 @@ function formatDate(iso) {
 
 export default function OrdersPage() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -31,7 +33,7 @@ export default function OrdersPage() {
     <div className="orders-wrapper">
       <header className="orders-header">
         <div className="orders-header-inner">
-          <button className="back-btn" onClick={() => navigate('/home')}>← Trang chủ</button>
+          <button className="back-btn" onClick={() => navigate('/home')}>{t('orders.back')}</button>
           <div className="orders-logo">
             <span>🛍️</span>
             <span>ShopVN</span>
@@ -40,34 +42,34 @@ export default function OrdersPage() {
       </header>
 
       <main className="orders-main">
-        <h1 className="orders-title">Lịch sử mua hàng</h1>
+        <h1 className="orders-title">{t('orders.title')}</h1>
 
-        {loading && <p className="orders-state">Đang tải...</p>}
+        {loading && <p className="orders-state">{t('orders.loading')}</p>}
         {error && <p className="orders-state error">{error}</p>}
 
         {!loading && !error && orders.length === 0 && (
           <div className="orders-empty">
             <span className="empty-icon">📦</span>
-            <p>Bạn chưa có đơn hàng nào</p>
-            <button className="btn-primary" onClick={() => navigate('/home')}>Mua sắm ngay</button>
+            <p>{t('orders.empty')}</p>
+            <button className="btn-primary" onClick={() => navigate('/home')}>{t('orders.shopNow')}</button>
           </div>
         )}
 
         {orders.length > 0 && (
           <div className="orders-list">
             {[...orders].reverse().map((order) => (
-              <div key={order.id} className="order-card">
+              <div key={order._id || order.id} className="order-card">
                 <div className="order-card-header">
                   <div className="order-meta">
-                    <span className="order-id">Đơn hàng #{order.id}</span>
+                    <span className="order-id">{t('orders.orderPrefix')}{order._id || order.id}</span>
                     <span className="order-date">{formatDate(order.createdAt)}</span>
                   </div>
-                  <span className="order-status confirmed">Đã xác nhận</span>
+                  <span className="order-status confirmed">{t('orders.confirmed')}</span>
                 </div>
 
                 <div className="order-items">
-                  {order.items.map((item) => (
-                    <div key={item.id} className="order-item">
+                  {order.items.map((item, idx) => (
+                    <div key={item._id || item.id || idx} className="order-item">
                       <span className="order-item-emoji">{item.emoji}</span>
                       <span className="order-item-name">{item.name}</span>
                       <span className="order-item-qty">×{item.quantity}</span>
@@ -83,7 +85,7 @@ export default function OrdersPage() {
                   </div>
                   <div className="order-footer-right">
                     <span className="order-payment">
-                      {order.paymentMethod === 'card' ? '💳 Thẻ' : '💵 Tiền mặt'}
+                      {order.paymentMethod === 'card' ? t('orders.paymentCard') : t('orders.paymentCash')}
                     </span>
                     <span className="order-total">{formatPrice(order.totalPrice)}</span>
                   </div>

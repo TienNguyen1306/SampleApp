@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { fetchProducts, deleteProductRequest } from '../api/products'
 import './AdminProductsPage.css'
 
@@ -9,6 +10,7 @@ function formatPrice(price) {
 
 export default function AdminProductsPage() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -26,7 +28,7 @@ export default function AdminProductsPage() {
     setDeletingId(id)
     try {
       await deleteProductRequest(id)
-      setProducts((prev) => prev.filter((p) => p.id !== id))
+      setProducts((prev) => prev.filter((p) => (p._id || p.id) !== id))
     } catch (err) {
       setError(err.message)
     } finally {
@@ -39,23 +41,23 @@ export default function AdminProductsPage() {
     <div className="admin-products-wrapper">
       <header className="admin-header">
         <div className="admin-header-inner">
-          <button className="back-btn" onClick={() => navigate('/home')}>← Trang chủ</button>
+          <button className="back-btn" onClick={() => navigate('/home')}>{t('admin.back')}</button>
           <div className="admin-logo">
             <span>🛍️</span>
-            <span>ShopVN — Quản lý sản phẩm</span>
+            <span>ShopVN — {t('admin.title')}</span>
           </div>
-          <button className="btn-add" onClick={() => navigate('/admin/add-product')}>+ Thêm sản phẩm</button>
+          <button className="btn-add" onClick={() => navigate('/admin/add-product')}>{t('admin.addProduct')}</button>
         </div>
       </header>
 
       <main className="admin-main">
-        <h1 className="admin-title">Danh sách sản phẩm</h1>
+        <h1 className="admin-title">{t('admin.title')}</h1>
 
         {error && <div className="admin-error">⚠️ {error}</div>}
-        {loading && <p className="admin-state">Đang tải...</p>}
+        {loading && <p className="admin-state">{t('admin.loading')}</p>}
 
         {!loading && products.length === 0 && (
-          <p className="admin-state">Chưa có sản phẩm nào.</p>
+          <p className="admin-state">{t('admin.noProducts')}</p>
         )}
 
         {!loading && products.length > 0 && (
@@ -65,18 +67,18 @@ export default function AdminProductsPage() {
                 <tr>
                   <th>ID</th>
                   <th>Emoji</th>
-                  <th>Tên sản phẩm</th>
-                  <th>Danh mục</th>
-                  <th>Tag</th>
-                  <th>Giá</th>
-                  <th>Tồn kho</th>
+                  <th>{t('addProduct.name')}</th>
+                  <th>{t('addProduct.category')}</th>
+                  <th>{t('addProduct.tag')}</th>
+                  <th>{t('addProduct.price')}</th>
+                  <th>{t('addProduct.stock')}</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
                 {products.map((p) => (
-                  <tr key={p.id}>
-                    <td className="td-id">#{p.id}</td>
+                  <tr key={p._id || p.id}>
+                    <td className="td-id">#{(p._id || p.id)?.toString().slice(-6)}</td>
                     <td className="td-emoji">{p.emoji}</td>
                     <td className="td-name">{p.name}</td>
                     <td>{p.category}</td>
@@ -84,20 +86,20 @@ export default function AdminProductsPage() {
                     <td className="td-price">{formatPrice(p.price)}</td>
                     <td>{p.stock}</td>
                     <td className="td-actions">
-                      {confirmId === p.id ? (
+                      {confirmId === (p._id || p.id) ? (
                         <div className="confirm-row">
-                          <span className="confirm-text">Xác nhận xóa?</span>
+                          <span className="confirm-text">{t('admin.deleteConfirm')}</span>
                           <button
                             className="btn-confirm-delete"
-                            onClick={() => handleDelete(p.id)}
-                            disabled={deletingId === p.id}
+                            onClick={() => handleDelete(p._id || p.id)}
+                            disabled={deletingId === (p._id || p.id)}
                           >
-                            {deletingId === p.id ? '...' : 'Xóa'}
+                            {deletingId === (p._id || p.id) ? '...' : t('admin.delete')}
                           </button>
-                          <button className="btn-cancel" onClick={() => setConfirmId(null)}>Hủy</button>
+                          <button className="btn-cancel" onClick={() => setConfirmId(null)}>{t('addProduct.cancel')}</button>
                         </div>
                       ) : (
-                        <button className="btn-delete" onClick={() => setConfirmId(p.id)}>🗑 Xóa</button>
+                        <button className="btn-delete" onClick={() => setConfirmId(p._id || p.id)}>🗑 {t('admin.delete')}</button>
                       )}
                     </td>
                   </tr>

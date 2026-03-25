@@ -1,0 +1,123 @@
+{
+  "login": {
+    "title": "Login",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Login",
+    "noAccount": "Don't have an account?",
+    "register": "Register",
+    "errors": {
+      "empty": "Please enter your username and password.",
+      "invalid": "Incorrect username or password."
+    }
+  },
+  "register": {
+    "title": "Register",
+    "name": "Full Name",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Register",
+    "haveAccount": "Already have an account?",
+    "login": "Login"
+  },
+  "home": {
+    "hero": {
+      "title": "Shop to your heart's content 🎉",
+      "subtitle": "Thousands of genuine products, nationwide delivery",
+      "cta": "Explore Now"
+    },
+    "nav": {
+      "home": "Home",
+      "products": "Products",
+      "promotions": "Promotions"
+    },
+    "featured": "Featured Products",
+    "addToCart": "Add to Cart 🛒",
+    "added": "✓ Added",
+    "greeting": "Hello,",
+    "logout": "Logout",
+    "orders": "📦 Orders",
+    "adminProducts": "⚙️ Manage Products",
+    "loading": "Loading products...",
+    "footer": "© 2024 ShopVN. All rights reserved."
+  },
+  "cart": {
+    "title": "Your Cart",
+    "empty": "Your cart is empty",
+    "shopNow": "Shop Now",
+    "remove": "Remove",
+    "checkout": "Proceed to Checkout",
+    "total": "Total",
+    "shipping": "Shipping",
+    "shippingFree": "Free",
+    "back": "← Continue Shopping"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "recipientInfo": "Recipient Information",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "John Doe",
+    "phone": "Phone Number",
+    "phonePlaceholder": "0912 345 678",
+    "address": "Delivery Address",
+    "addressPlaceholder": "123 ABC Street, XYZ Ward, HCM City",
+    "paymentMethod": "Payment Method",
+    "cod": "Cash on Delivery (COD)",
+    "stripe": "Pay by Card (Stripe)",
+    "cardInfo": "Card Details",
+    "submit": "Place Order",
+    "submitCard": "Pay",
+    "processing": "Processing...",
+    "success": "Order Placed Successfully!",
+    "orderId": "Order ID",
+    "recipient": "Recipient",
+    "paymentCash": "💵 Cash on Delivery",
+    "paymentCard": "💳 Card",
+    "continueShopping": "Continue Shopping",
+    "back": "← Back to Cart",
+    "yourOrder": "Your Order",
+    "stripeNotReady": "Stripe is not ready, please try again."
+  },
+  "orders": {
+    "title": "Order History",
+    "orderPrefix": "Order #",
+    "confirmed": "Confirmed",
+    "empty": "You have no orders yet",
+    "shopNow": "Shop Now",
+    "back": "← Home",
+    "recipient": "Recipient",
+    "address": "Address",
+    "payment": "Payment",
+    "total": "Total",
+    "paymentCash": "Cash (COD)",
+    "paymentCard": "Credit Card",
+    "loading": "Loading orders..."
+  },
+  "admin": {
+    "title": "Product Management",
+    "addProduct": "＋ Add Product",
+    "back": "← Home",
+    "deleteConfirm": "Delete this product?",
+    "delete": "Delete",
+    "edit": "Edit",
+    "loading": "Loading...",
+    "noProducts": "No products yet"
+  },
+  "addProduct": {
+    "title": "Add New Product",
+    "name": "Product Name",
+    "price": "Price (VND)",
+    "emoji": "Emoji",
+    "tag": "Tag",
+    "category": "Category",
+    "stock": "Stock Quantity",
+    "submit": "Add Product",
+    "cancel": "Cancel",
+    "success": "Product added successfully!"
+  },
+  "common": {
+    "error": "An error occurred",
+    "retry": "Retry",
+    "language": "Language"
+  }
+}

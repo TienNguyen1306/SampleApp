@@ -1,0 +1,123 @@
+{
+  "login": {
+    "title": "Đăng nhập",
+    "username": "Tài khoản",
+    "password": "Mật khẩu",
+    "submit": "Đăng nhập",
+    "noAccount": "Chưa có tài khoản?",
+    "register": "Đăng ký",
+    "errors": {
+      "empty": "Vui lòng nhập đầy đủ tài khoản và mật khẩu.",
+      "invalid": "Tài khoản hoặc mật khẩu không đúng."
+    }
+  },
+  "register": {
+    "title": "Đăng ký",
+    "name": "Họ và tên",
+    "username": "Tên đăng nhập",
+    "password": "Mật khẩu",
+    "submit": "Đăng ký",
+    "haveAccount": "Đã có tài khoản?",
+    "login": "Đăng nhập"
+  },
+  "home": {
+    "hero": {
+      "title": "Mua sắm thả ga 🎉",
+      "subtitle": "Hàng ngàn sản phẩm chính hãng, giao hàng toàn quốc",
+      "cta": "Khám phá ngay"
+    },
+    "nav": {
+      "home": "Trang chủ",
+      "products": "Sản phẩm",
+      "promotions": "Khuyến mãi"
+    },
+    "featured": "Sản phẩm nổi bật",
+    "addToCart": "Thêm vào giỏ 🛒",
+    "added": "✓ Đã thêm",
+    "greeting": "Xin chào,",
+    "logout": "Đăng xuất",
+    "orders": "📦 Đơn hàng",
+    "adminProducts": "⚙️ Quản lý SP",
+    "loading": "Đang tải sản phẩm...",
+    "footer": "© 2024 ShopVN. All rights reserved."
+  },
+  "cart": {
+    "title": "Giỏ hàng của bạn",
+    "empty": "Giỏ hàng của bạn đang trống",
+    "shopNow": "Mua sắm ngay",
+    "remove": "Xóa",
+    "checkout": "Thanh toán ngay",
+    "total": "Tổng cộng",
+    "shipping": "Phí vận chuyển",
+    "shippingFree": "Miễn phí",
+    "back": "← Tiếp tục mua sắm"
+  },
+  "checkout": {
+    "title": "Thanh toán",
+    "recipientInfo": "Thông tin người nhận",
+    "fullName": "Họ và tên",
+    "fullNamePlaceholder": "Nguyễn Văn A",
+    "phone": "Số điện thoại",
+    "phonePlaceholder": "0912 345 678",
+    "address": "Địa chỉ nhận hàng",
+    "addressPlaceholder": "123 Đường ABC, Phường XYZ, TP. HCM",
+    "paymentMethod": "Phương thức thanh toán",
+    "cod": "Thanh toán khi nhận hàng (COD)",
+    "stripe": "Thanh toán bằng thẻ (Stripe)",
+    "cardInfo": "Thông tin thẻ",
+    "submit": "Đặt hàng",
+    "submitCard": "Thanh toán",
+    "processing": "Đang xử lý...",
+    "success": "Đặt hàng thành công!",
+    "orderId": "Mã đơn hàng",
+    "recipient": "Người nhận",
+    "paymentCash": "💵 Tiền mặt khi nhận hàng",
+    "paymentCard": "💳 Thẻ",
+    "continueShopping": "Tiếp tục mua sắm",
+    "back": "← Quay lại giỏ hàng",
+    "yourOrder": "Đơn hàng của bạn",
+    "stripeNotReady": "Stripe chưa sẵn sàng, vui lòng thử lại."
+  },
+  "orders": {
+    "title": "Lịch sử mua hàng",
+    "orderPrefix": "Đơn hàng #",
+    "confirmed": "Đã xác nhận",
+    "empty": "Bạn chưa có đơn hàng nào",
+    "shopNow": "Mua sắm ngay",
+    "back": "← Trang chủ",
+    "recipient": "Người nhận",
+    "address": "Địa chỉ",
+    "payment": "Thanh toán",
+    "total": "Tổng",
+    "paymentCash": "Tiền mặt (COD)",
+    "paymentCard": "Thẻ tín dụng",
+    "loading": "Đang tải đơn hàng..."
+  },
+  "admin": {
+    "title": "Quản lý sản phẩm",
+    "addProduct": "＋ Thêm sản phẩm",
+    "back": "← Trang chủ",
+    "deleteConfirm": "Xóa sản phẩm này?",
+    "delete": "Xóa",
+    "edit": "Sửa",
+    "loading": "Đang tải...",
+    "noProducts": "Chưa có sản phẩm nào"
+  },
+  "addProduct": {
+    "title": "Thêm sản phẩm mới",
+    "name": "Tên sản phẩm",
+    "price": "Giá (VNĐ)",
+    "emoji": "Emoji",
+    "tag": "Tag",
+    "category": "Danh mục",
+    "stock": "Số lượng tồn kho",
+    "submit": "Thêm sản phẩm",
+    "cancel": "Hủy",
+    "success": "Thêm sản phẩm thành công!"
+  },
+  "common": {
+    "error": "Có lỗi xảy ra",
+    "retry": "Thử lại",
+    "language": "Ngôn ngữ"
+  }
+}
