@@ -42,7 +42,7 @@ export default function OrdersPage() {
       </header>
 
       <main className="orders-main">
-        <h1 className="orders-title">{t('orders.title')}</h1>
+        <h1 className="orders-title" data-testid="orders-title">{t('orders.title')}</h1>
 
         {loading && <p className="orders-state">{t('orders.loading')}</p>}
         {error && <p className="orders-state error">{error}</p>}

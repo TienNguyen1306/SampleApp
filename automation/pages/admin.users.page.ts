@@ -38,7 +38,7 @@ export class AdminUsersPage {
     this.passwordInput = page.getByTestId('add-user-password');
     this.roleSelect = page.getByTestId('add-user-role');
     this.submitButton = page.locator('.btn-submit');
-    this.cancelButton = page.locator('.btn-cancel').first();
+    this.cancelButton = page.getByTestId('add-user-cancel');
 
     // Confirm delete modal
     this.confirmDeleteModal = page.locator('.au-confirm');

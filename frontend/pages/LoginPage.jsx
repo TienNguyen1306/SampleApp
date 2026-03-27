@@ -50,6 +50,7 @@ export default function LoginPage() {
             <label htmlFor="username">{t('login.username')}</label>
             <input
               id="username"
+              data-testid="login-username"
               type="text"
               placeholder={t('login.username')}
               value={username}
@@ -62,6 +63,7 @@ export default function LoginPage() {
             <label htmlFor="password">{t('login.password')}</label>
             <input
               id="password"
+              data-testid="login-password"
               type="password"
               placeholder={t('login.password')}
               value={password}
@@ -76,7 +78,7 @@ export default function LoginPage() {
             </div>
           )}
 
-          <button type="submit" className="login-btn" disabled={loading}>
+          <button type="submit" className="login-btn" data-testid="login-submit" disabled={loading}>
             {loading ? '...' : t('login.submit')}
           </button>
         </form>

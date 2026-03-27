@@ -9,7 +9,7 @@ export class HomePage {
   constructor(page: Page) {
     this.page = page;
     this.welcomeMessage = page.locator('strong').filter({ hasText: /Admin User|Nguyễn Văn A/ }).first();
-    this.logoutButton = page.getByRole('button', { name: 'Đăng xuất' });
+    this.logoutButton = page.getByTestId('logout-btn');
     this.cartBadge = page.locator('.cart-badge');
   }
 

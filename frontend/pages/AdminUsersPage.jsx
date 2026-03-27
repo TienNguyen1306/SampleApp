@@ -331,7 +331,7 @@ export default function AdminUsersPage() {
               </div>
               {addError && <div className="au-error">⚠️ {addError}</div>}
               <div className="au-modal-actions">
-                <button type="button" className="btn-cancel" onClick={() => setShowAddModal(false)}>
+                <button type="button" className="btn-cancel" data-testid="add-user-cancel" onClick={() => setShowAddModal(false)}>
                   {t('adminUsers.addModal.cancel')}
                 </button>
                 <button type="submit" className="btn-submit" disabled={addLoading}>

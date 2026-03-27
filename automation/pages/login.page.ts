@@ -8,9 +8,9 @@ export class LoginPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.usernameInput = page.getByRole('textbox', { name: 'Tài khoản' });
-    this.passwordInput = page.getByRole('textbox', { name: 'Mật khẩu' });
-    this.loginButton = page.getByRole('button', { name: 'Đăng nhập' });
+    this.usernameInput = page.getByTestId('login-username');
+    this.passwordInput = page.getByTestId('login-password');
+    this.loginButton = page.getByTestId('login-submit');
   }
 
   async navigate() {

@@ -28,22 +28,22 @@ export class CheckoutPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.recipientNameInput = page.getByPlaceholder('Nguyễn Văn A');
-    this.recipientPhoneInput = page.getByPlaceholder('0912 345 678');
-    this.addressInput = page.getByPlaceholder('123 Đường ABC, Phường XYZ, TP. HCM');
+    this.recipientNameInput = page.getByTestId('checkout-name');
+    this.recipientPhoneInput = page.getByTestId('checkout-phone');
+    this.addressInput = page.getByTestId('checkout-address');
     this.cashOption = page.locator('.payment-option').filter({ hasText: 'COD' });
     this.cardOption = page.locator('.payment-option').filter({ hasText: 'Stripe' });
-    this.submitButton = page.locator('.btn-checkout');
-    this.backButton = page.getByRole('button', { name: '← Quay lại giỏ hàng' });
+    this.submitButton = page.getByTestId('checkout-submit');
+    this.backButton = page.getByTestId('checkout-back');
     this.orderSummary = page.locator('.order-summary');
     this.summaryItems = page.locator('.summary-item');
     this.cardElementContainer = page.locator('.card-element-container');
     this.cardHint = page.locator('.card-hint');
-    this.successHeading = page.getByRole('heading', { name: 'Đặt hàng thành công!' });
+    this.successHeading = page.getByTestId('checkout-success-heading');
     this.successOrderId = page.locator('.checkout-success').getByText(/Mã đơn hàng/);
     this.successContainer = page.locator('.checkout-success');
     this.successTotal = page.locator('.success-total');
-    this.continueShopping = page.getByRole('button', { name: 'Tiếp tục mua sắm' });
+    this.continueShopping = page.getByTestId('checkout-continue');
     this.errorMessage = page.locator('.checkout-error');
   }
 

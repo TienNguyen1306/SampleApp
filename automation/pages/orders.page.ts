@@ -8,7 +8,7 @@ export class OrdersPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.pageTitle = page.getByRole('heading', { name: 'Lịch sử mua hàng' });
+    this.pageTitle = page.getByTestId('orders-title');
     this.orderCards = page.locator('.order-card');
     this.emptyState = page.locator('.orders-empty p');
   }

@@ -105,6 +105,7 @@ function CheckoutForm({ onSuccess }) {
           <label>{t('checkout.fullName')}</label>
           <input
             name="recipientName"
+            data-testid="checkout-name"
             placeholder={t('checkout.fullNamePlaceholder')}
             value={form.recipientName}
             onChange={handleChange}
@@ -115,6 +116,7 @@ function CheckoutForm({ onSuccess }) {
           <label>{t('checkout.phone')}</label>
           <input
             name="recipientPhone"
+            data-testid="checkout-phone"
             placeholder={t('checkout.phonePlaceholder')}
             value={form.recipientPhone}
             onChange={handleChange}
@@ -125,6 +127,7 @@ function CheckoutForm({ onSuccess }) {
           <label>{t('checkout.address')}</label>
           <input
             name="address"
+            data-testid="checkout-address"
             placeholder={t('checkout.addressPlaceholder')}
             value={form.address}
             onChange={handleChange}
@@ -187,7 +190,7 @@ function CheckoutForm({ onSuccess }) {
 
       {error && <div className="checkout-error">⚠️ {error}</div>}
 
-      <button type="submit" className="btn-checkout" disabled={loading}>
+      <button type="submit" className="btn-checkout" data-testid="checkout-submit" disabled={loading}>
         {loading
           ? t('checkout.processing')
           : paymentMethod === 'card'
@@ -203,7 +206,7 @@ function OrderSuccess({ order, onContinue }) {
   return (
     <div className="checkout-success">
       <div className="success-icon">✅</div>
-      <h2>{t('checkout.success')}</h2>
+      <h2 data-testid="checkout-success-heading">{t('checkout.success')}</h2>
       <p>
         {t('checkout.orderId')}: <strong>#{order._id || order.id}</strong>
       </p>
@@ -215,7 +218,7 @@ function OrderSuccess({ order, onContinue }) {
         <strong>{order.paymentMethod === 'card' ? t('checkout.paymentCard') : t('checkout.paymentCash')}</strong>
       </p>
       <p className="success-total">{formatPrice(order.totalPrice)}</p>
-      <button className="btn-primary" onClick={onContinue}>
+      <button className="btn-primary" data-testid="checkout-continue" onClick={onContinue}>
         {t('checkout.continueShopping')}
       </button>
     </div>
@@ -254,7 +257,7 @@ export default function CheckoutPage() {
     <div className="checkout-wrapper">
       <header className="checkout-header">
         <div className="checkout-header-inner">
-          <button className="back-btn" onClick={() => navigate('/cart')}>
+          <button className="back-btn" data-testid="checkout-back" onClick={() => navigate('/cart')}>
             {t('checkout.back')}
           </button>
           <div className="checkout-logo">

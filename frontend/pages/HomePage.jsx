@@ -55,10 +55,10 @@ export default function HomePage() {
             {user && <span className="header-user">{t('home.greeting')} <strong>{user.name}</strong></span>}
             {user?.role === 'admin' && (
               <>
-                <button className="admin-btn" onClick={() => navigate('/admin/products')}>
+                <button className="admin-btn" data-testid="admin-products-btn" onClick={() => navigate('/admin/products')}>
                   {t('home.adminProducts')}
                 </button>
-                <button className="admin-btn" onClick={() => navigate('/admin/users')}>
+                <button className="admin-btn" data-testid="admin-users-btn" onClick={() => navigate('/admin/users')}>
                   {t('home.adminUsers')}
                 </button>
               </>
@@ -68,7 +68,7 @@ export default function HomePage() {
               🛒
               {totalCount > 0 && <span className="cart-badge">{totalCount}</span>}
             </button>
-            <button className="logout-btn" onClick={handleLogout}>{t('home.logout')}</button>
+            <button className="logout-btn" data-testid="logout-btn" onClick={handleLogout}>{t('home.logout')}</button>
             <LanguageSwitcher />
           </div>
         </div>
