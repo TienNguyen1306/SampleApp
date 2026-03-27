@@ -54,9 +54,14 @@ export default function HomePage() {
           <div className="header-right">
             {user && <span className="header-user">{t('home.greeting')} <strong>{user.name}</strong></span>}
             {user?.role === 'admin' && (
-              <button className="admin-btn" onClick={() => navigate('/admin/products')}>
-                {t('home.adminProducts')}
-              </button>
+              <>
+                <button className="admin-btn" onClick={() => navigate('/admin/products')}>
+                  {t('home.adminProducts')}
+                </button>
+                <button className="admin-btn" onClick={() => navigate('/admin/users')}>
+                  {t('home.adminUsers')}
+                </button>
+              </>
             )}
             <button className="orders-btn" onClick={() => navigate('/orders')}>{t('home.orders')}</button>
             <button className="cart-btn" onClick={() => navigate('/cart')}>
