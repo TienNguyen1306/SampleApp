@@ -4,13 +4,20 @@ function getToken() {
   return sessionStorage.getItem('token')
 }
 
+// Throw an error with errorCode so the frontend can translate it
+function throwApiError(data, fallbackCode = 'UNKNOWN') {
+  const err = new Error(data.errorCode || fallbackCode)
+  err.errorCode = data.errorCode || fallbackCode
+  throw err
+}
+
 export async function fetchUsers(params = {}) {
   const query = new URLSearchParams(params).toString()
   const res = await fetch(`${BASE_URL}/api/users${query ? `?${query}` : ''}`, {
     headers: { Authorization: `Bearer ${getToken()}` },
   })
   const data = await res.json()
-  if (!res.ok) throw new Error(data.message || 'Không thể tải danh sách user.')
+  if (!res.ok) throwApiError(data)
   return data
 }
 
@@ -21,7 +28,7 @@ export async function createUserRequest(userData) {
     body: JSON.stringify(userData),
   })
   const data = await res.json()
-  if (!res.ok) throw new Error(data.message || 'Không thể tạo user.')
+  if (!res.ok) throwApiError(data)
   return data
 }
 
@@ -32,7 +39,7 @@ export async function deleteUsersRequest(ids) {
     body: JSON.stringify({ ids }),
   })
   const data = await res.json()
-  if (!res.ok) throw new Error(data.message || 'Không thể xoá user.')
+  if (!res.ok) throwApiError(data)
   return data
 }
 
@@ -43,6 +50,6 @@ export async function updateUserRoleRequest(id, role) {
     body: JSON.stringify({ role }),
   })
   const data = await res.json()
-  if (!res.ok) throw new Error(data.message || 'Không thể cập nhật quyền.')
+  if (!res.ok) throwApiError(data)
   return data
 }

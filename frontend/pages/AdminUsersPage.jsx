@@ -101,7 +101,7 @@ export default function AdminUsersPage() {
       setConfirmDelete(null)
       loadUsers()
     } catch (err) {
-      setError(err.message)
+      setError(t(`errors.${err.errorCode || 'UNKNOWN'}`))
       setConfirmDelete(null)
     }
   }
@@ -113,7 +113,7 @@ export default function AdminUsersPage() {
       showSuccess(t('adminUsers.successRole'))
       setUsers((prev) => prev.map((u) => (u._id === id || u.id === id) ? { ...u, role: newRole } : u))
     } catch (err) {
-      setError(err.message)
+      setError(t(`errors.${err.errorCode || 'UNKNOWN'}`))
     }
   }
 
@@ -129,7 +129,7 @@ export default function AdminUsersPage() {
       setAddForm({ name: '', username: '', password: '', role: 'customer' })
       loadUsers()
     } catch (err) {
-      setAddError(err.message)
+      setAddError(t(`errors.${err.errorCode || 'UNKNOWN'}`))
     } finally {
       setAddLoading(false)
     }
@@ -284,8 +284,10 @@ export default function AdminUsersPage() {
             <h2>{t('adminUsers.addModal.title')}</h2>
             <form onSubmit={handleAddSubmit}>
               <div className="au-form-group">
-                <label>{t('adminUsers.addModal.name')}</label>
+                <label htmlFor="add-name">{t('adminUsers.addModal.name')}</label>
                 <input
+                  id="add-name"
+                  data-testid="add-user-name"
                   value={addForm.name}
                   onChange={(e) => setAddForm({ ...addForm, name: e.target.value })}
                   required
@@ -293,8 +295,10 @@ export default function AdminUsersPage() {
                 />
               </div>
               <div className="au-form-group">
-                <label>{t('adminUsers.addModal.username')}</label>
+                <label htmlFor="add-username">{t('adminUsers.addModal.username')}</label>
                 <input
+                  id="add-username"
+                  data-testid="add-user-username"
                   value={addForm.username}
                   onChange={(e) => setAddForm({ ...addForm, username: e.target.value })}
                   required
@@ -302,8 +306,10 @@ export default function AdminUsersPage() {
                 />
               </div>
               <div className="au-form-group">
-                <label>{t('adminUsers.addModal.password')}</label>
+                <label htmlFor="add-password">{t('adminUsers.addModal.password')}</label>
                 <input
+                  id="add-password"
+                  data-testid="add-user-password"
                   type="password"
                   value={addForm.password}
                   onChange={(e) => setAddForm({ ...addForm, password: e.target.value })}
@@ -312,8 +318,13 @@ export default function AdminUsersPage() {
                 />
               </div>
               <div className="au-form-group">
-                <label>{t('adminUsers.addModal.role')}</label>
-                <select value={addForm.role} onChange={(e) => setAddForm({ ...addForm, role: e.target.value })}>
+                <label htmlFor="add-role">{t('adminUsers.addModal.role')}</label>
+                <select
+                  id="add-role"
+                  data-testid="add-user-role"
+                  value={addForm.role}
+                  onChange={(e) => setAddForm({ ...addForm, role: e.target.value })}
+                >
                   <option value="customer">{t('adminUsers.roleCustomer')}</option>
                   <option value="admin">{t('adminUsers.roleAdmin')}</option>
                 </select>

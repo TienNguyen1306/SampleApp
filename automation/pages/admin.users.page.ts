@@ -7,7 +7,7 @@ export class AdminUsersPage {
   readonly addUserButton: Locator;
   readonly userRows: Locator;
 
-  // Add modal
+  // Add modal — locators via data-testid (stable, i18n-independent)
   readonly addModal: Locator;
   readonly nameInput: Locator;
   readonly usernameInput: Locator;
@@ -31,12 +31,12 @@ export class AdminUsersPage {
     this.addUserButton = page.locator('.btn-add-user');
     this.userRows = page.locator('.au-table tbody tr');
 
-    // Add modal
+    // Add modal — use data-testid for stable i18n-independent selection
     this.addModal = page.locator('.au-modal').filter({ hasText: /Add New User|Thêm User mới/ });
-    this.nameInput = page.locator('.au-form-group').filter({ has: page.locator('label') }).nth(0).locator('input');
-    this.usernameInput = page.locator('.au-form-group').filter({ has: page.locator('label') }).nth(1).locator('input');
-    this.passwordInput = page.locator('.au-form-group').filter({ has: page.locator('label') }).nth(2).locator('input');
-    this.roleSelect = page.locator('.au-form-group').filter({ has: page.locator('label') }).nth(3).locator('select');
+    this.nameInput = page.getByTestId('add-user-name');
+    this.usernameInput = page.getByTestId('add-user-username');
+    this.passwordInput = page.getByTestId('add-user-password');
+    this.roleSelect = page.getByTestId('add-user-role');
     this.submitButton = page.locator('.btn-submit');
     this.cancelButton = page.locator('.btn-cancel').first();
 
@@ -58,6 +58,42 @@ export class AdminUsersPage {
     await this.page.waitForLoadState('networkidle');
   }
 
+  async goHome() {
+    await this.page.goto('/home');
+    await this.page.waitForLoadState('networkidle');
+  }
+
+  async logout() {
+    await this.page.goto('/home');
+    await this.page.locator('.logout-btn').click();
+    await this.page.waitForURL('**/login');
+  }
+
+  async tryDirectAccess() {
+    await this.page.goto('/admin/users');
+    await this.page.waitForLoadState('networkidle');
+  }
+
+  async isAccessBlocked(): Promise<boolean> {
+    const isRedirected = !this.page.url().includes('/admin/users');
+    const hasNoRows = (await this.userRows.count()) === 0;
+    return isRedirected || hasNoRows;
+  }
+
+  async clickAdminUsersButton() {
+    await this.page.locator('.admin-btn').filter({ hasText: /Quản lý User|Manage Users/ }).click();
+    await this.page.waitForURL('**/admin/users');
+    await this.page.waitForLoadState('networkidle');
+  }
+
+  isAdminUsersButtonVisible(): Locator {
+    return this.page.locator('.admin-btn').filter({ hasText: /Quản lý User|Manage Users/ });
+  }
+
+  getAdminUsersButton(): Locator {
+    return this.page.locator('.admin-btn').filter({ hasText: /Quản lý User|Manage Users/ });
+  }
+
   async addUser(name: string, username: string, password: string, role: 'customer' | 'admin') {
     await this.addUserButton.click();
     await this.addModal.waitFor({ state: 'visible' });
@@ -70,8 +106,7 @@ export class AdminUsersPage {
   }
 
   async deleteUserByUsername(username: string) {
-    // Find the row for the user and click delete
-    const row = this.userRows.filter({ has: this.page.locator('.au-username', { hasText: username }) });
+    const row = this.getUserRow(username);
     await row.locator('.btn-del-one').click();
     await this.confirmDeleteModal.waitFor({ state: 'visible' });
     await this.confirmDeleteButton.click();
@@ -84,9 +119,5 @@ export class AdminUsersPage {
 
   getUserRow(username: string): Locator {
     return this.userRows.filter({ has: this.page.locator('.au-username', { hasText: username }) });
-  }
-
-  getAdminUsersButton(): Locator {
-    return this.page.locator('.admin-btn').filter({ hasText: /Quản lý User|Manage Users/ });
   }
 }

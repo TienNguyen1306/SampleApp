@@ -38,18 +38,18 @@ export async function createUser(req, res) {
   const { username, password, name, role = 'customer' } = req.body
 
   if (!username || !password || !name) {
-    return res.status(400).json({ message: 'Vui lòng nhập đầy đủ thông tin.' })
+    return res.status(400).json({ errorCode: 'MISSING_FIELDS' })
   }
   if (username.length < 3) {
-    return res.status(400).json({ message: 'Tên đăng nhập phải có ít nhất 3 ký tự.' })
+    return res.status(400).json({ errorCode: 'USERNAME_TOO_SHORT' })
   }
   if (password.length < 6) {
-    return res.status(400).json({ message: 'Mật khẩu phải có ít nhất 6 ký tự.' })
+    return res.status(400).json({ errorCode: 'PASSWORD_TOO_SHORT' })
   }
 
   const existing = await User.findOne({ username })
   if (existing) {
-    return res.status(409).json({ message: 'Tên đăng nhập đã tồn tại.' })
+    return res.status(409).json({ errorCode: 'USERNAME_TAKEN' })
   }
 
   const user = await User.create({ username, password, name, role })
@@ -62,17 +62,17 @@ export async function deleteUsers(req, res) {
   const { ids } = req.body
 
   if (!Array.isArray(ids) || ids.length === 0) {
-    return res.status(400).json({ message: 'Vui lòng chọn ít nhất một user để xoá.' })
+    return res.status(400).json({ errorCode: 'NO_USERS_SELECTED' })
   }
 
   // Không cho xoá user có username = 'admin'
   const protectedUsers = await User.find({ _id: { $in: ids }, username: 'admin' })
   if (protectedUsers.length > 0) {
-    return res.status(403).json({ message: 'Không thể xoá tài khoản admin.' })
+    return res.status(403).json({ errorCode: 'CANNOT_DELETE_ADMIN' })
   }
 
   const result = await User.deleteMany({ _id: { $in: ids } })
-  res.json({ message: `Đã xoá ${result.deletedCount} user.`, deletedCount: result.deletedCount })
+  res.json({ deletedCount: result.deletedCount })
 }
 
 // PATCH /api/users/:id/role
@@ -81,13 +81,13 @@ export async function updateUserRole(req, res) {
   const { id } = req.params
 
   if (!['admin', 'customer'].includes(role)) {
-    return res.status(400).json({ message: 'Quyền không hợp lệ.' })
+    return res.status(400).json({ errorCode: 'INVALID_ROLE' })
   }
 
   const user = await User.findById(id)
-  if (!user) return res.status(404).json({ message: 'Không tìm thấy user.' })
+  if (!user) return res.status(404).json({ errorCode: 'USER_NOT_FOUND' })
   if (user.username === 'admin') {
-    return res.status(403).json({ message: 'Không thể thay đổi quyền tài khoản admin.' })
+    return res.status(403).json({ errorCode: 'CANNOT_CHANGE_ADMIN_ROLE' })
   }
 
   user.role = role

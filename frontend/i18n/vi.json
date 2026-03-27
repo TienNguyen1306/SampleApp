@@ -156,5 +156,17 @@
     "error": "Có lỗi xảy ra",
     "retry": "Thử lại",
     "language": "Ngôn ngữ"
+  },
+  "errors": {
+    "MISSING_FIELDS": "Vui lòng nhập đầy đủ thông tin.",
+    "USERNAME_TOO_SHORT": "Tên đăng nhập phải có ít nhất 3 ký tự.",
+    "PASSWORD_TOO_SHORT": "Mật khẩu phải có ít nhất 6 ký tự.",
+    "USERNAME_TAKEN": "Tên đăng nhập đã tồn tại.",
+    "NO_USERS_SELECTED": "Vui lòng chọn ít nhất một user để xoá.",
+    "CANNOT_DELETE_ADMIN": "Không thể xoá tài khoản admin.",
+    "INVALID_ROLE": "Quyền không hợp lệ.",
+    "USER_NOT_FOUND": "Không tìm thấy user.",
+    "CANNOT_CHANGE_ADMIN_ROLE": "Không thể thay đổi quyền tài khoản admin.",
+    "UNKNOWN": "Có lỗi xảy ra, vui lòng thử lại."
   }
 }

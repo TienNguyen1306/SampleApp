@@ -19,16 +19,13 @@ test.describe('E2E - User Management', () => {
     };
 
     test('should create non-admin user, verify no access to user management, then delete', async ({
-      page,
       loginPage,
-      homePage,
       adminUsersPage,
     }) => {
       // ── Step 1: Login as admin ──────────────────────────────────────────
       await loginPage.navigate();
       await loginPage.login('admin', 'password123');
-      await page.waitForURL('**/home');
-      await expect(page).toHaveURL(/\/home/);
+      await loginPage.waitForHome();
 
       // ── Step 2: Navigate to user management page ────────────────────────
       await adminUsersPage.navigate();
@@ -45,36 +42,27 @@ test.describe('E2E - User Management', () => {
       await expect(adminUsersPage.getUserRow(newUser.username)).toBeVisible();
 
       // ── Step 4: Logout ──────────────────────────────────────────────────
-      await page.goto('/home');
-      await homePage.logoutButton.click();
-      await page.waitForURL('**/login');
+      await adminUsersPage.logout();
 
       // ── Step 5: Login as the new non-admin user ─────────────────────────
       await loginPage.login(newUser.username, newUser.password);
-      await page.waitForURL('**/home');
+      await loginPage.waitForHome();
 
       // ── Step 6: Verify "Quản lý User" button is NOT visible ─────────────
-      const adminUsersBtn = adminUsersPage.getAdminUsersButton();
-      await expect(adminUsersBtn).not.toBeVisible();
+      await expect(adminUsersPage.getAdminUsersButton()).not.toBeVisible();
 
       // ── Step 7: Try accessing /admin/users directly → should be blocked ─
-      await page.goto('/admin/users');
-      await page.waitForLoadState('networkidle');
+      await adminUsersPage.tryDirectAccess();
 
       // Should either redirect away or show no data (403 from API)
-      // The page URL should not stay at /admin/users with data loaded,
-      // OR the API call returns 403 and no user rows are shown
-      const isRedirected = !page.url().includes('/admin/users');
-      const hasNoRows = (await page.locator('.au-table tbody tr').count()) === 0;
-      expect(isRedirected || hasNoRows).toBeTruthy();
+      const isBlocked = await adminUsersPage.isAccessBlocked();
+      expect(isBlocked).toBeTruthy();
 
       // ── Step 8: Logout and login back as admin to delete the user ────────
-      await page.goto('/home');
-      await homePage.logoutButton.click();
-      await page.waitForURL('**/login');
+      await adminUsersPage.logout();
 
       await loginPage.login('admin', 'password123');
-      await page.waitForURL('**/home');
+      await loginPage.waitForHome();
       await adminUsersPage.navigate();
 
       // ── Step 9: Delete the newly created user ────────────────────────────
@@ -100,15 +88,13 @@ test.describe('E2E - User Management', () => {
     };
 
     test('should create admin user, verify access to user management, then delete', async ({
-      page,
       loginPage,
-      homePage,
       adminUsersPage,
     }) => {
       // ── Step 1: Login as admin ──────────────────────────────────────────
       await loginPage.navigate();
       await loginPage.login('admin', 'password123');
-      await page.waitForURL('**/home');
+      await loginPage.waitForHome();
 
       // ── Step 2: Navigate to user management and create new admin user ────
       await adminUsersPage.navigate();
@@ -127,35 +113,27 @@ test.describe('E2E - User Management', () => {
       expect(countAfter).toBeGreaterThan(countBefore);
 
       // ── Step 3: Logout ──────────────────────────────────────────────────
-      await page.goto('/home');
-      await homePage.logoutButton.click();
-      await page.waitForURL('**/login');
+      await adminUsersPage.logout();
 
       // ── Step 4: Login as new admin user ─────────────────────────────────
       await loginPage.login(newAdmin.username, newAdmin.password);
-      await page.waitForURL('**/home');
+      await loginPage.waitForHome();
 
       // ── Step 5: Verify "Quản lý User" button IS visible ─────────────────
-      const adminUsersBtn = adminUsersPage.getAdminUsersButton();
-      await expect(adminUsersBtn).toBeVisible();
+      await expect(adminUsersPage.getAdminUsersButton()).toBeVisible();
 
       // ── Step 6: Click and verify can access /admin/users with data ───────
-      await adminUsersBtn.click();
-      await page.waitForURL('**/admin/users');
-      await page.waitForLoadState('networkidle');
-
+      await adminUsersPage.clickAdminUsersButton();
       await expect(adminUsersPage.pageTitle).toBeVisible();
       // Should see at least the default admin user in the list
       const rowCount = await adminUsersPage.getUserCount();
       expect(rowCount).toBeGreaterThan(0);
 
       // ── Step 7: Logout and login back as main admin to clean up ──────────
-      await page.goto('/home');
-      await homePage.logoutButton.click();
-      await page.waitForURL('**/login');
+      await adminUsersPage.logout();
 
       await loginPage.login('admin', 'password123');
-      await page.waitForURL('**/home');
+      await loginPage.waitForHome();
       await adminUsersPage.navigate();
 
       // ── Step 8: Delete the newly created admin user ───────────────────────
