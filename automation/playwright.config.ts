@@ -1,5 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
+// Load .env from automation directory (Node.js 22+ built-in)
+try { process.loadEnvFile('.env') } catch { /* file is optional */ }
+
 export default defineConfig({
   testDir: './tests',
   fullyParallel: true,

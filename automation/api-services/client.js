@@ -5,7 +5,7 @@
 export const BASE_URL = 'http://localhost:3001'
 
 // Secret key for private user management APIs — must match backend APP_SECRET
-export const APP_KEY = process.env.APP_SECRET || 'shopvn-app-secret-2024'
+export const APP_KEY = process.env.APP_SECRET || ''
 
 /**
  * Build common headers.

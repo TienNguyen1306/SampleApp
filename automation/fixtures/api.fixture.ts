@@ -1,7 +1,7 @@
 import { test as base, APIRequestContext } from '@playwright/test'
 
 export const BASE_URL = 'http://localhost:3001'
-export const APP_KEY = 'shopvn-app-secret-2024'
+export const APP_KEY = process.env.APP_SECRET || ''
 
 type ApiFixtures = {
   adminToken: string

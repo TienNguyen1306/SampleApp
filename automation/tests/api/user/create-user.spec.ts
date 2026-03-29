@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 
-const KEY = 'shopvn-app-secret-2024'
+const KEY = process.env.APP_SECRET || ''
 
 test.describe('POST /api/users', () => {
   let adminToken: string

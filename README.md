@@ -92,6 +92,11 @@ cd ..
 Tạo file `.env` ở thư mục gốc nếu cần tuỳ chỉnh:
 
 ```env
+# Secrets — thay bằng giá trị ngẫu nhiên mạnh trước khi deploy
+JWT_SECRET=your-strong-jwt-secret-here
+APP_SECRET=your-strong-app-secret-here
+VITE_APP_SECRET=your-strong-app-secret-here   # phải khớp với APP_SECRET
+
 # MongoDB — bỏ trống để dùng in-memory (mặc định cho dev)
 MONGODB_URI=mongodb://localhost:27017/shopvn
 
@@ -102,7 +107,7 @@ STRIPE_SECRET_KEY=sk_test_YOUR_SECRET_KEY
 PORT=3001
 ```
 
-> ⚠️ Nếu không tạo file `.env`, app vẫn chạy bình thường với in-memory DB và Stripe mock mode.
+> ⚠️ Nếu không tạo file `.env`, app vẫn chạy bình thường với in-memory DB, secret mặc định và Stripe mock mode. **Không dùng secret mặc định trên production.**
 
 ---
 
@@ -451,14 +456,6 @@ SampleApp/
 | GET | `/api/orders` | ✅ | Lịch sử đơn hàng |
 | POST | `/api/orders` | ✅ | Tạo đơn hàng |
 | POST | `/api/orders/payment-intent` | ✅ | Tạo Stripe payment intent |
-
-### Users *(admin only)*
-| Method | Endpoint | Auth | Mô tả |
-|--------|----------|------|-------|
-| GET | `/api/users` | ✅ Admin | Danh sách user (search, filter, sort, paging) |
-| POST | `/api/users` | ✅ Admin | Tạo user mới |
-| DELETE | `/api/users` | ✅ Admin | Xoá nhiều user |
-| PATCH | `/api/users/:id/role` | ✅ Admin | Đổi quyền user |
 
 ---
 
