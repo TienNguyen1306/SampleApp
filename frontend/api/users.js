@@ -1,8 +1,7 @@
 const BASE_URL = 'http://localhost:3001'
 
-// Secret key xác minh request đến từ app nội bộ
-// Phải khớp với APP_SECRET trong backend/config.js
-const APP_KEY = import.meta.env.VITE_APP_SECRET || 'shopvn-app-secret-2024'
+// Đọc từ .env (VITE_APP_SECRET) — phải khớp với APP_SECRET bên backend
+const APP_KEY = import.meta.env.VITE_APP_SECRET
 
 function getToken() {
   return sessionStorage.getItem('token')

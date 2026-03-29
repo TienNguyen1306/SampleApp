@@ -4,7 +4,7 @@ import { APP_KEY } from '../../fixtures/api.fixture'
 // We need APP_KEY to clean up — import from relative path won't work for spec files
 // So define inline
 const ADMIN_CREDS = { username: 'admin', password: 'password123' }
-const KEY = 'shopvn-app-secret-2024'
+const KEY = process.env.APP_SECRET || ''
 
 test.describe('POST /api/auth/register', () => {
   let createdUserId: string | null = null

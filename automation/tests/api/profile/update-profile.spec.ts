@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 import * as path from 'path'
 import * as fs from 'fs'
 
-const KEY = 'shopvn-app-secret-2024'
+const KEY = process.env.APP_SECRET || ''
 
 test.describe('PATCH /api/profile', () => {
   let token: string
