@@ -47,7 +47,6 @@ export default function HomePage() {
             <span className="header-logo-name">ShopVN</span>
           </div>
           <nav className="header-nav">
-            <a href="#">{t('home.nav.home')}</a>
             <a href="#">{t('home.nav.products')}</a>
             <a href="#">{t('home.nav.promotions')}</a>
           </nav>
