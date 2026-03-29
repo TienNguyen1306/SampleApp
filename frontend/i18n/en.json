@@ -13,12 +13,20 @@
   },
   "register": {
     "title": "Register",
+    "subtitle": "Create a new account",
     "name": "Full Name",
     "username": "Username",
+    "usernamePlaceholder": "Enter your username",
     "password": "Password",
+    "passwordPlaceholder": "At least 6 characters",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Re-enter password",
+    "avatarHint": "Profile picture (optional)",
     "submit": "Register",
+    "submitting": "Registering...",
     "haveAccount": "Already have an account?",
-    "login": "Login"
+    "login": "Login",
+    "passwordMismatch": "Passwords do not match."
   },
   "home": {
     "hero": {
@@ -152,6 +160,20 @@
     "successDelete": "User(s) deleted successfully!",
     "successRole": "Role updated successfully!"
   },
+  "profile": {
+    "title": "My Profile",
+    "avatar": "Profile Picture",
+    "changeAvatar": "Change Photo",
+    "name": "Full Name",
+    "namePlaceholder": "John Doe",
+    "username": "Username",
+    "save": "Save Changes",
+    "saving": "Saving...",
+    "back": "← Home",
+    "success": "Updated successfully!",
+    "avatarHint": "JPG, PNG, GIF up to 5MB. Click to change.",
+    "loading": "Loading..."
+  },
   "common": {
     "error": "An error occurred",
     "retry": "Retry",
@@ -168,6 +190,8 @@
     "USER_NOT_FOUND": "User not found.",
     "CANNOT_CHANGE_ADMIN_ROLE": "Cannot change the admin account's role.",
     "FORBIDDEN": "You do not have permission to perform this action.",
+    "FILE_TOO_LARGE": "Profile picture must not exceed 5MB.",
+    "INVALID_FILE_TYPE": "Only image files are accepted (JPG, PNG, GIF, ...).",
     "UNKNOWN": "An error occurred, please try again."
   }
 }

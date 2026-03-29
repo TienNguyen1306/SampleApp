@@ -1,29 +1,43 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { registerRequest } from '../api/auth'
 import './LoginPage.css'
 
 export default function RegisterPage() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const [name, setName] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [avatarFile, setAvatarFile] = useState(null)
+  const [avatarPreview, setAvatarPreview] = useState(null)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const fileInputRef = useRef(null)
+
+  function handleAvatarChange(e) {
+    const file = e.target.files[0]
+    if (!file) return
+    setAvatarFile(file)
+    const reader = new FileReader()
+    reader.onload = (ev) => setAvatarPreview(ev.target.result)
+    reader.readAsDataURL(file)
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
 
     if (password !== confirmPassword) {
-      setError('Mật khẩu xác nhận không khớp.')
+      setError(t('register.passwordMismatch'))
       return
     }
 
     setLoading(true)
     try {
-      const { token, user } = await registerRequest(username, password, name)
+      const { token, user } = await registerRequest(username, password, name, avatarFile)
       sessionStorage.setItem('token', token)
       sessionStorage.setItem('user', JSON.stringify(user))
       navigate('/home')
@@ -42,12 +56,36 @@ export default function RegisterPage() {
           <h1 className="logo-name">ShopVN</h1>
         </div>
 
-        <h2 className="login-title">Đăng ký</h2>
-        <p className="login-subtitle">Tạo tài khoản mới</p>
+        <h2 className="login-title">{t('register.title')}</h2>
+        <p className="login-subtitle">{t('register.subtitle')}</p>
 
         <form onSubmit={handleSubmit} className="login-form">
+
+          {/* Avatar upload */}
+          <div className="form-group" style={{ alignItems: 'center' }}>
+            <div
+              className="reg-avatar-wrapper"
+              onClick={() => fileInputRef.current?.click()}
+              title={t('profile.changeAvatar')}
+            >
+              {avatarPreview
+                ? <img src={avatarPreview} alt="preview" className="reg-avatar-img" />
+                : <div className="reg-avatar-placeholder">👤</div>
+              }
+              <div className="reg-avatar-overlay">📷</div>
+            </div>
+            <span className="reg-avatar-hint">{t('register.avatarHint')}</span>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={handleAvatarChange}
+            />
+          </div>
+
           <div className="form-group">
-            <label htmlFor="name">Họ tên</label>
+            <label htmlFor="name">{t('register.name')}</label>
             <input
               id="name"
               type="text"
@@ -59,11 +97,11 @@ export default function RegisterPage() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="username">Tên đăng nhập</label>
+            <label htmlFor="username">{t('register.username')}</label>
             <input
               id="username"
               type="text"
-              placeholder="Nhập tên đăng nhập"
+              placeholder={t('register.usernamePlaceholder')}
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               autoComplete="username"
@@ -71,11 +109,11 @@ export default function RegisterPage() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Mật khẩu</label>
+            <label htmlFor="password">{t('register.password')}</label>
             <input
               id="password"
               type="password"
-              placeholder="Ít nhất 6 ký tự"
+              placeholder={t('register.passwordPlaceholder')}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="new-password"
@@ -83,11 +121,11 @@ export default function RegisterPage() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="confirmPassword">Xác nhận mật khẩu</label>
+            <label htmlFor="confirmPassword">{t('register.confirmPassword')}</label>
             <input
               id="confirmPassword"
               type="password"
-              placeholder="Nhập lại mật khẩu"
+              placeholder={t('register.confirmPasswordPlaceholder')}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               autoComplete="new-password"
@@ -101,14 +139,14 @@ export default function RegisterPage() {
           )}
 
           <button type="submit" className="login-btn" disabled={loading}>
-            {loading ? 'Đang đăng ký...' : 'Đăng ký'}
+            {loading ? t('register.submitting') : t('register.submit')}
           </button>
         </form>
 
         <p className="login-hint">
-          Đã có tài khoản?{' '}
+          {t('register.haveAccount')}{' '}
           <a href="/login" onClick={(e) => { e.preventDefault(); navigate('/login') }}>
-            Đăng nhập
+            {t('register.login')}
           </a>
         </p>
       </div>

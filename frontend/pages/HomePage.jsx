@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { fetchProducts } from '../api/products'
 import { useCart } from '../context/CartContext'
@@ -52,7 +52,15 @@ export default function HomePage() {
             <a href="#">{t('home.nav.promotions')}</a>
           </nav>
           <div className="header-right">
-            {user && <span className="header-user">{t('home.greeting')} <strong>{user.name}</strong></span>}
+            {user && (
+              <Link to="/profile" className="header-profile-link">
+                {user.avatar
+                  ? <img src={user.avatar} alt="avatar" className="header-avatar" />
+                  : <span className="header-avatar-placeholder">👤</span>
+                }
+                <span className="header-user">{t('home.greeting')} <strong>{user.name}</strong></span>
+              </Link>
+            )}
             {user?.role === 'admin' && (
               <>
                 <button className="admin-btn" data-testid="admin-products-btn" onClick={() => navigate('/admin/products')}>

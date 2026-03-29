@@ -13,12 +13,20 @@
   },
   "register": {
     "title": "Đăng ký",
+    "subtitle": "Tạo tài khoản mới",
     "name": "Họ và tên",
     "username": "Tên đăng nhập",
+    "usernamePlaceholder": "Nhập tên đăng nhập",
     "password": "Mật khẩu",
+    "passwordPlaceholder": "Ít nhất 6 ký tự",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "confirmPasswordPlaceholder": "Nhập lại mật khẩu",
+    "avatarHint": "Ảnh đại diện (tuỳ chọn)",
     "submit": "Đăng ký",
+    "submitting": "Đang đăng ký...",
     "haveAccount": "Đã có tài khoản?",
-    "login": "Đăng nhập"
+    "login": "Đăng nhập",
+    "passwordMismatch": "Mật khẩu xác nhận không khớp."
   },
   "home": {
     "hero": {
@@ -152,6 +160,20 @@
     "successDelete": "Đã xoá user thành công!",
     "successRole": "Cập nhật quyền thành công!"
   },
+  "profile": {
+    "title": "Hồ sơ cá nhân",
+    "avatar": "Ảnh đại diện",
+    "changeAvatar": "Đổi ảnh",
+    "name": "Họ và tên",
+    "namePlaceholder": "Nguyễn Văn A",
+    "username": "Tên đăng nhập",
+    "save": "Lưu thay đổi",
+    "saving": "Đang lưu...",
+    "back": "← Trang chủ",
+    "success": "Cập nhật thành công!",
+    "avatarHint": "JPG, PNG, GIF tối đa 5MB. Click ảnh để thay đổi.",
+    "loading": "Đang tải..."
+  },
   "common": {
     "error": "Có lỗi xảy ra",
     "retry": "Thử lại",
@@ -168,6 +190,8 @@
     "USER_NOT_FOUND": "Không tìm thấy user.",
     "CANNOT_CHANGE_ADMIN_ROLE": "Không thể thay đổi quyền tài khoản admin.",
     "FORBIDDEN": "Bạn không có quyền thực hiện thao tác này.",
+    "FILE_TOO_LARGE": "Ảnh đại diện không được vượt quá 5MB.",
+    "INVALID_FILE_TYPE": "Chỉ chấp nhận file ảnh (JPG, PNG, GIF, ...).",
     "UNKNOWN": "Có lỗi xảy ra, vui lòng thử lại."
   }
 }
