@@ -87,27 +87,17 @@ cd ..
 
 ---
 
-### Bước 5 — Cấu hình môi trường *(tuỳ chọn)*
+### Bước 5 — Cấu hình môi trường
 
-Tạo file `.env` ở thư mục gốc nếu cần tuỳ chỉnh:
+Copy file `.env.example` thành `.env` ở thư mục gốc:
 
-```env
-# Secrets — thay bằng giá trị ngẫu nhiên mạnh trước khi deploy
-JWT_SECRET=your-strong-jwt-secret-here
-APP_SECRET=your-strong-app-secret-here
-VITE_APP_SECRET=your-strong-app-secret-here   # phải khớp với APP_SECRET
-
-# MongoDB — bỏ trống để dùng in-memory (mặc định cho dev)
-MONGODB_URI=mongodb://localhost:27017/shopvn
-
-# Stripe — lấy key tại https://dashboard.stripe.com/test/apikeys
-STRIPE_SECRET_KEY=sk_test_YOUR_SECRET_KEY
-
-# Port backend (mặc định: 3001)
-PORT=3001
+```bash
+cp .env.example .env
 ```
 
-> ⚠️ Nếu không tạo file `.env`, app vẫn chạy bình thường với in-memory DB, secret mặc định và Stripe mock mode. **Không dùng secret mặc định trên production.**
+File `.env.example` đã có sẵn giá trị dev — copy là chạy được ngay, không cần chỉnh gì thêm.
+
+> ⚠️ Trước khi deploy production, thay `JWT_SECRET`, `APP_SECRET` và `VITE_APP_SECRET` bằng chuỗi ngẫu nhiên mạnh (≥ 32 ký tự).
 
 ---
 
