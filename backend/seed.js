@@ -3,14 +3,17 @@ import { Product } from './models/Product.js'
 
 export async function seedDatabase() {
   // Seed users nếu chưa có
+  // Dùng .save() thay vì insertMany để trigger bcrypt pre-save hook
   const userCount = await User.countDocuments()
   if (userCount === 0) {
-    await User.insertMany([
-      { username: 'admin',      password: 'password123', name: 'Admin User',       role: 'admin' },
-      { username: 'user',       password: '123456',      name: 'Nguyễn Văn A',     role: 'customer' },
-      { username: 'testuser',   password: '123456',      name: 'Test User',         role: 'customer' },
-      { username: 'anhtien123', password: 'Abcd1234@',   name: 'Nguyen Anh Tien',   role: 'customer' },
-    ])
+    const seedUsers = [
+      { username: 'admin',    password: 'password123', name: 'Admin User',   role: 'admin' },
+      { username: 'user',     password: '123456',      name: 'Nguyễn Văn A', role: 'customer' },
+      { username: 'testuser', password: '123456',      name: 'Test User',    role: 'customer' },
+    ]
+    for (const data of seedUsers) {
+      await new User(data).save()
+    }
     console.log('✅ Seeded users')
   }
 

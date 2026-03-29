@@ -1,9 +1,13 @@
-export const JWT_SECRET = 'shopvn-secret-key-change-in-production'
-export const JWT_EXPIRES_IN = '7d'
-export const PORT = 3001
+const DEFAULT_JWT_SECRET = 'shopvn-dev-secret-do-not-use-in-production'
 
-// Secret key dùng để xác minh request đến từ app nội bộ (frontend của mình)
-// Đổi giá trị này trước khi deploy production
+if (!process.env.JWT_SECRET) {
+  console.warn('⚠️  WARNING: JWT_SECRET not set in environment. Using default dev secret — set JWT_SECRET before deploying to production!')
+}
+
+export const JWT_SECRET = process.env.JWT_SECRET || DEFAULT_JWT_SECRET
+export const JWT_EXPIRES_IN = '7d'
+export const PORT = process.env.PORT || 3001
+
 export const APP_SECRET = process.env.APP_SECRET || 'shopvn-app-secret-2024'
 
 // Stripe — thay bằng secret key từ https://dashboard.stripe.com/test/apikeys
