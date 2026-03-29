@@ -53,12 +53,12 @@ export default function HomePage() {
           </nav>
           <div className="header-right">
             {user && (
-              <Link to="/profile" className="header-profile-link">
+              <Link to="/profile" className="header-profile-link" data-testid="header-profile-link">
                 {user.avatar
-                  ? <img src={user.avatar} alt="avatar" className="header-avatar" />
-                  : <span className="header-avatar-placeholder">👤</span>
+                  ? <img src={user.avatar} alt="avatar" className="header-avatar" data-testid="header-avatar" />
+                  : <span className="header-avatar-placeholder" data-testid="header-avatar-placeholder">👤</span>
                 }
-                <span className="header-user">{t('home.greeting')} <strong>{user.name}</strong></span>
+                <span className="header-user" data-testid="header-username">{t('home.greeting')} <strong>{user.name}</strong></span>
               </Link>
             )}
             {user?.role === 'admin' && (

@@ -77,6 +77,7 @@ export default function RegisterPage() {
             <span className="reg-avatar-hint">{t('register.avatarHint')}</span>
             <input
               ref={fileInputRef}
+              data-testid="reg-avatar-input"
               type="file"
               accept="image/*"
               style={{ display: 'none' }}
@@ -85,9 +86,10 @@ export default function RegisterPage() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="name">{t('register.name')}</label>
+            <label htmlFor="reg-name">{t('register.name')}</label>
             <input
-              id="name"
+              id="reg-name"
+              data-testid="reg-name"
               type="text"
               placeholder="Nguyễn Văn A"
               value={name}
@@ -97,9 +99,10 @@ export default function RegisterPage() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="username">{t('register.username')}</label>
+            <label htmlFor="reg-username">{t('register.username')}</label>
             <input
-              id="username"
+              id="reg-username"
+              data-testid="reg-username"
               type="text"
               placeholder={t('register.usernamePlaceholder')}
               value={username}
@@ -109,9 +112,10 @@ export default function RegisterPage() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">{t('register.password')}</label>
+            <label htmlFor="reg-password">{t('register.password')}</label>
             <input
-              id="password"
+              id="reg-password"
+              data-testid="reg-password"
               type="password"
               placeholder={t('register.passwordPlaceholder')}
               value={password}
@@ -121,9 +125,10 @@ export default function RegisterPage() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="confirmPassword">{t('register.confirmPassword')}</label>
+            <label htmlFor="reg-confirm-password">{t('register.confirmPassword')}</label>
             <input
-              id="confirmPassword"
+              id="reg-confirm-password"
+              data-testid="reg-confirm-password"
               type="password"
               placeholder={t('register.confirmPasswordPlaceholder')}
               value={confirmPassword}
@@ -138,7 +143,7 @@ export default function RegisterPage() {
             </div>
           )}
 
-          <button type="submit" className="login-btn" disabled={loading}>
+          <button type="submit" className="login-btn" data-testid="reg-submit" disabled={loading}>
             {loading ? t('register.submitting') : t('register.submit')}
           </button>
         </form>

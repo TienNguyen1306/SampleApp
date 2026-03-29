@@ -101,6 +101,7 @@ export default function ProfilePage() {
             <p className="pf-avatar-hint">{t('profile.avatarHint')}</p>
             <input
               ref={fileInputRef}
+              data-testid="profile-avatar-input"
               type="file"
               accept="image/*"
               className="pf-file-input"
@@ -118,6 +119,7 @@ export default function ProfilePage() {
           <div className="pf-form-group">
             <label className="pf-label">{t('profile.name')}</label>
             <input
+              data-testid="profile-name"
               className="pf-input"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -125,10 +127,10 @@ export default function ProfilePage() {
             />
           </div>
 
-          {error && <p className="pf-error">{error}</p>}
-          {success && <p className="pf-success">{success}</p>}
+          {error && <p className="pf-error" data-testid="profile-error">{error}</p>}
+          {success && <p className="pf-success" data-testid="profile-success">{success}</p>}
 
-          <button type="submit" className="pf-save-btn" disabled={saving}>
+          <button type="submit" className="pf-save-btn" data-testid="profile-save" disabled={saving}>
             {saving ? t('profile.saving') : t('profile.save')}
           </button>
         </form>
