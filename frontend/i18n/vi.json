@@ -167,6 +167,7 @@
     "INVALID_ROLE": "Quyền không hợp lệ.",
     "USER_NOT_FOUND": "Không tìm thấy user.",
     "CANNOT_CHANGE_ADMIN_ROLE": "Không thể thay đổi quyền tài khoản admin.",
+    "FORBIDDEN": "Bạn không có quyền thực hiện thao tác này.",
     "UNKNOWN": "Có lỗi xảy ra, vui lòng thử lại."
   }
 }

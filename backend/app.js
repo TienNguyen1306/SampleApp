@@ -8,7 +8,10 @@ import userRoutes from './routes/users.js'
 
 const app = express()
 
-app.use(cors({ origin: /^http:\/\/localhost:\d+$/ }))
+app.use(cors({
+  origin: /^http:\/\/localhost:\d+$/,
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-App-Key'],
+}))
 app.use(express.json())
 
 app.use('/api/auth', authRoutes)

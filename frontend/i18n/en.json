@@ -167,6 +167,7 @@
     "INVALID_ROLE": "Invalid role.",
     "USER_NOT_FOUND": "User not found.",
     "CANNOT_CHANGE_ADMIN_ROLE": "Cannot change the admin account's role.",
+    "FORBIDDEN": "You do not have permission to perform this action.",
     "UNKNOWN": "An error occurred, please try again."
   }
 }
