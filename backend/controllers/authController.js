@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import bcrypt from 'bcrypt'
 import { User } from '../models/User.js'
 import { JWT_SECRET, JWT_EXPIRES_IN } from '../config.js'
 
@@ -9,9 +10,10 @@ export async function login(req, res) {
     return res.status(400).json({ message: 'Vui lòng nhập đầy đủ tài khoản và mật khẩu.' })
   }
 
-  const user = await User.findOne({ username, password })
+  const user = await User.findOne({ username })
+  const valid = user && await bcrypt.compare(password, user.password)
 
-  if (!user) {
+  if (!valid) {
     return res.status(401).json({ message: 'Tài khoản hoặc mật khẩu không đúng.' })
   }
 

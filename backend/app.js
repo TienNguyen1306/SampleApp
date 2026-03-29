@@ -15,6 +15,24 @@ app.use(cors({
 }))
 app.use(express.json())
 
+// Ngăn NoSQL injection — strip keys có $ hoặc . khỏi req.body và req.params
+function sanitize(obj) {
+  if (obj && typeof obj === 'object') {
+    for (const key of Object.keys(obj)) {
+      if (key.startsWith('$') || key.includes('.')) {
+        delete obj[key]
+      } else {
+        sanitize(obj[key])
+      }
+    }
+  }
+}
+app.use((req, _res, next) => {
+  sanitize(req.body)
+  sanitize(req.params)
+  next()
+})
+
 app.use('/api/auth', authRoutes)
 app.use('/api/products', productRoutes)
 app.use('/api/orders', orderRoutes)
