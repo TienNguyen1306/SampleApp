@@ -15,7 +15,7 @@ test.describe('POST /api/orders', () => {
     recipientName: 'Test User',
     recipientPhone: '0901234567',
     address: '123 Test Street',
-    paymentMethod: 'cod',
+    paymentMethod: 'cash',
     totalPrice: 50000,
   }
 
