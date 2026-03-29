@@ -163,6 +163,41 @@ Mở trình duyệt: **http://localhost:5173**
 
 Nếu muốn dùng MongoDB local thay vì in-memory:
 
+### Windows:
+
+**Cách 1 — Installer (khuyến nghị):**
+
+1. Tải MongoDB Community Server tại: https://www.mongodb.com/try/download/community
+2. Chọn **Windows** → **msi** → Download
+3. Chạy file `.msi`, chọn **Complete** → tick **Install MongoDB as a Service**
+4. Sau khi cài, MongoDB tự chạy dưới dạng Windows Service
+
+Kiểm tra:
+```powershell
+# Mở PowerShell (Admin)
+Get-Service -Name MongoDB
+# Status phải là: Running
+```
+
+Nếu chưa chạy:
+```powershell
+Start-Service -Name MongoDB
+```
+
+**Cách 2 — winget:**
+```powershell
+winget install MongoDB.Server
+```
+
+**Cách 3 — Chocolatey:**
+```powershell
+choco install mongodb
+```
+
+> 💡 Sau khi cài xong, MongoDB mặc định lắng nghe tại `localhost:27017`.
+
+---
+
 ### Ubuntu / WSL:
 ```bash
 curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc | sudo gpg --dearmor -o /usr/share/keyrings/mongodb-server-8.0.gpg
@@ -180,6 +215,13 @@ brew services start mongodb-community
 ```
 
 ### Kết nối app với MongoDB local:
+
+**Windows (PowerShell / cmd):**
+```powershell
+set MONGODB_URI=mongodb://localhost:27017/shopvn && npm run server
+```
+
+**macOS / Linux:**
 ```bash
 MONGODB_URI=mongodb://localhost:27017/shopvn npm run server
 ```
