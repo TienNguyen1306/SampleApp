@@ -46,10 +46,6 @@ export default function HomePage() {
             <span>🛍️</span>
             <span className="header-logo-name">ShopVN</span>
           </div>
-          <nav className="header-nav">
-            <a href="#">{t('home.nav.products')}</a>
-            <a href="#">{t('home.nav.promotions')}</a>
-          </nav>
           <div className="header-right">
             {user && (
               <Link to="/profile" className="header-profile-link" data-testid="header-profile-link">
