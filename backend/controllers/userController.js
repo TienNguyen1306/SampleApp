@@ -43,7 +43,7 @@ export async function createUser(req, res) {
   if (username.length < 3) {
     return res.status(400).json({ errorCode: 'USERNAME_TOO_SHORT' })
   }
-  if (password.length < 6) {
+  if (password.length < 8) {
     return res.status(400).json({ errorCode: 'PASSWORD_TOO_SHORT' })
   }
   if (!['admin', 'customer'].includes(role)) {
@@ -57,6 +57,7 @@ export async function createUser(req, res) {
 
   const user = await User.create({ username, password, name, role })
   const { password: _, ...userWithoutPassword } = user.toObject()
+  console.info(`[AUDIT] Admin "${req.user.username}" created user "${username}" (role: ${role}) at ${new Date().toISOString()}`)
   res.status(201).json(userWithoutPassword)
 }
 
@@ -75,6 +76,7 @@ export async function deleteUsers(req, res) {
   }
 
   const result = await User.deleteMany({ _id: { $in: ids } })
+  console.info(`[AUDIT] Admin "${req.user.username}" deleted ${result.deletedCount} user(s) ids=[${ids.join(',')}] at ${new Date().toISOString()}`)
   res.json({ deletedCount: result.deletedCount })
 }
 
@@ -93,8 +95,10 @@ export async function updateUserRole(req, res) {
     return res.status(403).json({ errorCode: 'CANNOT_CHANGE_ADMIN_ROLE' })
   }
 
+  const oldRole = user.role
   user.role = role
   await user.save()
 
+  console.info(`[AUDIT] Admin "${req.user.username}" changed role of "${user.username}" from ${oldRole} to ${role} at ${new Date().toISOString()}`)
   res.json({ id: user._id, username: user.username, name: user.name, role: user.role })
 }

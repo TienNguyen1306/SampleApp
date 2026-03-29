@@ -14,6 +14,7 @@ export async function login(req, res) {
   const valid = user && await bcrypt.compare(password, user.password)
 
   if (!valid) {
+    console.warn(`[AUTH] Failed login attempt for username="${username}" ip=${req.ip} at ${new Date().toISOString()}`)
     return res.status(401).json({ message: 'Tài khoản hoặc mật khẩu không đúng.' })
   }
 
@@ -45,8 +46,8 @@ export async function register(req, res) {
   if (username.length < 3) {
     return res.status(400).json({ message: 'Tên đăng nhập phải có ít nhất 3 ký tự.' })
   }
-  if (password.length < 6) {
-    return res.status(400).json({ message: 'Mật khẩu phải có ít nhất 6 ký tự.' })
+  if (password.length < 8) {
+    return res.status(400).json({ message: 'Mật khẩu phải có ít nhất 8 ký tự.' })
   }
 
   const existing = await User.findOne({ username })
