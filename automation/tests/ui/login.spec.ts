@@ -1,5 +1,5 @@
-import { test, expect } from '../fixtures/auth.fixture';
-import { validUsers, invalidUsers } from '../data/users.data';
+import { test, expect } from '../../fixtures/auth.fixture';
+import { validUsers, invalidUsers } from '../../data/users.data';
 
 test.describe('Login Page', () => {
 

@@ -1,6 +1,6 @@
-import { test, expect } from '../fixtures/checkout.fixture';
-import { checkoutScenarios, incompleteFormScenarios, mockOrder } from '../data/checkout.data';
-import { HomePage } from '../pages/home.page';
+import { test, expect } from '../../fixtures/checkout.fixture';
+import { checkoutScenarios, incompleteFormScenarios, mockOrder } from '../../data/checkout.data';
+import { HomePage } from '../../pages/home.page';
 
 const ORDERS_API_URL = 'http://localhost:3001/api/orders';
 

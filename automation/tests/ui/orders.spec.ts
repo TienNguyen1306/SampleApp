@@ -1,5 +1,5 @@
-import { test, expect } from '../fixtures/checkout.fixture';
-import { mockOrder, mockOrderHistory } from '../data/checkout.data';
+import { test, expect } from '../../fixtures/checkout.fixture';
+import { mockOrder, mockOrderHistory } from '../../data/checkout.data';
 
 const ORDERS_API_URL = 'http://localhost:3001/api/orders';
 

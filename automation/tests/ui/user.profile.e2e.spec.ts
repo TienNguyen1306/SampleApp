@@ -1,7 +1,7 @@
 import path from 'path';
-import { test, expect } from '../fixtures/profile.fixture';
+import { test, expect } from '../../fixtures/profile.fixture';
 
-const AVATAR_PATH = path.join(__dirname, '../assets/test-avatar.png');
+const AVATAR_PATH = path.join(__dirname, '../../assets/test-avatar.png');
 
 /**
  * E2E test - User Profile (no mocks, hits real backend localhost:3001 + frontend localhost:5173)

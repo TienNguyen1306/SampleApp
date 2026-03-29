@@ -1,4 +1,4 @@
-import { test, expect } from '../fixtures/user.management.fixture';
+import { test, expect } from '../../fixtures/user.management.fixture';
 
 /**
  * E2E tests - User Management (no mocks, hits real backend localhost:3001 + frontend localhost:5173)
