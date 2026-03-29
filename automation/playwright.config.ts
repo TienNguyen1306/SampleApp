@@ -7,18 +7,31 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
-  use: {
-    baseURL: 'http://localhost:5173',
-    trace: 'on-first-retry',
-  },
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: 'ui-chromium',
+      testMatch: 'tests/ui/**/*.spec.ts',
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: 'http://localhost:5173',
+        trace: 'on-first-retry',
+      },
     },
     {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      name: 'ui-webkit',
+      testMatch: 'tests/ui/**/*.spec.ts',
+      use: {
+        ...devices['Desktop Safari'],
+        baseURL: 'http://localhost:5173',
+        trace: 'on-first-retry',
+      },
+    },
+    {
+      name: 'api',
+      testMatch: 'tests/api/**/*.spec.ts',
+      use: {
+        baseURL: 'http://localhost:3001',
+      },
     },
   ],
 });

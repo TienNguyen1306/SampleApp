@@ -46,6 +46,9 @@ export async function createUser(req, res) {
   if (password.length < 6) {
     return res.status(400).json({ errorCode: 'PASSWORD_TOO_SHORT' })
   }
+  if (!['admin', 'customer'].includes(role)) {
+    return res.status(400).json({ errorCode: 'INVALID_ROLE' })
+  }
 
   const existing = await User.findOne({ username })
   if (existing) {

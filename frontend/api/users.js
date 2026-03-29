@@ -1,7 +1,19 @@
 const BASE_URL = 'http://localhost:3001'
 
+// Secret key xác minh request đến từ app nội bộ
+// Phải khớp với APP_SECRET trong backend/config.js
+const APP_KEY = import.meta.env.VITE_APP_SECRET || 'shopvn-app-secret-2024'
+
 function getToken() {
   return sessionStorage.getItem('token')
+}
+
+function getHeaders(extra = {}) {
+  return {
+    'X-App-Key': APP_KEY,
+    Authorization: `Bearer ${getToken()}`,
+    ...extra,
+  }
 }
 
 // Throw an error with errorCode so the frontend can translate it
@@ -14,7 +26,7 @@ function throwApiError(data, fallbackCode = 'UNKNOWN') {
 export async function fetchUsers(params = {}) {
   const query = new URLSearchParams(params).toString()
   const res = await fetch(`${BASE_URL}/api/users${query ? `?${query}` : ''}`, {
-    headers: { Authorization: `Bearer ${getToken()}` },
+    headers: getHeaders(),
   })
   const data = await res.json()
   if (!res.ok) throwApiError(data)
@@ -24,7 +36,7 @@ export async function fetchUsers(params = {}) {
 export async function createUserRequest(userData) {
   const res = await fetch(`${BASE_URL}/api/users`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
+    headers: getHeaders({ 'Content-Type': 'application/json' }),
     body: JSON.stringify(userData),
   })
   const data = await res.json()
@@ -35,7 +47,7 @@ export async function createUserRequest(userData) {
 export async function deleteUsersRequest(ids) {
   const res = await fetch(`${BASE_URL}/api/users`, {
     method: 'DELETE',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
+    headers: getHeaders({ 'Content-Type': 'application/json' }),
     body: JSON.stringify({ ids }),
   })
   const data = await res.json()
@@ -46,7 +58,7 @@ export async function deleteUsersRequest(ids) {
 export async function updateUserRoleRequest(id, role) {
   const res = await fetch(`${BASE_URL}/api/users/${id}/role`, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
+    headers: getHeaders({ 'Content-Type': 'application/json' }),
     body: JSON.stringify({ role }),
   })
   const data = await res.json()

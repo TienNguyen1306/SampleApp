@@ -31,6 +31,27 @@
   color: #764ba2;
 }
 
+.orders-nav {
+  flex: 1;
+  display: flex;
+  gap: 20px;
+  padding-left: 24px;
+}
+
+.orders-nav a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.9;
+  transition: opacity 0.2s;
+}
+
+.orders-nav a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
 .back-btn {
   background: none;
   border: none;

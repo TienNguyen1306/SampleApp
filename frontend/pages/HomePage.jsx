@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { fetchProducts } from '../api/products'
 import { useCart } from '../context/CartContext'
@@ -46,13 +46,16 @@ export default function HomePage() {
             <span>🛍️</span>
             <span className="header-logo-name">ShopVN</span>
           </div>
-          <nav className="header-nav">
-            <a href="#">{t('home.nav.home')}</a>
-            <a href="#">{t('home.nav.products')}</a>
-            <a href="#">{t('home.nav.promotions')}</a>
-          </nav>
           <div className="header-right">
-            {user && <span className="header-user">{t('home.greeting')} <strong>{user.name}</strong></span>}
+            {user && (
+              <Link to="/profile" className="header-profile-link" data-testid="header-profile-link">
+                {user.avatar
+                  ? <img src={user.avatar} alt="avatar" className="header-avatar" data-testid="header-avatar" />
+                  : <span className="header-avatar-placeholder" data-testid="header-avatar-placeholder">👤</span>
+                }
+                <span className="header-user" data-testid="header-username">{t('home.greeting')} <strong>{user.name}</strong></span>
+              </Link>
+            )}
             {user?.role === 'admin' && (
               <>
                 <button className="admin-btn" data-testid="admin-products-btn" onClick={() => navigate('/admin/products')}>

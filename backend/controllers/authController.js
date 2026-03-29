@@ -23,7 +23,7 @@ export async function login(req, res) {
 
   res.json({
     token,
-    user: { id: user._id, username: user.username, name: user.name, role: user.role },
+    user: { id: user._id, username: user.username, name: user.name, role: user.role, avatar: user.avatar },
   })
 }
 
@@ -31,7 +31,7 @@ export async function getMe(req, res) {
   const user = await User.findById(req.user.id)
   if (!user) return res.status(404).json({ message: 'Không tìm thấy người dùng.' })
 
-  res.json({ id: user._id, username: user.username, name: user.name, role: user.role })
+  res.json({ id: user._id, username: user.username, name: user.name, role: user.role, avatar: user.avatar })
 }
 
 export async function register(req, res) {
@@ -52,7 +52,14 @@ export async function register(req, res) {
     return res.status(409).json({ message: 'Tên đăng nhập đã tồn tại.' })
   }
 
-  const user = await User.create({ username, password, name, role: 'customer' })
+  // Handle optional avatar upload
+  let avatar = null
+  if (req.file) {
+    const base64 = req.file.buffer.toString('base64')
+    avatar = `data:${req.file.mimetype};base64,${base64}`
+  }
+
+  const user = await User.create({ username, password, name, role: 'customer', avatar })
   const token = jwt.sign(
     { id: user._id, username: user.username, role: user.role },
     JWT_SECRET,
@@ -61,6 +68,6 @@ export async function register(req, res) {
 
   res.status(201).json({
     token,
-    user: { id: user._id, username: user.username, name: user.name, role: user.role },
+    user: { id: user._id, username: user.username, name: user.name, role: user.role, avatar: user.avatar },
   })
 }

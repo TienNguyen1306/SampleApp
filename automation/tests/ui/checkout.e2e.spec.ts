@@ -1,5 +1,5 @@
-import { test, expect } from '../fixtures/checkout.e2e.fixture';
-import { e2eCheckoutScenarios } from '../data/checkout.data';
+import { test, expect } from '../../fixtures/checkout.e2e.fixture';
+import { e2eCheckoutScenarios } from '../../data/checkout.data';
 
 /**
  * E2E tests - no mocks, hits real backend (localhost:3001) and frontend (localhost:5173)

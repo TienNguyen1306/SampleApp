@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { createProductRequest } from '../api/products'
 import './AddProductPage.css'
@@ -44,11 +44,14 @@ export default function AddProductPage() {
     <div className="add-product-wrapper">
       <header className="add-product-header">
         <div className="add-product-header-inner">
-          <button className="back-btn" onClick={() => navigate('/home')}>{t('admin.back')}</button>
           <div className="add-product-logo">
             <span>🛍️</span>
             <span>ShopVN</span>
           </div>
+          <nav className="add-product-nav">
+            <Link to="/home">{t('home.nav.home')}</Link>
+          </nav>
+          <button className="back-btn" onClick={() => navigate(-1)}>{t('admin.back')}</button>
         </div>
       </header>
 
