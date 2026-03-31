@@ -20,6 +20,16 @@ test.describe('PUT /api/cart', () => {
     expect(res.status()).toBe(200)
     const body = await res.json()
     expect(body.ok).toBe(true)
+
+    // Verify via GET that the cart was actually updated (returns array directly)
+    const getRes = await request.get('/api/cart', {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    expect(getRes.status()).toBe(200)
+    const items = await getRes.json()
+    expect(Array.isArray(items)).toBe(true)
+    expect(items.length).toBe(1)
+    expect(items[0].quantity).toBe(2)
   })
 
   test('positive: clear cart with empty items array', async ({ request }) => {
@@ -30,6 +40,15 @@ test.describe('PUT /api/cart', () => {
     expect(res.status()).toBe(200)
     const body = await res.json()
     expect(body.ok).toBe(true)
+
+    // Verify via GET that the cart is empty (returns array directly)
+    const getRes = await request.get('/api/cart', {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    expect(getRes.status()).toBe(200)
+    const items = await getRes.json()
+    expect(Array.isArray(items)).toBe(true)
+    expect(items.length).toBe(0)
   })
 
   test('negative: items not array returns 400', async ({ request }) => {

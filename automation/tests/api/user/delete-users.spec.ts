@@ -28,6 +28,15 @@ test.describe('DELETE /api/users', () => {
     expect(res.status()).toBe(200)
     const body = await res.json()
     expect(body.deletedCount).toBe(1)
+
+    // Verify via GET that the user is actually gone
+    const getRes = await request.get('/api/users', {
+      headers: { Authorization: `Bearer ${adminToken}`, 'X-App-Key': KEY },
+    })
+    expect(getRes.status()).toBe(200)
+    const { users } = await getRes.json()
+    const still = users.find((u: any) => u._id === _id)
+    expect(still).toBeUndefined()
   })
 
   test('negative: try to delete admin user returns 403', async ({ request }) => {

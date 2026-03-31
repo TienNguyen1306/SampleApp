@@ -1,4 +1,5 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator, expect } from '@playwright/test';
+import { HomePage } from './home.page';
 
 export interface CheckoutFormData {
   recipientName: string;
@@ -51,10 +52,20 @@ export class CheckoutPage {
     await this.page.goto('/checkout');
   }
 
+  async waitForCheckout() {
+    await this.page.waitForURL('**/checkout');
+  }
+
   async fillForm(data: CheckoutFormData) {
     await this.recipientNameInput.fill(data.recipientName);
     await this.recipientPhoneInput.fill(data.recipientPhone);
     await this.addressInput.fill(data.address);
+  }
+
+  async fillFormPartial(data: Partial<CheckoutFormData>) {
+    if (data.recipientName) await this.recipientNameInput.fill(data.recipientName);
+    if (data.recipientPhone) await this.recipientPhoneInput.fill(data.recipientPhone);
+    if (data.address) await this.addressInput.fill(data.address);
   }
 
   async selectPaymentMethod(method: 'cash' | 'card') {
@@ -85,5 +96,136 @@ export class CheckoutPage {
     const text = await this.successOrderId.innerText();
     const match = text.match(/#([a-fA-F0-9]+)/);
     return match ? match[1] : '';
+  }
+
+  /**
+   * Sets up a request listener to track whether the payment-intent API was called.
+   * Call this before triggering the action, then use assertPaymentIntentWasCalled / assertPaymentIntentNotCalled.
+   */
+  trackPaymentIntentRequests(): { wasCalled: () => boolean } {
+    let called = false;
+    this.page.on('request', (req) => {
+      if (req.url().includes('/api/orders/payment-intent')) called = true;
+    });
+    return { wasCalled: () => called };
+  }
+
+  /**
+   * Intercepts POST /api/orders and captures the request payload.
+   * Returns a getter function — call it after the form is submitted to retrieve the payload.
+   */
+  async setupOrderPostCapture(
+    mockResponse: Record<string, unknown>,
+    ordersApiUrl: string
+  ): Promise<() => Record<string, unknown> | null> {
+    let capturedBody: Record<string, unknown> | null = null;
+    await this.page.route(ordersApiUrl, async (route) => {
+      if (route.request().method() === 'POST') {
+        capturedBody = route.request().postDataJSON();
+        await route.fulfill({
+          status: 201,
+          contentType: 'application/json',
+          body: JSON.stringify(mockResponse),
+        });
+      } else {
+        await route.continue();
+      }
+    });
+    return () => capturedBody;
+  }
+
+  // ── Assertions ────────────────────────────────────────────────────────────
+
+  async assertOnCart() {
+    await expect(this.page).toHaveURL(/\/cart/);
+  }
+
+  async assertOnCheckout() {
+    await expect(this.page).toHaveURL(/\/checkout/);
+  }
+
+  async assertOnHome() {
+    await expect(this.page).toHaveURL(/\/home/);
+  }
+
+  async assertFormVisible() {
+    await expect(this.recipientNameInput).toBeVisible();
+    await expect(this.recipientPhoneInput).toBeVisible();
+    await expect(this.addressInput).toBeVisible();
+    await expect(this.cashOption).toBeVisible();
+    await expect(this.cardOption).toBeVisible();
+    await expect(this.submitButton).toBeVisible();
+  }
+
+  async assertSuccess() {
+    await expect(this.successHeading).toBeVisible();
+  }
+
+  async assertNotSuccess() {
+    await expect(this.successHeading).not.toBeVisible();
+  }
+
+  async assertSuccessOrderIdHasHash() {
+    await expect(this.successOrderId).toContainText('#');
+  }
+
+  async assertSuccessContains(text: string) {
+    await expect(this.successContainer).toContainText(text);
+  }
+
+  async assertSuccessTotal(text: string) {
+    await expect(this.successTotal).toContainText(text);
+  }
+
+  async assertCardElementVisible() {
+    await expect(this.cardElementContainer).toBeVisible();
+  }
+
+  async assertCardElementNotVisible() {
+    await expect(this.cardElementContainer).not.toBeVisible();
+  }
+
+  async assertCardHintVisible() {
+    await expect(this.cardHint).toBeVisible();
+  }
+
+  async assertOrderSummaryVisible() {
+    await expect(this.orderSummary).toBeVisible();
+  }
+
+  async assertSummaryItemCount(n: number) {
+    await expect(this.summaryItems).toHaveCount(n);
+  }
+
+  async assertCartBadgeGone() {
+    const homePage = new HomePage(this.page);
+    await homePage.assertCartBadgeNotVisible();
+  }
+
+  assertPaymentIntentWasCalled(tracker: { wasCalled: () => boolean }) {
+    expect(tracker.wasCalled()).toBe(true);
+  }
+
+  assertPaymentIntentNotCalled(tracker: { wasCalled: () => boolean }) {
+    expect(tracker.wasCalled()).toBe(false);
+  }
+
+  assertOrderPayload(
+    getPayload: () => Record<string, unknown> | null,
+    expected: {
+      recipientName?: string;
+      recipientPhone?: string;
+      paymentMethod?: string;
+      hasItems?: boolean;
+      totalPricePositive?: boolean;
+    }
+  ) {
+    const payload = getPayload();
+    expect(payload).not.toBeNull();
+    if (expected.recipientName) expect(payload!['recipientName']).toBe(expected.recipientName);
+    if (expected.recipientPhone) expect(payload!['recipientPhone']).toBe(expected.recipientPhone);
+    if (expected.paymentMethod) expect(payload!['paymentMethod']).toBe(expected.paymentMethod);
+    if (expected.hasItems) expect(payload!['items']).toBeDefined();
+    if (expected.totalPricePositive) expect(payload!['totalPrice'] as number).toBeGreaterThan(0);
   }
 }

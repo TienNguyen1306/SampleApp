@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator, expect } from '@playwright/test';
 
 export class CartPage {
   readonly page: Page;
@@ -19,11 +19,25 @@ export class CartPage {
     await this.page.goto('/cart');
   }
 
+  async navigateToCheckout() {
+    await this.page.goto('/checkout');
+  }
+
   async clickCheckout() {
     await this.checkoutButton.click();
   }
 
   async getItemCount(): Promise<number> {
     return this.cartItems.count();
+  }
+
+  // ── Assertions ────────────────────────────────────────────────────────────
+
+  async assertOnCart() {
+    await expect(this.page).toHaveURL(/\/cart/);
+  }
+
+  async assertOnCheckout() {
+    await expect(this.page).toHaveURL(/\/checkout/);
   }
 }

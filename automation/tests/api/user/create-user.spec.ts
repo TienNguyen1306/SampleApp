@@ -33,6 +33,16 @@ test.describe('POST /api/users', () => {
     expect(body.username).toBe(username)
     expect(body).not.toHaveProperty('password')
     createdUserId = body._id
+
+    // Verify via GET that the user actually appears in the user list
+    const getRes = await request.get('/api/users', {
+      headers: { Authorization: `Bearer ${adminToken}`, 'X-App-Key': KEY },
+    })
+    expect(getRes.status()).toBe(200)
+    const { users } = await getRes.json()
+    const created = users.find((u: any) => u._id === createdUserId)
+    expect(created).toBeDefined()
+    expect(created.username).toBe(username)
   })
 
   test('positive: create admin-role user', async ({ request }) => {
@@ -44,6 +54,16 @@ test.describe('POST /api/users', () => {
     expect(res.status()).toBe(201)
     const body = await res.json()
     expect(body.role).toBe('admin')
+
+    // Verify via GET that the admin role is persisted
+    const getRes = await request.get('/api/users', {
+      headers: { Authorization: `Bearer ${adminToken}`, 'X-App-Key': KEY },
+    })
+    const { users } = await getRes.json()
+    const created = users.find((u: any) => u._id === body._id)
+    expect(created).toBeDefined()
+    expect(created.role).toBe('admin')
+
     // Cleanup
     await request.delete('/api/users', {
       headers: { Authorization: `Bearer ${adminToken}`, 'X-App-Key': KEY },

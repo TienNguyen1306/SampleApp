@@ -9,9 +9,9 @@ test.describe('Login Page', () => {
         await mockLoginApi(user.mockResponse);
         await loginPage.login(user.username, user.password);
 
-        await expect(loginPage.page).toHaveURL(/\/home/);
-        await expect(homePage.logoutButton).toBeVisible();
-        await expect(homePage.welcomeMessage).toContainText(user.expectedName);
+        await loginPage.assertOnHomePage();
+        await homePage.assertIsLoggedIn();
+        await homePage.assertWelcomeText(user.expectedName);
       });
     }
   });
@@ -21,21 +21,19 @@ test.describe('Login Page', () => {
       test(`should reject login with ${user.description}`, async ({ loginPage }) => {
         await loginPage.login(user.username, user.password);
 
-        await expect(loginPage.page).not.toHaveURL(/\/home/);
-        await expect(loginPage.loginButton).toBeVisible();
+        await loginPage.assertNotOnHomePage();
+        await loginPage.assertLoginButtonVisible();
       });
     }
   });
 
   test('should display login form elements', async ({ loginPage }) => {
-    await expect(loginPage.usernameInput).toBeVisible();
-    await expect(loginPage.passwordInput).toBeVisible();
-    await expect(loginPage.loginButton).toBeVisible();
+    await loginPage.assertFormVisible();
   });
 
   test('should be already logged in via fixture', async ({ loggedInPage }) => {
-    await expect(loggedInPage.logoutButton).toBeVisible();
-    await expect(loggedInPage.welcomeMessage).toContainText('Admin User');
+    await loggedInPage.assertIsLoggedIn();
+    await loggedInPage.assertWelcomeText('Admin User');
   });
 
 });

@@ -30,6 +30,18 @@ test.describe('POST /api/orders', () => {
     expect(body).toHaveProperty('userId')
     expect(body.status).toBe('confirmed')
     expect(body.recipientName).toBe('Test User')
+
+    // Verify via GET that the order appears in order history
+    const orderId = body._id
+    const getRes = await request.get('/api/orders', {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    expect(getRes.status()).toBe(200)
+    const orders = await getRes.json()
+    const found = orders.find((o: any) => o._id === orderId)
+    expect(found).toBeDefined()
+    expect(found.recipientName).toBe('Test User')
+    expect(found.status).toBe('confirmed')
   })
 
   test('negative: no auth returns 401', async ({ request }) => {

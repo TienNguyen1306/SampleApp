@@ -1,6 +1,4 @@
 import { test, expect } from '@playwright/test'
-import * as path from 'path'
-import * as fs from 'fs'
 
 const KEY = process.env.APP_SECRET || ''
 
@@ -42,6 +40,14 @@ test.describe('PATCH /api/profile', () => {
     expect(body.name).toBe('Updated Name')
     expect(body).toHaveProperty('id')
     expect(body).not.toHaveProperty('password')
+
+    // Verify via GET that the name change is persisted
+    const getRes = await request.get('/api/profile', {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    expect(getRes.status()).toBe(200)
+    const getBody = await getRes.json()
+    expect(getBody.name).toBe('Updated Name')
   })
 
   test('positive: update without name keeps existing name', async ({ request }) => {

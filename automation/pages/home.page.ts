@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator, expect } from '@playwright/test';
 
 export class HomePage {
   readonly page: Page;
@@ -11,6 +11,11 @@ export class HomePage {
     this.welcomeMessage = page.locator('strong').filter({ hasText: /Admin User|Nguyễn Văn A/ }).first();
     this.logoutButton = page.getByTestId('logout-btn');
     this.cartBadge = page.locator('.cart-badge');
+  }
+
+  async navigate() {
+    await this.page.goto('/home');
+    await this.page.waitForLoadState('networkidle');
   }
 
   async isLoggedIn(): Promise<boolean> {
@@ -34,5 +39,19 @@ export class HomePage {
   async clickOrders() {
     await this.page.locator('.orders-btn').click();
     await this.page.waitForURL('**/orders');
+  }
+
+  // ── Assertions ────────────────────────────────────────────────────────────
+
+  async assertIsLoggedIn() {
+    await expect(this.logoutButton).toBeVisible();
+  }
+
+  async assertWelcomeText(name: string) {
+    await expect(this.welcomeMessage).toContainText(name);
+  }
+
+  async assertCartBadgeNotVisible() {
+    await expect(this.cartBadge).not.toBeVisible();
   }
 }
