@@ -1,8 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { APP_KEY } from '../../fixtures/api.fixture'
 
-// We need APP_KEY to clean up — import from relative path won't work for spec files
-// So define inline
 const ADMIN_CREDS = { username: 'admin', password: 'password123' }
 const KEY = process.env.APP_SECRET || ''
 
@@ -36,6 +33,15 @@ test.describe('POST /api/auth/register', () => {
     expect(body.user.username).toBe(username)
     expect(body.user.role).toBe('customer')
     createdUserId = body.user.id
+
+    // Verify via GET /api/auth/me that the new user is authenticated and data is correct
+    const meRes = await request.get('/api/auth/me', {
+      headers: { Authorization: `Bearer ${body.token}` },
+    })
+    expect(meRes.status()).toBe(200)
+    const meBody = await meRes.json()
+    expect(meBody.username).toBe(username)
+    expect(meBody.role).toBe('customer')
   })
 
   test('negative: duplicate username returns 409', async ({ request }) => {

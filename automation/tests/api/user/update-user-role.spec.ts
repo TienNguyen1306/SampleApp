@@ -37,6 +37,15 @@ test.describe('PATCH /api/users/:id/role', () => {
     expect(res.status()).toBe(200)
     const body = await res.json()
     expect(body.role).toBe('admin')
+
+    // Verify via GET that the role change is persisted
+    const getRes = await request.get('/api/users', {
+      headers: { Authorization: `Bearer ${adminToken}`, 'X-App-Key': KEY },
+    })
+    const { users } = await getRes.json()
+    const user = users.find((u: any) => u._id === testUserId)
+    expect(user).toBeDefined()
+    expect(user.role).toBe('admin')
   })
 
   test('positive: update role back to customer', async ({ request }) => {
@@ -47,6 +56,15 @@ test.describe('PATCH /api/users/:id/role', () => {
     expect(res.status()).toBe(200)
     const body = await res.json()
     expect(body.role).toBe('customer')
+
+    // Verify via GET that the role change is persisted
+    const getRes = await request.get('/api/users', {
+      headers: { Authorization: `Bearer ${adminToken}`, 'X-App-Key': KEY },
+    })
+    const { users } = await getRes.json()
+    const user = users.find((u: any) => u._id === testUserId)
+    expect(user).toBeDefined()
+    expect(user.role).toBe('customer')
   })
 
   test('negative: invalid role returns 400', async ({ request }) => {

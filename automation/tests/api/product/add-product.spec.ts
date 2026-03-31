@@ -37,6 +37,15 @@ test.describe('POST /api/products', () => {
     expect(body).toHaveProperty('_id')
     expect(body.price).toBe(50000)
     createdProductId = body._id
+
+    // Verify via GET that the product was actually created
+    const getRes = await request.get(`/api/products/${createdProductId}`, {
+      headers: { Authorization: `Bearer ${adminToken}` },
+    })
+    expect(getRes.status()).toBe(200)
+    const getBody = await getRes.json()
+    expect(getBody._id).toBe(createdProductId)
+    expect(getBody.price).toBe(50000)
   })
 
   test('negative: missing required fields returns 400', async ({ request }) => {

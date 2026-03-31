@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator, expect } from '@playwright/test';
 
 export class LoginPage {
   readonly page: Page;
@@ -25,5 +25,25 @@ export class LoginPage {
 
   async waitForHome() {
     await this.page.waitForURL('**/home');
+  }
+
+  // ── Assertions ────────────────────────────────────────────────────────────
+
+  async assertOnHomePage() {
+    await expect(this.page).toHaveURL(/\/home/);
+  }
+
+  async assertNotOnHomePage() {
+    await expect(this.page).not.toHaveURL(/\/home/);
+  }
+
+  async assertFormVisible() {
+    await expect(this.usernameInput).toBeVisible();
+    await expect(this.passwordInput).toBeVisible();
+    await expect(this.loginButton).toBeVisible();
+  }
+
+  async assertLoginButtonVisible() {
+    await expect(this.loginButton).toBeVisible();
   }
 }

@@ -27,6 +27,12 @@ test.describe('DELETE /api/products/:id', () => {
     expect(res.status()).toBe(200)
     const body = await res.json()
     expect(body).toHaveProperty('message')
+
+    // Verify via GET that the product is actually gone
+    const getRes = await request.get(`/api/products/${productId}`, {
+      headers: { Authorization: `Bearer ${adminToken}` },
+    })
+    expect(getRes.status()).toBe(404)
   })
 
   test('negative: delete non-existent product returns 404', async ({ request }) => {
