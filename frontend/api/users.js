@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:3001'
+const BASE_URL = ''
 
 // Đọc từ .env (VITE_APP_SECRET) — phải khớp với APP_SECRET bên backend
 const APP_KEY = import.meta.env.VITE_APP_SECRET
