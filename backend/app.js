@@ -14,7 +14,7 @@ const app = express()
 app.use(helmet())
 
 app.use(cors({
-  origin: /^http:\/\/localhost:\d+$/,
+  origin: /^http:\/\/(localhost|127\.0\.0\.1|(10|192\.168|172\.(1[6-9]|2\d|3[01]))\.\d{1,3}\.\d{1,3}):\d+$/,
   allowedHeaders: ['Content-Type', 'Authorization', 'X-App-Key'],
 }))
 app.use(express.json())
