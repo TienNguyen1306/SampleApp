@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:3001'
+const BASE_URL = ''
 
 export async function loginRequest(username, password) {
   const res = await fetch(`${BASE_URL}/api/auth/login`, {
