@@ -26,11 +26,26 @@ export async function placeOrder(orderData) {
   return data
 }
 
-export async function fetchOrders() {
-  const res = await fetch(`${BASE_URL}/api/orders`, {
+export async function fetchOrders({ page = 1, limit = 10, search = '', status = '', paymentMethod = '' } = {}) {
+  const params = new URLSearchParams({ page, limit })
+  if (search) params.set('search', search)
+  if (status) params.set('status', status)
+  if (paymentMethod) params.set('paymentMethod', paymentMethod)
+
+  const res = await fetch(`${BASE_URL}/api/orders?${params.toString()}`, {
     headers: { Authorization: `Bearer ${getToken()}` },
   })
   const data = await res.json()
   if (!res.ok) throw new Error(data.message || 'Không thể tải đơn hàng.')
+  return data
+}
+
+export async function deleteOrder(id) {
+  const res = await fetch(`${BASE_URL}/api/orders/${id}`, {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${getToken()}` },
+  })
+  const data = await res.json()
+  if (!res.ok) throw new Error(data.message || 'Không thể xoá đơn hàng.')
   return data
 }
