@@ -37,7 +37,7 @@ test.describe('POST /api/orders', () => {
       headers: { Authorization: `Bearer ${token}` },
     })
     expect(getRes.status()).toBe(200)
-    const orders = await getRes.json()
+    const { orders } = await getRes.json()
     const found = orders.find((o: any) => o._id === orderId)
     expect(found).toBeDefined()
     expect(found.recipientName).toBe('Test User')

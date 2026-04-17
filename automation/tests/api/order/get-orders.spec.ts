@@ -10,13 +10,16 @@ test.describe('GET /api/orders', () => {
     token = (await res.json()).token
   })
 
-  test('positive: returns array of orders for authenticated user', async ({ request }) => {
+  test('positive: returns paginated orders for authenticated user', async ({ request }) => {
     const res = await request.get('/api/orders', {
       headers: { Authorization: `Bearer ${token}` },
     })
     expect(res.status()).toBe(200)
     const body = await res.json()
-    expect(Array.isArray(body)).toBeTruthy()
+    expect(Array.isArray(body.orders)).toBeTruthy()
+    expect(body.pagination).toHaveProperty('page')
+    expect(body.pagination).toHaveProperty('total')
+    expect(body.pagination).toHaveProperty('totalPages')
   })
 
   test('negative: no auth returns 401', async ({ request }) => {
