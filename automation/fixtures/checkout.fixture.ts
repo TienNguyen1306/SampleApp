@@ -173,17 +173,28 @@ export const test = base.extend<CheckoutFixtures>({
 
   mockOrderHistoryApi: async ({ page }, use) => {
     const setup = async (orders: MockOrderResponse[]) => {
-      await page.route(ORDERS_API_URL, (route) => {
-        if (route.request().method() === 'GET') {
-          route.fulfill({
-            status: 200,
-            contentType: 'application/json',
-            body: JSON.stringify(orders),
-          });
-        } else {
-          route.continue();
+      await page.route(
+        (url: URL) => url.pathname === '/api/orders',
+        (route) => {
+          if (route.request().method() === 'GET') {
+            route.fulfill({
+              status: 200,
+              contentType: 'application/json',
+              body: JSON.stringify({
+                orders,
+                pagination: {
+                  page: 1,
+                  limit: 10,
+                  total: orders.length,
+                  totalPages: Math.max(1, Math.ceil(orders.length / 10)),
+                },
+              }),
+            });
+          } else {
+            route.continue();
+          }
         }
-      });
+      );
     };
     await use(setup);
   },

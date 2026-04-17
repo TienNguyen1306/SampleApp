@@ -9,6 +9,22 @@ export class OrdersPage {
   readonly backButton: Locator;
   readonly ordersNavButton: Locator;
 
+  // Search & Filter
+  readonly searchInput: Locator;
+  readonly searchButton: Locator;
+  readonly statusFilter: Locator;
+  readonly paymentFilter: Locator;
+
+  // Pagination
+  readonly pagination: Locator;
+  readonly prevButton: Locator;
+  readonly nextButton: Locator;
+
+  // Delete
+  readonly deleteButtons: Locator;
+  readonly confirmDeleteButton: Locator;
+  readonly cancelDeleteButton: Locator;
+
   constructor(page: Page) {
     this.page = page;
     this.pageTitle = page.getByTestId('orders-title');
@@ -17,6 +33,19 @@ export class OrdersPage {
     this.shopNowButton = page.getByRole('button', { name: 'Mua sắm ngay' });
     this.backButton = page.getByRole('button', { name: '← Trang chủ' });
     this.ordersNavButton = page.getByRole('button', { name: '📦 Đơn hàng' });
+
+    this.searchInput = page.getByTestId('orders-search-input');
+    this.searchButton = page.getByTestId('orders-search-btn');
+    this.statusFilter = page.getByTestId('orders-filter-status');
+    this.paymentFilter = page.getByTestId('orders-filter-payment');
+
+    this.pagination = page.getByTestId('orders-pagination');
+    this.prevButton = page.getByTestId('orders-prev-btn');
+    this.nextButton = page.getByTestId('orders-next-btn');
+
+    this.deleteButtons = page.getByTestId('order-delete-btn');
+    this.confirmDeleteButton = page.getByTestId('confirm-delete-btn');
+    this.cancelDeleteButton = page.getByRole('button', { name: 'Hủy' });
   }
 
   async navigate() {
@@ -91,9 +120,68 @@ export class OrdersPage {
     await this.page.route(productsApiUrl, (route) =>
       route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(products) })
     );
-    await this.page.route(ordersApiUrl, (route) =>
-      route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(orders) })
+    await this.page.route(
+      (url: URL) => url.pathname === new URL(ordersApiUrl).pathname,
+      (route) =>
+        route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(orders) })
     );
+  }
+
+  // ── Search & Filter ───────────────────────────────────────────────────────
+
+  async search(keyword: string) {
+    await this.searchInput.fill(keyword);
+    await this.searchButton.click();
+    await this.waitForLoaded();
+  }
+
+  async searchWithEnter(keyword: string) {
+    await this.searchInput.fill(keyword);
+    await this.searchInput.press('Enter');
+    await this.waitForLoaded();
+  }
+
+  async clearSearch() {
+    await this.searchInput.clear();
+    await this.page.locator('.search-clear-btn').click();
+    await this.waitForLoaded();
+  }
+
+  async filterByStatus(value: string) {
+    await this.statusFilter.selectOption(value);
+    await this.waitForLoaded();
+  }
+
+  async filterByPayment(value: string) {
+    await this.paymentFilter.selectOption(value);
+    await this.waitForLoaded();
+  }
+
+  // ── Pagination ────────────────────────────────────────────────────────────
+
+  async goToNextPage() {
+    await this.nextButton.click();
+    await this.waitForLoaded();
+  }
+
+  async goToPrevPage() {
+    await this.prevButton.click();
+    await this.waitForLoaded();
+  }
+
+  // ── Delete ────────────────────────────────────────────────────────────────
+
+  async clickDeleteOnCard(index: number) {
+    await this.deleteButtons.nth(index).click();
+  }
+
+  async confirmDelete() {
+    await this.confirmDeleteButton.click();
+    await this.waitForLoaded();
+  }
+
+  async cancelDelete() {
+    await this.cancelDeleteButton.click();
   }
 
   // ── Assertions ────────────────────────────────────────────────────────────
@@ -120,5 +208,29 @@ export class OrdersPage {
 
   async assertOrderCardContains(index: number, text: string) {
     await expect(this.orderCards.nth(index)).toContainText(text);
+  }
+
+  async assertPaginationVisible() {
+    await expect(this.pagination).toBeVisible();
+  }
+
+  async assertPrevButtonDisabled() {
+    await expect(this.prevButton).toBeDisabled();
+  }
+
+  async assertNextButtonDisabled() {
+    await expect(this.nextButton).toBeDisabled();
+  }
+
+  async assertDeleteModalVisible() {
+    await expect(this.confirmDeleteButton).toBeVisible();
+  }
+
+  async assertDeleteModalHidden() {
+    await expect(this.confirmDeleteButton).not.toBeVisible();
+  }
+
+  async assertNoResultsVisible() {
+    await expect(this.emptyState).toBeVisible();
   }
 }
