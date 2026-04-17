@@ -50,7 +50,14 @@ export class OrdersPage {
 
   async navigate() {
     await this.page.goto('/orders');
-    await this.waitForLoaded();
+    await this.page.waitForLoadState('networkidle');
+    // Wait for React to render final content: order cards, empty state, or error.
+    // networkidle alone can resolve before the state update from the API response is painted.
+    await this.page.locator('.order-card, .orders-empty, .orders-state.error').first()
+      .waitFor({ timeout: 8000 })
+      .catch(() => {
+        // No content appeared — leave it to individual test assertions to fail with a clear message.
+      });
   }
 
   async navigateToHome() {
