@@ -49,3 +49,19 @@ export async function deleteOrder(id) {
   if (!res.ok) throw new Error(data.message || 'Không thể xoá đơn hàng.')
   return data
 }
+
+export async function deleteAllOrders({ search = '', status = '', paymentMethod = '' } = {}) {
+  const params = new URLSearchParams()
+  if (search) params.set('search', search)
+  if (status) params.set('status', status)
+  if (paymentMethod) params.set('paymentMethod', paymentMethod)
+
+  const query = params.toString() ? `?${params.toString()}` : ''
+  const res = await fetch(`${BASE_URL}/api/orders${query}`, {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${getToken()}` },
+  })
+  const data = await res.json()
+  if (!res.ok) throw new Error(data.message || 'Không thể xoá đơn hàng.')
+  return data
+}

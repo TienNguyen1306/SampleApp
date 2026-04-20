@@ -20,10 +20,15 @@ export class OrdersPage {
   readonly prevButton: Locator;
   readonly nextButton: Locator;
 
-  // Delete
+  // Delete single
   readonly deleteButtons: Locator;
   readonly confirmDeleteButton: Locator;
   readonly cancelDeleteButton: Locator;
+
+  // Delete all
+  readonly deleteAllButton: Locator;
+  readonly confirmDeleteAllButton: Locator;
+  readonly cancelDeleteAllButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -46,6 +51,10 @@ export class OrdersPage {
     this.deleteButtons = page.getByTestId('order-delete-btn');
     this.confirmDeleteButton = page.getByTestId('confirm-delete-btn');
     this.cancelDeleteButton = page.getByRole('button', { name: 'Hủy' });
+
+    this.deleteAllButton = page.getByTestId('delete-all-btn');
+    this.confirmDeleteAllButton = page.getByTestId('confirm-delete-all-btn');
+    this.cancelDeleteAllButton = page.getByTestId('cancel-delete-all-btn');
   }
 
   async navigate() {
@@ -191,6 +200,19 @@ export class OrdersPage {
     await this.cancelDeleteButton.click();
   }
 
+  async clickDeleteAll() {
+    await this.deleteAllButton.click();
+  }
+
+  async confirmDeleteAll() {
+    await this.confirmDeleteAllButton.click();
+    await this.waitForLoaded();
+  }
+
+  async cancelDeleteAll() {
+    await this.cancelDeleteAllButton.click();
+  }
+
   // ── Assertions ────────────────────────────────────────────────────────────
 
   async assertOnOrders() {
@@ -235,6 +257,22 @@ export class OrdersPage {
 
   async assertDeleteModalHidden() {
     await expect(this.confirmDeleteButton).not.toBeVisible();
+  }
+
+  async assertDeleteAllButtonVisible() {
+    await expect(this.deleteAllButton).toBeVisible();
+  }
+
+  async assertDeleteAllButtonHidden() {
+    await expect(this.deleteAllButton).not.toBeVisible();
+  }
+
+  async assertDeleteAllModalVisible() {
+    await expect(this.confirmDeleteAllButton).toBeVisible();
+  }
+
+  async assertDeleteAllModalHidden() {
+    await expect(this.confirmDeleteAllButton).not.toBeVisible();
   }
 
   async assertNoResultsVisible() {

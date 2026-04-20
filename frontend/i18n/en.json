@@ -119,7 +119,11 @@
     "deleteOrder": "Delete Order",
     "deleteConfirm": "Are you sure you want to delete this order?",
     "deleting": "Deleting...",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "deleteAll": "Delete All ({{count}})",
+    "deleteAllConfirm": "Delete all {{count}} displayed order(s)? This action cannot be undone.",
+    "deleteAllSuccess": "Deleted {{count}} order(s) successfully.",
+    "deletingAll": "Deleting..."
   },
   "admin": {
     "title": "Product Management",

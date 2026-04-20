@@ -119,7 +119,11 @@
     "deleteOrder": "Xoá đơn hàng",
     "deleteConfirm": "Bạn có chắc muốn xoá đơn hàng này không?",
     "deleting": "Đang xoá...",
-    "cancel": "Hủy"
+    "cancel": "Hủy",
+    "deleteAll": "Xoá tất cả ({{count}})",
+    "deleteAllConfirm": "Xoá tất cả {{count}} đơn hàng đang hiển thị? Không thể hoàn tác.",
+    "deleteAllSuccess": "Đã xoá {{count}} đơn hàng thành công.",
+    "deletingAll": "Đang xoá..."
   },
   "admin": {
     "title": "Quản lý sản phẩm",

@@ -443,6 +443,137 @@ test.describe('Order History Page', () => {
     });
   });
 
+  // ── Delete all orders ─────────────────────────────────────────────────────
+  test.describe('Delete all orders', () => {
+    test('should show delete-all button when orders are present', async ({ ordersPage, page }) => {
+      await setupSmartOrdersMock(page, mixedOrders);
+      await ordersPage.navigate();
+
+      await ordersPage.assertOrderCount(3);
+      await ordersPage.assertDeleteAllButtonVisible();
+    });
+
+    test('should not show delete-all button when list is empty', async ({ ordersPage, page }) => {
+      await setupSmartOrdersMock(page, []);
+      await ordersPage.navigate();
+
+      await ordersPage.assertDeleteAllButtonHidden();
+    });
+
+    test('should open confirmation modal when clicking delete-all', async ({ ordersPage, page }) => {
+      await setupSmartOrdersMock(page, mixedOrders);
+      await ordersPage.navigate();
+
+      await ordersPage.clickDeleteAll();
+      await ordersPage.assertDeleteAllModalVisible();
+    });
+
+    test('should cancel delete-all and keep all orders', async ({ ordersPage, page }) => {
+      await setupSmartOrdersMock(page, mixedOrders);
+      await ordersPage.navigate();
+
+      await ordersPage.clickDeleteAll();
+      await ordersPage.assertDeleteAllModalVisible();
+      await ordersPage.cancelDeleteAll();
+
+      await ordersPage.assertDeleteAllModalHidden();
+      await ordersPage.assertOrderCount(3); // all orders still present
+    });
+
+    test('should delete all orders and show empty state after confirming', async ({ ordersPage, page }) => {
+      let allDeleted = false;
+
+      // Mock DELETE /api/orders (no :id segment)
+      await page.route(
+        (url: URL) => url.pathname === '/api/orders',
+        (route) => {
+          if (route.request().method() === 'DELETE') {
+            allDeleted = true;
+            route.fulfill({
+              status: 200,
+              contentType: 'application/json',
+              body: JSON.stringify({ message: 'OK', deleted: mixedOrders.length }),
+            });
+          } else if (route.request().method() === 'GET') {
+            const orders = allDeleted ? [] : mixedOrders;
+            route.fulfill({
+              status: 200,
+              contentType: 'application/json',
+              body: JSON.stringify({
+                orders,
+                pagination: { page: 1, limit: 10, total: orders.length, totalPages: 1 },
+              }),
+            });
+          } else {
+            route.continue();
+          }
+        }
+      );
+
+      await ordersPage.navigate();
+      await ordersPage.assertOrderCount(3);
+
+      await ordersPage.clickDeleteAll();
+      await ordersPage.assertDeleteAllModalVisible();
+
+      // Accept the browser alert triggered after successful delete
+      page.on('dialog', (dialog) => dialog.accept());
+      await ordersPage.confirmDeleteAll();
+
+      await ordersPage.assertOrderCount(0);
+    });
+
+    test('should delete only filtered orders when filter is active', async ({ ordersPage, page }) => {
+      // Keep cash orders in list, delete the card one
+      const cashOrders = mixedOrders.filter((o) => o.paymentMethod === 'cash');
+      let filterDeleted = false;
+
+      await page.route(
+        (url: URL) => url.pathname === '/api/orders',
+        (route) => {
+          if (route.request().method() === 'DELETE') {
+            filterDeleted = true;
+            route.fulfill({
+              status: 200,
+              contentType: 'application/json',
+              body: JSON.stringify({ message: 'OK', deleted: 1 }),
+            });
+          } else if (route.request().method() === 'GET') {
+            const url = new URL(route.request().url());
+            const paymentMethod = url.searchParams.get('paymentMethod') || '';
+            let orders = filterDeleted ? cashOrders : mixedOrders;
+            if (paymentMethod) orders = orders.filter((o) => o.paymentMethod === paymentMethod);
+            route.fulfill({
+              status: 200,
+              contentType: 'application/json',
+              body: JSON.stringify({
+                orders,
+                pagination: { page: 1, limit: 10, total: orders.length, totalPages: 1 },
+              }),
+            });
+          } else {
+            route.continue();
+          }
+        }
+      );
+
+      await ordersPage.navigate();
+      // Filter to card orders (1 result)
+      await ordersPage.filterByPayment('card');
+      await ordersPage.assertOrderCount(1);
+
+      // Delete all card orders
+      await ordersPage.clickDeleteAll();
+      await ordersPage.assertDeleteAllModalVisible();
+      page.on('dialog', (dialog) => dialog.accept());
+      await ordersPage.confirmDeleteAll();
+
+      // Remove filter — cash orders should remain
+      await ordersPage.filterByPayment('');
+      await ordersPage.assertOrderCount(2);
+    });
+  });
+
   // ── Existing E2E: order appears in history after checkout ───────────────────
   test.describe('End-to-end: order appears in history after checkout', () => {
     test('should show new order in history after successful payment', async ({ page }) => {

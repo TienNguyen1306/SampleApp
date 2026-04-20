@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { fetchOrders, deleteOrder } from '../api/orders'
+import { fetchOrders, deleteOrder, deleteAllOrders } from '../api/orders'
 import './OrdersPage.css'
 
 const PAGE_SIZE_OPTIONS = [5, 10, 20]
@@ -40,6 +40,10 @@ export default function OrdersPage() {
   // Delete state
   const [deletingId, setDeletingId] = useState(null)
   const [confirmDeleteId, setConfirmDeleteId] = useState(null)
+
+  // Delete-all state
+  const [confirmDeleteAll, setConfirmDeleteAll] = useState(false)
+  const [deletingAll, setDeletingAll] = useState(false)
 
   const loadOrders = useCallback(() => {
     setLoading(true)
@@ -82,6 +86,21 @@ export default function OrdersPage() {
       alert(err.message)
     } finally {
       setDeletingId(null)
+    }
+  }
+
+  async function handleDeleteAll() {
+    setDeletingAll(true)
+    try {
+      const { deleted } = await deleteAllOrders({ search, status: statusFilter, paymentMethod: paymentFilter })
+      setConfirmDeleteAll(false)
+      setPage(1)
+      loadOrders()
+      alert(t('orders.deleteAllSuccess', { count: deleted }))
+    } catch (err) {
+      alert(err.message)
+    } finally {
+      setDeletingAll(false)
     }
   }
 
@@ -196,7 +215,14 @@ export default function OrdersPage() {
         {orders.length > 0 && (
           <>
             <div className="orders-summary">
-              {t('orders.showing', { from: (page - 1) * limit + 1, to: Math.min(page * limit, pagination.total), total: pagination.total })}
+              <span>{t('orders.showing', { from: (page - 1) * limit + 1, to: Math.min(page * limit, pagination.total), total: pagination.total })}</span>
+              <button
+                className="btn-delete-all"
+                onClick={() => setConfirmDeleteAll(true)}
+                data-testid="delete-all-btn"
+              >
+                🗑️ {t('orders.deleteAll', { count: pagination.total })}
+              </button>
             </div>
 
             <div className="orders-list">
@@ -285,7 +311,7 @@ export default function OrdersPage() {
         )}
       </main>
 
-      {/* Delete Confirm Modal */}
+      {/* Delete Single Confirm Modal */}
       {confirmDeleteId && (
         <div className="modal-overlay" onClick={() => setConfirmDeleteId(null)}>
           <div className="modal-box" onClick={(e) => e.stopPropagation()}>
@@ -300,6 +326,28 @@ export default function OrdersPage() {
                 {deletingId ? t('orders.deleting') : t('orders.deleteOrder')}
               </button>
               <button className="btn-secondary" onClick={() => setConfirmDeleteId(null)}>
+                {t('orders.cancel')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete All Confirm Modal */}
+      {confirmDeleteAll && (
+        <div className="modal-overlay" onClick={() => setConfirmDeleteAll(false)}>
+          <div className="modal-box" onClick={(e) => e.stopPropagation()}>
+            <p className="modal-msg">🗑️ {t('orders.deleteAllConfirm', { count: pagination.total })}</p>
+            <div className="modal-actions">
+              <button
+                className="btn-danger"
+                onClick={handleDeleteAll}
+                disabled={deletingAll}
+                data-testid="confirm-delete-all-btn"
+              >
+                {deletingAll ? t('orders.deletingAll') : t('orders.deleteAll', { count: pagination.total })}
+              </button>
+              <button className="btn-secondary" onClick={() => setConfirmDeleteAll(false)} data-testid="cancel-delete-all-btn">
                 {t('orders.cancel')}
               </button>
             </div>

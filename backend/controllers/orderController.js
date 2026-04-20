@@ -89,3 +89,25 @@ export async function deleteOrder(req, res) {
   await order.deleteOne()
   res.json({ message: 'OK' })
 }
+
+// DELETE /api/orders?search=&status=&paymentMethod=
+export async function deleteAllOrders(req, res) {
+  const search = (req.query.search || '').trim()
+  const status = req.query.status || ''
+  const paymentMethod = req.query.paymentMethod || ''
+
+  const query = { userId: req.user.id }
+
+  if (status) query.status = status
+  if (paymentMethod) query.paymentMethod = paymentMethod
+  if (search) {
+    query.$or = [
+      { recipientName: { $regex: search, $options: 'i' } },
+      { address: { $regex: search, $options: 'i' } },
+      { 'items.name': { $regex: search, $options: 'i' } },
+    ]
+  }
+
+  const result = await Order.deleteMany(query)
+  res.json({ message: 'OK', deleted: result.deletedCount })
+}

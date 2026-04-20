@@ -68,6 +68,25 @@ export async function placeOrder(token, orderData) {
 }
 
 /**
+ * Delete all orders matching optional filters (owner-only).
+ * @param {string} token
+ * @param {{ search?: string, status?: string, paymentMethod?: string }} params
+ * @returns {{ message: string, deleted: number }}
+ */
+export async function deleteAllOrders(token, params = {}) {
+  const query = new URLSearchParams(
+    Object.fromEntries(
+      Object.entries(params).filter(([, v]) => v != null && v !== '')
+    )
+  ).toString()
+  const url = `/api/orders${query ? `?${query}` : ''}`
+  return request(url, {
+    method: 'DELETE',
+    headers: buildHeaders(token),
+  })
+}
+
+/**
  * Create a Stripe payment intent (used before placing a card order).
  * @param {string} token
  * @param {number} amount - amount in smallest currency unit (e.g. cents)

@@ -181,6 +181,32 @@
   font-size: 0.85rem;
   color: #888;
   margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.btn-delete-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.85rem;
+  background: #fff0f0;
+  color: #d63031;
+  border: 1px solid #ffb3b3;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.btn-delete-all:hover {
+  background: #ffe0e0;
+  border-color: #d63031;
 }
 
 /* Empty */

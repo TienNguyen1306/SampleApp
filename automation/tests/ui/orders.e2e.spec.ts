@@ -243,4 +243,55 @@ test.describe('E2E - Order History (no mocks)', () => {
     await ordersPage.assertOrderCount(1);
     await ordersPage.assertNextButtonDisabled();
   });
+
+  test('should delete all displayed orders via delete-all button', async ({ page }) => {
+    // At this point pagination test left orders in DB; start fresh by placing 2 new cash orders
+    const cashItems = [{ productId: '000000000000000000000001', name: 'Áo thun', price: 199000, emoji: '👕', quantity: 1 }];
+    await order.placeOrder(userToken, { items: cashItems, recipientName: 'Del All A', recipientPhone: '0911000001', address: '1 Đường Xoá', paymentMethod: 'cash', totalPrice: 199000 });
+    await order.placeOrder(userToken, { items: cashItems, recipientName: 'Del All B', recipientPhone: '0911000002', address: '2 Đường Xoá', paymentMethod: 'cash', totalPrice: 199000 });
+
+    const ordersPage = new OrdersPage(page);
+    await ordersPage.navigate();
+
+    // There should be at least 2 orders
+    const countBefore = await ordersPage.getOrderCount();
+    expect(countBefore).toBeGreaterThanOrEqual(2);
+
+    // Click delete-all and confirm (accept the alert)
+    await ordersPage.assertDeleteAllButtonVisible();
+    await ordersPage.clickDeleteAll();
+    await ordersPage.assertDeleteAllModalVisible();
+
+    page.on('dialog', (dialog) => dialog.accept());
+    await ordersPage.confirmDeleteAll();
+
+    // All orders should be gone
+    await ordersPage.assertOrderCount(0);
+  });
+
+  test('should delete only filtered orders when filter is active', async ({ page }) => {
+    // Place 2 cash + 1 card orders so we can filter
+    const items = [{ productId: '000000000000000000000001', name: 'Sản phẩm', price: 100000, emoji: '📦', quantity: 1 }];
+    await order.placeOrder(userToken, { items, recipientName: 'Filter Cash A', recipientPhone: '0912000001', address: '1 Đường Filter', paymentMethod: 'cash', totalPrice: 100000 });
+    await order.placeOrder(userToken, { items, recipientName: 'Filter Cash B', recipientPhone: '0912000002', address: '2 Đường Filter', paymentMethod: 'cash', totalPrice: 100000 });
+    await order.placeOrder(userToken, { items, recipientName: 'Filter Card C', recipientPhone: '0912000003', address: '3 Đường Filter', paymentMethod: 'card', paymentIntentId: 'mock_pi', totalPrice: 100000 });
+
+    const ordersPage = new OrdersPage(page);
+    await ordersPage.navigate();
+
+    // Filter to card payment — only 1 order shown
+    await ordersPage.filterByPayment('card');
+    await ordersPage.assertOrderCount(1);
+
+    // Delete all (only the filtered card order)
+    await ordersPage.clickDeleteAll();
+    await ordersPage.assertDeleteAllModalVisible();
+    page.on('dialog', (dialog) => dialog.accept());
+    await ordersPage.confirmDeleteAll();
+
+    // After removing card filter, 2 cash orders should remain
+    await ordersPage.filterByPayment('');
+    const remaining = await ordersPage.getOrderCount();
+    expect(remaining).toBe(2);
+  });
 });
