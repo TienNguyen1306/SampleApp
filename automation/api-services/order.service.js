@@ -11,11 +11,37 @@ import { buildHeaders, request } from './client.js'
 
 /**
  * Get order history for the authenticated user.
- * @param {string} token
- * @returns {Array<Order>}
+ * @param {string|null} token
+ * @param {{
+ *   page?: number,
+ *   limit?: number,
+ *   search?: string,
+ *   status?: string,
+ *   paymentMethod?: string
+ * }} params
+ * @returns {{ orders: Array<Order>, pagination: { page: number, limit: number, total: number, totalPages: number } }}
  */
-export async function getOrders(token) {
-  return request('/api/orders', {
+export async function getOrders(token, params = {}) {
+  const query = new URLSearchParams(
+    Object.fromEntries(
+      Object.entries(params).filter(([, v]) => v != null && v !== '')
+    )
+  ).toString()
+  const url = `/api/orders${query ? `?${query}` : ''}`
+  return request(url, {
+    headers: buildHeaders(token),
+  })
+}
+
+/**
+ * Delete an order (owner-only).
+ * @param {string} token
+ * @param {string} id - order _id
+ * @returns {{ message: string }}
+ */
+export async function deleteOrder(token, id) {
+  return request(`/api/orders/${id}`, {
+    method: 'DELETE',
     headers: buildHeaders(token),
   })
 }

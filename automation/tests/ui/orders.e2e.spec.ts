@@ -13,18 +13,19 @@
  */
 
 import { test, expect } from '@playwright/test';
+import * as auth from '../../api-services/auth.service.js';
+import * as order from '../../api-services/order.service.js';
+import * as user from '../../api-services/user.service.js';
 import { LoginPage } from '../../pages/login.page';
 import { OrdersPage } from '../../pages/orders.page';
-
-const APP_KEY = process.env.APP_SECRET || '';
 
 const ORDERS: {
   recipientName: string;
   address: string;
   paymentMethod: 'cash' | 'card';
 }[] = [
-  { recipientName: 'Nguyễn E2E A', address: '1 Đường Lê Lợi, TP. HCM',      paymentMethod: 'cash' },
-  { recipientName: 'Trần E2E B',   address: '2 Đường Nguyễn Huệ, TP. HCM',   paymentMethod: 'card' },
+  { recipientName: 'Nguyễn E2E A', address: '1 Đường Lê Lợi, TP. HCM',       paymentMethod: 'cash' },
+  { recipientName: 'Trần E2E B',   address: '2 Đường Nguyễn Huệ, TP. HCM',    paymentMethod: 'card' },
   { recipientName: 'Lê E2E C',     address: '3 Đường Trần Hưng Đạo, TP. HCM', paymentMethod: 'cash' },
 ];
 
@@ -37,59 +38,42 @@ test.describe('E2E - Order History (no mocks)', () => {
   const testUsername = `e2e_orders_${Date.now()}`;
 
   // ── Setup ────────────────────────────────────────────────────────────────
-  test.beforeAll(async ({ request }) => {
+  test.beforeAll(async () => {
     // 1. Get admin token
-    const adminLoginRes = await request.post('/api/auth/login', {
-      data: { username: 'admin', password: 'password123' },
-    });
-    expect(adminLoginRes.status()).toBe(200);
-    adminToken = (await adminLoginRes.json()).token;
+    const adminLogin = await auth.login('admin', 'password123');
+    adminToken = adminLogin.token;
 
     // 2. Create dedicated test user
-    const createUserRes = await request.post('/api/users', {
-      headers: { Authorization: `Bearer ${adminToken}`, 'X-App-Key': APP_KEY },
-      data: { username: testUsername, password: 'password123', name: 'E2E Orders User' },
+    const newUser = await user.createUser(adminToken, {
+      username: testUsername,
+      password: 'password123',
+      name: 'E2E Orders User',
     });
-    expect(createUserRes.status()).toBe(201);
-    testUserId = (await createUserRes.json())._id;
+    testUserId = newUser._id;
 
     // 3. Login as test user
-    const userLoginRes = await request.post('/api/auth/login', {
-      data: { username: testUsername, password: 'password123' },
-    });
-    expect(userLoginRes.status()).toBe(200);
-    userToken = (await userLoginRes.json()).token;
+    const userLogin = await auth.login(testUsername, 'password123');
+    userToken = userLogin.token;
 
     // 4. Place 3 orders via API
     for (const o of ORDERS) {
-      const res = await request.post('/api/orders', {
-        headers: { Authorization: `Bearer ${userToken}` },
-        data: {
-          items: [{ productId: '000000000000000000000001', name: 'Test Product', price: 100000, emoji: '📦', quantity: 1 }],
-          recipientName: o.recipientName,
-          recipientPhone: '0912345678',
-          address: o.address,
-          paymentMethod: o.paymentMethod,
-          totalPrice: 100000,
-        },
+      await order.placeOrder(userToken, {
+        items: [{ productId: '000000000000000000000001', name: 'Test Product', price: 100000, emoji: '📦', quantity: 1 }],
+        recipientName: o.recipientName,
+        recipientPhone: '0912345678',
+        address: o.address,
+        paymentMethod: o.paymentMethod,
+        totalPrice: 100000,
       });
-      expect(res.status()).toBe(201);
     }
   });
 
   // ── Teardown ─────────────────────────────────────────────────────────────
-  test.afterAll(async ({ request }) => {
+  test.afterAll(async () => {
     if (!testUserId) return;
     // Re-login as admin (token may have expired after long test run)
-    const adminLoginRes = await request.post('/api/auth/login', {
-      data: { username: 'admin', password: 'password123' },
-    });
-    const freshAdminToken = (await adminLoginRes.json()).token;
-
-    await request.delete('/api/users', {
-      headers: { Authorization: `Bearer ${freshAdminToken}`, 'X-App-Key': APP_KEY },
-      data: { ids: [testUserId] },
-    });
+    const freshAdmin = await auth.login('admin', 'password123');
+    await user.deleteUsers(freshAdmin.token, [testUserId]);
   });
 
   // ── Per-test: log in as test user and go to /orders ──────────────────────
@@ -230,22 +214,18 @@ test.describe('E2E - Order History (no mocks)', () => {
     await ordersPage.assertOrderCount(2);
   });
 
-  test('should show pagination when page size is reduced below order count', async ({ page, request }) => {
+  test('should show pagination when page size is reduced below order count', async ({ page }) => {
     // 2 orders remain after the delete test; place 4 more so we have 6 total.
     // With page size 5 that gives 2 pages (5 on page 1, 1 on page 2).
     for (let i = 0; i < 4; i++) {
-      const res = await request.post('/api/orders', {
-        headers: { Authorization: `Bearer ${userToken}` },
-        data: {
-          items: [{ productId: '000000000000000000000001', name: 'Test Product', price: 100000, emoji: '📦', quantity: 1 }],
-          recipientName: `Pagination User ${i + 1}`,
-          recipientPhone: '0912345678',
-          address: `${i + 1} Đường Test`,
-          paymentMethod: 'cash',
-          totalPrice: 100000,
-        },
+      await order.placeOrder(userToken, {
+        items: [{ productId: '000000000000000000000001', name: 'Test Product', price: 100000, emoji: '📦', quantity: 1 }],
+        recipientName: `Pagination User ${i + 1}`,
+        recipientPhone: '0912345678',
+        address: `${i + 1} Đường Test`,
+        paymentMethod: 'cash',
+        totalPrice: 100000,
       });
-      expect(res.status()).toBe(201);
     }
 
     const ordersPage = new OrdersPage(page);
