@@ -27,7 +27,7 @@ export const test = base.extend<CheckoutFixtures>({
 
   cartPage: async ({ page }, use) => {
     // Mock login
-    await page.route(LOGIN_API_URL, (route) =>
+    await page.route((url: URL) => url.pathname === '/api/auth/login', (route) =>
       route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -38,7 +38,7 @@ export const test = base.extend<CheckoutFixtures>({
       })
     );
     // Mock products
-    await page.route(PRODUCTS_API_URL, (route) =>
+    await page.route((url: URL) => url.pathname === '/api/products', (route) =>
       route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -56,7 +56,7 @@ export const test = base.extend<CheckoutFixtures>({
 
   cartWithItemsPage: async ({ page }, use) => {
     // Mock login
-    await page.route(LOGIN_API_URL, (route) =>
+    await page.route((url: URL) => url.pathname === '/api/auth/login', (route) =>
       route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -67,7 +67,7 @@ export const test = base.extend<CheckoutFixtures>({
       })
     );
     // Mock products
-    await page.route(PRODUCTS_API_URL, (route) =>
+    await page.route((url: URL) => url.pathname === '/api/products', (route) =>
       route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -91,7 +91,7 @@ export const test = base.extend<CheckoutFixtures>({
 
   checkoutPage: async ({ page }, use) => {
     // Mock login
-    await page.route(LOGIN_API_URL, (route) =>
+    await page.route((url: URL) => url.pathname === '/api/auth/login', (route) =>
       route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -102,7 +102,7 @@ export const test = base.extend<CheckoutFixtures>({
       })
     );
     // Mock products
-    await page.route(PRODUCTS_API_URL, (route) =>
+    await page.route((url: URL) => url.pathname === '/api/products', (route) =>
       route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -110,7 +110,7 @@ export const test = base.extend<CheckoutFixtures>({
       })
     );
     // Mock payment intent
-    await page.route(PAYMENT_INTENT_API_URL, (route) =>
+    await page.route((url: URL) => url.pathname === '/api/orders/payment-intent', (route) =>
       route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -135,7 +135,7 @@ export const test = base.extend<CheckoutFixtures>({
 
   ordersPage: async ({ page }, use) => {
     // Mock login
-    await page.route(LOGIN_API_URL, (route) =>
+    await page.route((url: URL) => url.pathname === '/api/auth/login', (route) =>
       route.fulfill({
         status: 200,
         contentType: 'application/json',
