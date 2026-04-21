@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 
 const CART_KEY = 'shopvn_cart'
-const CART_API = 'http://localhost:3001/api/cart'
+const CART_API = '/api/cart'
 
 const CartContext = createContext(null)
 
