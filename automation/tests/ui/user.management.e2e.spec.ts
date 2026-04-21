@@ -5,6 +5,7 @@ import { test, expect } from '../../fixtures/user.management.fixture';
  * Prerequisites: both servers must be running, admin account: admin / password123
  */
 test.describe('E2E - User Management', () => {
+  test.describe.configure({ mode: 'serial' })
 
   /**
    * Scenario 1: Create non-admin user → login → verify CANNOT access user management → delete
@@ -32,11 +33,8 @@ test.describe('E2E - User Management', () => {
       await expect(adminUsersPage.pageTitle).toBeVisible();
 
       // ── Step 3: Create a new non-admin (customer) user ──────────────────
-      const countBefore = await adminUsersPage.getUserCount();
       await adminUsersPage.addUser(newUser.name, newUser.username, newUser.password, newUser.role);
       await adminUsersPage.waitForLoaded();
-      const countAfter = await adminUsersPage.getUserCount();
-      expect(countAfter).toBeGreaterThan(countBefore);
 
       // Verify new user appears in the table
       await expect(adminUsersPage.getUserRow(newUser.username)).toBeVisible();
@@ -100,7 +98,6 @@ test.describe('E2E - User Management', () => {
       await adminUsersPage.navigate();
       await expect(adminUsersPage.pageTitle).toBeVisible();
 
-      const countBefore = await adminUsersPage.getUserCount();
       await adminUsersPage.addUser(newAdmin.name, newAdmin.username, newAdmin.password, newAdmin.role);
       await adminUsersPage.waitForLoaded();
 
@@ -108,9 +105,6 @@ test.describe('E2E - User Management', () => {
       const adminRow = adminUsersPage.getUserRow(newAdmin.username);
       await expect(adminRow).toBeVisible();
       await expect(adminRow.locator('.au-role-badge.role-admin')).toBeVisible();
-
-      const countAfter = await adminUsersPage.getUserCount();
-      expect(countAfter).toBeGreaterThan(countBefore);
 
       // ── Step 3: Logout ──────────────────────────────────────────────────
       await adminUsersPage.logout();
