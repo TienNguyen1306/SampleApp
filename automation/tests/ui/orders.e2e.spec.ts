@@ -292,6 +292,9 @@ test.describe('E2E - Order History (no mocks)', () => {
     await ordersPage.assertDeleteAllModalVisible();
     await ordersPage.confirmDeleteAll();
 
+    // Wait for card orders to be gone (still in card filter view)
+    await expect(ordersPage.orderCards).toHaveCount(0, { timeout: 10000 });
+
     // After removing card filter, 2 cash orders should remain
     await ordersPage.filterByPayment('');
     await expect(ordersPage.orderCards).toHaveCount(2, { timeout: 10000 });
