@@ -27,7 +27,7 @@ export const test = base.extend<CheckoutFixtures>({
 
   cartPage: async ({ page }, use) => {
     // Mock login
-    await page.route(LOGIN_API_URL, (route) =>
+    await page.route((url: URL) => url.pathname === '/api/auth/login', (route) =>
       route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -38,7 +38,7 @@ export const test = base.extend<CheckoutFixtures>({
       })
     );
     // Mock products
-    await page.route(PRODUCTS_API_URL, (route) =>
+    await page.route((url: URL) => url.pathname === '/api/products', (route) =>
       route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -56,7 +56,7 @@ export const test = base.extend<CheckoutFixtures>({
 
   cartWithItemsPage: async ({ page }, use) => {
     // Mock login
-    await page.route(LOGIN_API_URL, (route) =>
+    await page.route((url: URL) => url.pathname === '/api/auth/login', (route) =>
       route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -67,7 +67,7 @@ export const test = base.extend<CheckoutFixtures>({
       })
     );
     // Mock products
-    await page.route(PRODUCTS_API_URL, (route) =>
+    await page.route((url: URL) => url.pathname === '/api/products', (route) =>
       route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -91,7 +91,7 @@ export const test = base.extend<CheckoutFixtures>({
 
   checkoutPage: async ({ page }, use) => {
     // Mock login
-    await page.route(LOGIN_API_URL, (route) =>
+    await page.route((url: URL) => url.pathname === '/api/auth/login', (route) =>
       route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -102,7 +102,7 @@ export const test = base.extend<CheckoutFixtures>({
       })
     );
     // Mock products
-    await page.route(PRODUCTS_API_URL, (route) =>
+    await page.route((url: URL) => url.pathname === '/api/products', (route) =>
       route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -110,7 +110,7 @@ export const test = base.extend<CheckoutFixtures>({
       })
     );
     // Mock payment intent
-    await page.route(PAYMENT_INTENT_API_URL, (route) =>
+    await page.route((url: URL) => url.pathname === '/api/orders/payment-intent', (route) =>
       route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -135,7 +135,7 @@ export const test = base.extend<CheckoutFixtures>({
 
   ordersPage: async ({ page }, use) => {
     // Mock login
-    await page.route(LOGIN_API_URL, (route) =>
+    await page.route((url: URL) => url.pathname === '/api/auth/login', (route) =>
       route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -156,7 +156,7 @@ export const test = base.extend<CheckoutFixtures>({
 
   mockOrdersApi: async ({ page }, use) => {
     const setup = async (response: MockOrderResponse) => {
-      await page.route(ORDERS_API_URL, (route) => {
+      await page.route((url: URL) => url.pathname === '/api/orders', (route) => {
         if (route.request().method() === 'POST') {
           route.fulfill({
             status: 201,
@@ -173,17 +173,28 @@ export const test = base.extend<CheckoutFixtures>({
 
   mockOrderHistoryApi: async ({ page }, use) => {
     const setup = async (orders: MockOrderResponse[]) => {
-      await page.route(ORDERS_API_URL, (route) => {
-        if (route.request().method() === 'GET') {
-          route.fulfill({
-            status: 200,
-            contentType: 'application/json',
-            body: JSON.stringify(orders),
-          });
-        } else {
-          route.continue();
+      await page.route(
+        (url: URL) => url.pathname === '/api/orders',
+        (route) => {
+          if (route.request().method() === 'GET') {
+            route.fulfill({
+              status: 200,
+              contentType: 'application/json',
+              body: JSON.stringify({
+                orders,
+                pagination: {
+                  page: 1,
+                  limit: 10,
+                  total: orders.length,
+                  totalPages: Math.max(1, Math.ceil(orders.length / 10)),
+                },
+              }),
+            });
+          } else {
+            route.continue();
+          }
         }
-      });
+      );
     };
     await use(setup);
   },

@@ -3,6 +3,8 @@ import { test, expect } from '@playwright/test'
 const KEY = process.env.APP_SECRET || ''
 
 test.describe('PATCH /api/users/:id/role', () => {
+  test.describe.configure({ mode: 'serial' })
+
   let adminToken: string
   let testUserId: string
 

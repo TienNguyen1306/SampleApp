@@ -43,8 +43,71 @@ export async function placeOrder(req, res) {
   res.status(201).json(order)
 }
 
-// GET /api/orders
+// GET /api/orders?page=1&limit=10&search=&status=&paymentMethod=
 export async function getOrders(req, res) {
-  const orders = await Order.find({ userId: req.user.id }).sort({ createdAt: -1 })
-  res.json(orders)
+  const page = Math.max(1, parseInt(req.query.page) || 1)
+  const limit = Math.min(50, Math.max(1, parseInt(req.query.limit) || 10))
+  const search = (req.query.search || '').trim()
+  const status = req.query.status || ''
+  const paymentMethod = req.query.paymentMethod || ''
+
+  const query = { userId: req.user.id }
+
+  if (status) query.status = status
+  if (paymentMethod) query.paymentMethod = paymentMethod
+  if (search) {
+    query.$or = [
+      { recipientName: { $regex: search, $options: 'i' } },
+      { address: { $regex: search, $options: 'i' } },
+      { 'items.name': { $regex: search, $options: 'i' } },
+    ]
+  }
+
+  const [orders, total] = await Promise.all([
+    Order.find(query)
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit),
+    Order.countDocuments(query),
+  ])
+
+  res.json({
+    orders,
+    pagination: {
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+    },
+  })
+}
+
+// DELETE /api/orders/:id
+export async function deleteOrder(req, res) {
+  const order = await Order.findOne({ _id: req.params.id, userId: req.user.id })
+  if (!order) return res.status(404).json({ message: 'ORDER_NOT_FOUND' })
+  await order.deleteOne()
+  res.json({ message: 'OK' })
+}
+
+// DELETE /api/orders?search=&status=&paymentMethod=
+export async function deleteAllOrders(req, res) {
+  const search = (req.query.search || '').trim()
+  const status = req.query.status || ''
+  const paymentMethod = req.query.paymentMethod || ''
+
+  const query = { userId: req.user.id }
+
+  if (status) query.status = status
+  if (paymentMethod) query.paymentMethod = paymentMethod
+  if (search) {
+    query.$or = [
+      { recipientName: { $regex: search, $options: 'i' } },
+      { address: { $regex: search, $options: 'i' } },
+      { 'items.name': { $regex: search, $options: 'i' } },
+    ]
+  }
+
+  const result = await Order.deleteMany(query)
+  res.json({ message: 'OK', deleted: result.deletedCount })
 }

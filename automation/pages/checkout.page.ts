@@ -116,21 +116,27 @@ export class CheckoutPage {
    */
   async setupOrderPostCapture(
     mockResponse: Record<string, unknown>,
-    ordersApiUrl: string
+    _ordersApiUrl: string
   ): Promise<() => Record<string, unknown> | null> {
     let capturedBody: Record<string, unknown> | null = null;
-    await this.page.route(ordersApiUrl, async (route) => {
-      if (route.request().method() === 'POST') {
-        capturedBody = route.request().postDataJSON();
-        await route.fulfill({
-          status: 201,
-          contentType: 'application/json',
-          body: JSON.stringify(mockResponse),
-        });
-      } else {
-        await route.continue();
+    // Use pathname matching so the route works regardless of whether the request
+    // goes through the Vite dev proxy (localhost:5173) or directly to the backend
+    // (localhost:3001). The URL string passed by the caller is intentionally ignored.
+    await this.page.route(
+      (url: URL) => url.pathname === '/api/orders',
+      async (route) => {
+        if (route.request().method() === 'POST') {
+          capturedBody = route.request().postDataJSON();
+          await route.fulfill({
+            status: 201,
+            contentType: 'application/json',
+            body: JSON.stringify(mockResponse),
+          });
+        } else {
+          await route.continue();
+        }
       }
-    });
+    );
     return () => capturedBody;
   }
 

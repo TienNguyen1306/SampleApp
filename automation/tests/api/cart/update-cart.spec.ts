@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test'
 
 test.describe('PUT /api/cart', () => {
+  // Tests share the same admin cart — must run serially to avoid race conditions
+  test.describe.configure({ mode: 'serial' });
   let token: string
 
   test.beforeAll(async ({ request }) => {
