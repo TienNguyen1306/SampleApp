@@ -12,6 +12,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : 2,
   reporter: 'html',
   expect: { timeout: 10000 },
+  use: { navigationTimeout: 60000, actionTimeout: 15000 },
   projects: [
     {
       name: 'ui-chromium',
