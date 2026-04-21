@@ -156,7 +156,7 @@ export const test = base.extend<CheckoutFixtures>({
 
   mockOrdersApi: async ({ page }, use) => {
     const setup = async (response: MockOrderResponse) => {
-      await page.route(ORDERS_API_URL, (route) => {
+      await page.route((url: URL) => url.pathname === '/api/orders', (route) => {
         if (route.request().method() === 'POST') {
           route.fulfill({
             status: 201,
