@@ -257,12 +257,13 @@ test.describe('E2E - Order History (no mocks)', () => {
     const countBefore = await ordersPage.getOrderCount();
     expect(countBefore).toBeGreaterThanOrEqual(2);
 
-    // Click delete-all and confirm (accept the alert)
+    // Register dialog handler early so alert() after deletion is caught
+    page.on('dialog', (dialog) => dialog.accept());
+
+    // Click delete-all and confirm
     await ordersPage.assertDeleteAllButtonVisible();
     await ordersPage.clickDeleteAll();
     await ordersPage.assertDeleteAllModalVisible();
-
-    page.on('dialog', (dialog) => dialog.accept());
     await ordersPage.confirmDeleteAll();
 
     // All orders should be gone
@@ -283,15 +284,16 @@ test.describe('E2E - Order History (no mocks)', () => {
     await ordersPage.filterByPayment('card');
     await ordersPage.assertOrderCount(1);
 
+    // Register dialog handler early so alert() after deletion is caught
+    page.on('dialog', (dialog) => dialog.accept());
+
     // Delete all (only the filtered card order)
     await ordersPage.clickDeleteAll();
     await ordersPage.assertDeleteAllModalVisible();
-    page.on('dialog', (dialog) => dialog.accept());
     await ordersPage.confirmDeleteAll();
 
     // After removing card filter, 2 cash orders should remain
     await ordersPage.filterByPayment('');
-    const remaining = await ordersPage.getOrderCount();
-    expect(remaining).toBe(2);
+    await expect(ordersPage.orderCards).toHaveCount(2, { timeout: 10000 });
   });
 });

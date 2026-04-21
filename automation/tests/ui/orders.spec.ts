@@ -513,11 +513,10 @@ test.describe('Order History Page', () => {
       await ordersPage.navigate();
       await ordersPage.assertOrderCount(3);
 
+      // Register dialog handler early so alert() after deletion is caught
+      page.on('dialog', (dialog) => dialog.accept());
       await ordersPage.clickDeleteAll();
       await ordersPage.assertDeleteAllModalVisible();
-
-      // Accept the browser alert triggered after successful delete
-      page.on('dialog', (dialog) => dialog.accept());
       await ordersPage.confirmDeleteAll();
 
       await ordersPage.assertOrderCount(0);
@@ -562,10 +561,12 @@ test.describe('Order History Page', () => {
       await ordersPage.filterByPayment('card');
       await ordersPage.assertOrderCount(1);
 
+      // Register dialog handler early so alert() after deletion is caught
+      page.on('dialog', (dialog) => dialog.accept());
+
       // Delete all card orders
       await ordersPage.clickDeleteAll();
       await ordersPage.assertDeleteAllModalVisible();
-      page.on('dialog', (dialog) => dialog.accept());
       await ordersPage.confirmDeleteAll();
 
       // Remove filter — cash orders should remain

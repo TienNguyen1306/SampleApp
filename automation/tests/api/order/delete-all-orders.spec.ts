@@ -15,6 +15,8 @@ const SAMPLE_ORDER = {
 }
 
 test.describe('DELETE /api/orders (delete-all)', () => {
+  test.describe.configure({ mode: 'serial' })
+
   let userToken: string
   let userId: string
 
