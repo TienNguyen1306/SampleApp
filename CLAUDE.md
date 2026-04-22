@@ -1,113 +1,53 @@
-# ShopVN — Claude Instructions
+# ShopVN — Claude Code Instructions
 
-## Project Structure
+## LLM Wiki
 
-```
-SampleApp/
-├── backend/          # Express 5 + Mongoose 9 API server
-├── frontend/         # React 19 + Vite SPA
-├── automation/       # Playwright test suite
-│   ├── pages/        # Page Object Models
-│   ├── fixtures/     # Playwright fixtures
-│   ├── tests/
-│   │   ├── api/      # API tests (no browser)
-│   │   └── ui/       # UI tests (browser)
-│   └── data/         # Test data
-├── .env              # Dev secrets (gitignored) — copy from .env.example
-└── .env.example      # Template with dev-safe default values
-```
+Project có wiki tại `.wiki/` — đọc trước khi gen code:
 
-## Running the App
+- `.wiki/index.md` — index tổng quan, đọc file này đầu tiên
+- `.wiki/overview.md` — tech stack, env vars, error codes, conventions
+- `.wiki/backend.md` — tất cả API routes, models, middleware
+- `.wiki/frontend.md` — pages, API layer, state, i18n, CSS classes
+- `.wiki/automation.md` — Playwright config, fixtures, page objects
 
-```bash
-# 1. Create .env (if not exists)
-cp .env.example .env
+### Quy tắc bắt buộc: Sau khi sửa code, update wiki tương ứng
 
-# 2. Install deps
-npm install
-cd automation && npm install && cd ..
+| Nếu bạn sửa file trong... | Thì update wiki page... |
+|--------------------------|------------------------|
+| `backend/routes/` | `.wiki/backend.md` — phần "API Routes" |
+| `backend/controllers/` | `.wiki/backend.md` — phần "Controllers" |
+| `backend/models/` | `.wiki/backend.md` — phần "Models" |
+| `backend/middleware/` | `.wiki/backend.md` — phần "Middleware" |
+| `frontend/pages/` | `.wiki/frontend.md` — phần "Pages" |
+| `frontend/api/` | `.wiki/frontend.md` — phần "API Layer" |
+| `frontend/context/` | `.wiki/frontend.md` — phần "State Management" |
+| `frontend/i18n/` | `.wiki/frontend.md` — phần "i18n" |
+| `frontend/App.jsx` | `.wiki/frontend.md` — phần "React Router" |
+| `automation/playwright.config.ts` | `.wiki/automation.md` — phần "Playwright Config" |
+| `automation/fixtures/` | `.wiki/automation.md` — phần "Fixtures" |
+| `automation/pages/` | `.wiki/automation.md` — phần "Page Objects" |
+| `automation/tests/` | `.wiki/automation.md` — phần "Cấu trúc tests" |
+| `.env.example` hoặc env vars | `.wiki/overview.md` — phần "Environment Variables" |
+| Route mới trong App.jsx | `.wiki/frontend.md` — phần "React Router" |
 
-# 3. Start backend (uses in-memory MongoDB by default)
-NODE_ENV=test node --env-file=.env server.js
+**Cách update wiki**: Sửa trực tiếp nội dung markdown, giữ nguyên cấu trúc và style. Chỉ update phần liên quan, không rewrite toàn bộ file. Sau đó thêm entry vào `.wiki/changelog.md`.
 
-# 4. Start frontend
-npm run dev -- --port 5173
-```
+**Không cần script hay API key** — Claude Code tự update wiki như một phần của workflow gen code.
 
-## Running Tests
+## Tech Stack nhanh
 
-```bash
-cd automation
+- **Backend**: Node.js ESM + Express 5 + MongoDB (mongoose). Port 3001.
+- **Frontend**: React 19 + React Router 7 + Vite 7. Port 5173.
+- **Auth**: JWT 7 ngày, lưu ở `sessionStorage`. Header: `Authorization: Bearer <token>`.
+- **Admin API**: Thêm header `X-App-Key: <APP_SECRET>` cho `/api/users/*`.
+- **Testing**: Playwright — `workers: 2`, `retries: 1`. Chạy: `cd automation && npx playwright test --project=ui-chromium --project=api`.
 
-# API tests only
-APP_SECRET=shopvn-dev-app-secret NODE_ENV=test npx playwright test --project=api --workers=2
+## Conventions
 
-# UI tests only (Chromium)
-APP_SECRET=shopvn-dev-app-secret NODE_ENV=test npx playwright test --project=ui-chromium --workers=2
-
-# All tests
-APP_SECRET=shopvn-dev-app-secret NODE_ENV=test npx playwright test --workers=2
-```
-
-> ⚠️ Backend **must** be started with `NODE_ENV=test` to disable rate limiting during tests.
-
-## API Response Shapes (non-obvious ones)
-
-| Endpoint | Response shape |
-|---|---|
-| `GET /api/cart` | `Array` (items directly, NOT `{ items: [...] }`) |
-| `GET /api/users` | `{ users: [...], total, page, limit }` |
-| `GET /api/products` | `Array` |
-| `GET /api/orders` | `Array` |
-| `GET /api/auth/me` | `{ id, username, name, role, avatar }` |
-| `GET /api/profile` | `{ id, username, name, role, avatar }` |
-
-> ✅ **Before writing GET validation in API tests**, always read the corresponding `get-*.spec.ts` file first to verify the exact response structure.
-
-## Automation — Coding Rules
-
-### UI Tests
-- **All interactions and assertions must go through Page Object methods** — no direct Playwright calls in test files
-- ❌ `expect(page).toHaveURL(...)` in test → ✅ `loginPage.assertOnHomePage()`
-- ❌ `page.locator('.btn').click()` in test → ✅ `homePage.clickOrders()`
-- ❌ `expect(locator).toBeVisible()` in test → ✅ `checkoutPage.assertFormVisible()`
-- ❌ `new HomePage(page)` inline in test → put in fixture or use existing PO from fixture
-- Mock/route setup (`page.route(...)`) can stay in test files — it's test setup, not user action
-
-### API Tests
-- Every **positive** POST / PUT / PATCH / DELETE test must include a **GET validation step** after the mutation to confirm the change was actually persisted
-- Exception: negative tests (4xx responses) do not need GET validation
-
-### Page Objects
-- Add assertion methods (`assertXxx()`) for every new locator that tests need to verify
-- Action methods should not contain assertions — keep them separate
-- Use `expect` from `@playwright/test` inside PO methods (import it)
-
-## Tech Stack Notes
-
-- **Express 5** — async error handling without `next(err)`, just `throw`
-- **Mongoose 9** — pre-save hooks: `async function()` without calling `next()`
-- **Rate limiting** — bypassed when `NODE_ENV=test` (max 1000 req/window)
-- **NoSQL sanitizer** — custom middleware (express-mongo-sanitize incompatible with Express 5)
-- **APP_SECRET** — backend uses `APP_SECRET`, frontend uses `VITE_APP_SECRET` (must match)
-- **MongoDB** — leave `MONGODB_URI` empty or `'local'` to use in-memory (dev/test)
-
-## Environment Variables
-
-| Var | Used by | Notes |
-|---|---|---|
-| `JWT_SECRET` | backend | Sign JWT tokens |
-| `APP_SECRET` | backend | Validate `X-App-Key` header on internal APIs |
-| `VITE_APP_SECRET` | frontend | Must equal `APP_SECRET` |
-| `STRIPE_SECRET_KEY` | backend | Leave as placeholder for mock mode |
-| `PORT` | backend | Default 3001 |
-| `MONGODB_URI` | backend | Empty = in-memory |
-| `NODE_ENV` | backend + tests | Set to `test` when running automation |
-
-## Git Workflow
-
-- Feature branches: `feature/xxx`
-- Refactor branches: `refactor/xxx`
-- Fix branches: `fix/xxx`
-- Improvement branches: `improve/xxx`
-- Always run full test suite before merging to `main`
+- **Error response**: `{ errorCode: 'SCREAMING_SNAKE_CASE', message: '...' }`
+- **Controllers**: async functions, không try/catch (Express 5 auto-catch). Throw `err` với `err.status` + `err.errorCode`.
+- **Backend**: ESM (`import/export`), không `require()`.
+- **CSS**: prefix theo page (`au-*` = AdminUsers, `orders-*` = OrdersPage).
+- **i18n keys**: `<pageName>.<elementName>` (e.g. `orders.title`).
+- **Playwright route mock**: dùng pathname predicate `(url: URL) => url.pathname === '/api/...'`, không dùng full URL.
+- **Serial mode**: thêm `test.describe.configure({ mode: 'serial' })` nếu tests trong describe dùng shared `beforeAll` state.

@@ -1,0 +1,53 @@
+name: Update LLM Wiki
+
+on:
+  push:
+    branches-ignore:
+      - 'feature/llm-wiki'  # Tránh infinite loop khi wiki tự update
+    paths-ignore:
+      - '.wiki/**'
+      - 'scripts/update-wiki.js'
+      - '.github/workflows/update-wiki.yml'
+      - '*.md'
+
+jobs:
+  update-wiki:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # Cần để diff với commit trước
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Get changed files
+        id: changed-files
+        run: |
+          echo "files=$(git diff --name-only HEAD~1 HEAD | tr '\n' ' ')" >> $GITHUB_OUTPUT
+
+      - name: Update wiki
+        if: steps.changed-files.outputs.files != ''
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          node scripts/update-wiki.js ${{ steps.changed-files.outputs.files }}
+
+      - name: Commit updated wiki
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .wiki/
+          git diff --staged --quiet || git commit -m "docs(wiki): auto-update from $(git log -1 --format='%h %s')"
+
+      - name: Push wiki changes
+        uses: ad-m/github-push-action@v0.8.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref_name }}
