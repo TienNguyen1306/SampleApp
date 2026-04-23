@@ -29,6 +29,8 @@
   font-weight: 700;
   font-size: 17px;
   color: #e85d04;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .admin-main {

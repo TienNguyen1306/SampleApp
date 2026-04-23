@@ -41,6 +41,8 @@
   font-size: 1.3rem;
   font-weight: 800;
   color: #764ba2;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 /* Main */

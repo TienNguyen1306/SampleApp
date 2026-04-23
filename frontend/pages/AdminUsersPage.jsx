@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { fetchUsers, createUserRequest, deleteUsersRequest, updateUserRoleRequest } from '../api/users'
 import LanguageSwitcher from '../components/LanguageSwitcher'
@@ -141,10 +141,10 @@ export default function AdminUsersPage() {
       <header className="au-header">
         <div className="au-header-inner">
           <button className="back-btn" onClick={() => navigate('/home')}>{t('adminUsers.back')}</button>
-          <div className="au-logo">
+          <Link to="/home" className="au-logo">
             <span>🛍️</span>
             <span>ShopVN — {t('adminUsers.title')}</span>
-          </div>
+          </Link>
           <div className="au-header-right">
             <LanguageSwitcher />
           </div>

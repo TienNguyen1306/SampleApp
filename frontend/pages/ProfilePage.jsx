@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { fetchProfile, updateProfile } from '../api/profile'
 import './ProfilePage.css'
@@ -83,6 +83,10 @@ export default function ProfilePage() {
       <div className="pf-card">
         <div className="pf-header">
           <button className="pf-back" onClick={() => navigate('/home')}>{t('profile.back')}</button>
+          <Link to="/home" className="pf-logo">
+            <span>🛍️</span>
+            <span>ShopVN</span>
+          </Link>
           <h1 className="pf-title">{t('profile.title')}</h1>
         </div>
 
