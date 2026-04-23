@@ -170,6 +170,44 @@ t('orders.statusConfirmed') // 'Đã xác nhận'
 }
 ```
 
+## Header Logo Pattern
+
+**Tất cả page đều có ShopVN logo navigate về `/home` khi click.**
+
+```jsx
+// Pattern: dùng <Link to="/home"> thay vì <div> cho logo
+import { Link } from 'react-router-dom'
+
+<Link to="/home" className="<page>-logo">
+  <span>🛍️</span>
+  <span>ShopVN</span>
+</Link>
+```
+
+**CSS bắt buộc cho mọi logo class** (tránh browser default underline/blue):
+```css
+.<page>-logo {
+  text-decoration: none;
+  cursor: pointer;
+  color: <original-color>;   /* giữ màu gốc, không dùng màu link */
+}
+```
+
+| Page | Logo class | Header element |
+|------|------------|----------------|
+| HomePage | `.header-logo` | `<header class="home-header">` |
+| CartPage | `.cart-logo` | `<header class="cart-header">` |
+| OrdersPage | `.orders-logo` | `<header class="orders-header">` |
+| CheckoutPage | `.checkout-logo` | `<header class="checkout-header">` |
+| AdminProductsPage | `.admin-logo` | `<header class="admin-header">` |
+| AddProductPage | `.add-product-logo` | `<header class="add-product-header">` |
+| AdminUsersPage | `.au-logo` | `<header class="au-header">` (dark bg → color: #fff) |
+| LoginPage | `.login-logo` | Trong `.login-card` (không có `<header>` riêng) |
+| RegisterPage | `.login-logo` | Trong `.login-card` (dùng chung LoginPage.css) |
+| ProfilePage | `.pf-logo` | Trong `.pf-header` (gradient bar trong card) |
+
+> Khi thêm page mới: **luôn wrap logo trong `<Link to="/home">`**, thêm `text-decoration: none` vào CSS.
+
 ## CSS Conventions
 
 **Không dùng CSS framework** — mỗi page có file CSS riêng, dùng BEM-like naming:
@@ -180,6 +218,7 @@ t('orders.statusConfirmed') // 'Đã xác nhận'
 .orders-* → OrdersPage
 .home-*  → HomePage
 .checkout-* → CheckoutPage
+.pf-*    → ProfilePage
 
 /* Button classes: */
 .btn-primary         → nút chính

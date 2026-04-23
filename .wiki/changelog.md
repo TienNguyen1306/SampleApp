@@ -1,5 +1,14 @@
 # Wiki Changelog
 
+## 2026-04-23 — Cập nhật Header Logo Pattern
+
+- `frontend.md`: Thêm section **Header Logo Pattern** mô tả:
+  - Tất cả page dùng `<Link to="/home">` thay `<div>` cho logo ShopVN
+  - CSS bắt buộc: `text-decoration: none; cursor: pointer`
+  - Bảng mapping page → logo class → header element
+  - Hướng dẫn khi thêm page mới
+- `frontend.md`: Thêm prefix `.pf-*` vào CSS Conventions (ProfilePage)
+
 ## 2026-04-22 — Khởi tạo wiki
 
 - Tạo wiki đầy đủ cho project ShopVN
