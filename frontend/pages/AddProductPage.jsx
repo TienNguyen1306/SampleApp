@@ -44,10 +44,10 @@ export default function AddProductPage() {
     <div className="add-product-wrapper">
       <header className="add-product-header">
         <div className="add-product-header-inner">
-          <div className="add-product-logo">
+          <Link to="/home" className="add-product-logo">
             <span>🛍️</span>
             <span>ShopVN</span>
-          </div>
+          </Link>
           <nav className="add-product-nav">
             <Link to="/home">{t('home.nav.home')}</Link>
           </nav>

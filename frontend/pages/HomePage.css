@@ -27,6 +27,8 @@
   align-items: center;
   gap: 0.4rem;
   font-size: 1.4rem;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .header-logo-name {

@@ -129,10 +129,10 @@ export default function OrdersPage() {
     <div className="orders-wrapper">
       <header className="orders-header">
         <div className="orders-header-inner">
-          <div className="orders-logo">
+          <Link to="/home" className="orders-logo">
             <span>🛍️</span>
             <span>ShopVN</span>
-          </div>
+          </Link>
           <nav className="orders-nav">
             <Link to="/home">{t('home.nav.home')}</Link>
           </nav>

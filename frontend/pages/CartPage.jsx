@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useCart } from '../context/CartContext'
 import './CartPage.css'
@@ -17,10 +17,10 @@ export default function CartPage() {
       <header className="cart-header">
         <div className="cart-header-inner">
           <button className="back-btn" onClick={() => navigate('/home')}>{t('cart.back')}</button>
-          <div className="cart-logo">
+          <Link to="/home" className="cart-logo">
             <span>🛍️</span>
             <span>ShopVN</span>
-          </div>
+          </Link>
         </div>
       </header>
 

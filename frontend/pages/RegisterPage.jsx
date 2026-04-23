@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { registerRequest } from '../api/auth'
 import './LoginPage.css'
@@ -51,10 +51,10 @@ export default function RegisterPage() {
   return (
     <div className="login-bg">
       <div className="login-card">
-        <div className="login-logo">
+        <Link to="/home" className="login-logo">
           <span className="logo-icon">🛍️</span>
           <h1 className="logo-name">ShopVN</h1>
-        </div>
+        </Link>
 
         <h2 className="login-title">{t('register.title')}</h2>
         <p className="login-subtitle">{t('register.subtitle')}</p>

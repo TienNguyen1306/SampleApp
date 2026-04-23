@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate, Navigate } from 'react-router-dom'
+import { useNavigate, Navigate, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
@@ -240,10 +240,10 @@ export default function CheckoutPage() {
       <div className="checkout-wrapper">
         <header className="checkout-header">
           <div className="checkout-header-inner">
-            <div className="checkout-logo">
+            <Link to="/home" className="checkout-logo">
               <span>🛍️</span>
               <span>ShopVN</span>
-            </div>
+            </Link>
           </div>
         </header>
         <main className="checkout-main">
@@ -260,10 +260,10 @@ export default function CheckoutPage() {
           <button className="back-btn" data-testid="checkout-back" onClick={() => navigate('/cart')}>
             {t('checkout.back')}
           </button>
-          <div className="checkout-logo">
+          <Link to="/home" className="checkout-logo">
             <span>🛍️</span>
             <span>ShopVN</span>
-          </div>
+          </Link>
           <LanguageSwitcher />
         </div>
       </header>

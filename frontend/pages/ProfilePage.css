@@ -46,6 +46,18 @@
 }
 .pf-back:hover { background: rgba(255, 255, 255, 0.3); }
 
+.pf-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+  flex: 1;
+}
+
 .pf-title {
   color: #fff;
   font-size: 1.4rem;
