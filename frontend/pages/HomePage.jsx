@@ -42,10 +42,10 @@ export default function HomePage() {
     <div className="home-wrapper">
       <header className="home-header">
         <div className="header-inner">
-          <div className="header-logo">
+          <Link to="/home" className="header-logo">
             <span>🛍️</span>
             <span className="header-logo-name">ShopVN</span>
-          </div>
+          </Link>
           <div className="header-right">
             {user && (
               <Link to="/profile" className="header-profile-link" data-testid="header-profile-link">

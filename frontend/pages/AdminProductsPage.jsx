@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { fetchProducts, deleteProductRequest } from '../api/products'
 import './AdminProductsPage.css'
@@ -42,10 +42,10 @@ export default function AdminProductsPage() {
       <header className="admin-header">
         <div className="admin-header-inner">
           <button className="back-btn" onClick={() => navigate('/home')}>{t('admin.back')}</button>
-          <div className="admin-logo">
+          <Link to="/home" className="admin-logo">
             <span>🛍️</span>
             <span>ShopVN — {t('admin.title')}</span>
-          </div>
+          </Link>
           <button className="btn-add" onClick={() => navigate('/admin/add-product')}>{t('admin.addProduct')}</button>
         </div>
       </header>

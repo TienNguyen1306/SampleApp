@@ -48,6 +48,8 @@
   font-weight: 700;
   font-size: 18px;
   color: #e85d04;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .add-product-main {

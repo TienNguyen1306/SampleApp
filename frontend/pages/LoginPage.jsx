@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { loginRequest } from '../api/auth'
 import LanguageSwitcher from '../components/LanguageSwitcher'
@@ -37,10 +37,10 @@ export default function LoginPage() {
           <LanguageSwitcher />
         </div>
 
-        <div className="login-logo">
+        <Link to="/home" className="login-logo">
           <span className="logo-icon">🛍️</span>
           <h1 className="logo-name">ShopVN</h1>
-        </div>
+        </Link>
 
         <h2 className="login-title">{t('login.title')}</h2>
         <p className="login-subtitle">{t('login.title')} — ShopVN</p>
