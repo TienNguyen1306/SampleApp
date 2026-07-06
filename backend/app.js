@@ -1,12 +1,17 @@
 import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
+import { fileURLToPath } from 'url'
+import { dirname, join } from 'path'
 import authRoutes from './routes/auth.js'
 import productRoutes from './routes/products.js'
 import orderRoutes from './routes/orders.js'
 import cartRoutes from './routes/cart.js'
 import userRoutes from './routes/users.js'
 import profileRoutes from './routes/profile.js'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 const app = express()
 
@@ -45,6 +50,15 @@ app.use('/api/users', userRoutes)
 app.use('/api/profile', profileRoutes)
 
 app.get('/api/health', (_, res) => res.json({ status: 'ok' }))
+
+// Serve built frontend static files (production)
+app.use(express.static(join(__dirname, '..', 'dist')))
+
+// SPA fallback — serve index.html for non-API routes
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api/')) return next()
+  res.sendFile(join(__dirname, '..', 'dist', 'index.html'))
+})
 
 // Global error handler — không leak stack trace ra ngoài
 app.use((err, req, res, _next) => {

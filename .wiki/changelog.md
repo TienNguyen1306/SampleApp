@@ -1,5 +1,10 @@
 # Wiki Changelog
 
+## 2026-07-06 — Azure full-stack deployment
+
+- `backend/app.js`: Thêm `express.static('dist')` và SPA fallback (`GET *`) sau tất cả API routes để serve built frontend trên production
+- `.github/workflows/main_shopvndemo.yml`: Thêm `NODE_ENV=production` cho build step và `startup-command: node server.js` cho deploy step
+
 ## 2026-04-22 — Khởi tạo wiki
 
 - Tạo wiki đầy đủ cho project ShopVN

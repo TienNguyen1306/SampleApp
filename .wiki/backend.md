@@ -6,6 +6,8 @@
 
 ```
 Request → helmet → cors → express.json → sanitize → [route middlewares] → controller → error handler
+         ↓ (non-API requests fall through to)
+         express.static('dist') → SPA fallback (index.html)
 ```
 
 **Middleware files:**

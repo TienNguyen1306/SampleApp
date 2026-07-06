@@ -24,6 +24,8 @@ jobs:
           node-version: '24.x'
 
       - name: npm install, build, and test
+        env:
+          NODE_ENV: production
         run: |
           npm install
           npm run build --if-present
@@ -62,4 +64,5 @@ jobs:
           app-name: 'ShopVNDemo'
           slot-name: 'Production'
           package: .
+          startup-command: 'node server.js'
           
