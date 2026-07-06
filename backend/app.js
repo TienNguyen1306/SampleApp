@@ -55,7 +55,7 @@ app.get('/api/health', (_, res) => res.json({ status: 'ok' }))
 app.use(express.static(join(__dirname, '..', 'dist')))
 
 // SPA fallback — serve index.html for non-API routes
-app.get('*', (req, res, next) => {
+app.get('/{*path}', (req, res, next) => {
   if (req.path.startsWith('/api/')) return next()
   res.sendFile(join(__dirname, '..', 'dist', 'index.html'))
 })
