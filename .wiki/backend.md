@@ -22,6 +22,8 @@ Request → helmet → cors → express.json → sanitize → [route middlewares
 
 ## API Routes
 
+> Swagger `@swagger` annotations above backend route handlers use English `summary`/`description` text, and the health check annotation in `backend/app.js` follows the same convention.
+
 ### Auth — `/api/auth`
 *(No X-App-Key needed)*
 
@@ -193,6 +195,23 @@ throw err
 - `deleteUsers()`: Filter ids, loại trừ admin, `deleteMany()`
 - `updateUserRole()`: Validate role enum, block nếu là admin user
 
+## API Documentation / Swagger
+
+- Dùng `swagger-jsdoc` + `swagger-ui-express`. Config tại `backend/swagger.js`
+  (OpenAPI 3.0 `definition`: info, tags theo domain, `components.securitySchemes`
+  `bearerAuth` (JWT) + `appKeyAuth` (X-App-Key), `components.schemas`: `User`,
+  `Product`, `Order`, `OrderItem`, `CartItem`, `Error`, `Pagination`).
+- Spec được generate từ JSDoc `@swagger` comment viết ngay phía trên mỗi route
+  trong `backend/routes/*.js` và health check trong `backend/app.js`.
+- Mount trong `app.js`: `GET /api-docs` (Swagger UI), `GET /api-docs.json`
+  (raw OpenAPI JSON). Bật ở **mọi môi trường**, không giới hạn theo `NODE_ENV`.
+- Human-readable Swagger annotation text (`summary`, `description`, inline field
+  descriptions) is written in English for route docs and the `/api/health`
+  annotation.
+- **Quan trọng (Windows)**: `apis` glob path trong `swagger.js` phải dùng
+  forward-slash (`path.split('\\').join('/')`) — `swagger-jsdoc`/`glob` không
+  match được backslash path trên Windows.
+
 ## Cách thêm endpoint mới
 
 ```js
@@ -202,8 +221,20 @@ export async function myEndpoint(req, res) {
   res.json(data)
 }
 
-// 2. Thêm route vào routes/<domain>.js
+// 2. Thêm route vào routes/<domain>.js kèm JSDoc @swagger annotation
 import { myEndpoint } from '../controllers/<domain>Controller.js'
+
+/**
+ * @swagger
+ * /my-path:
+ *   get:
+ *     tags: [MyDomain]
+ *     summary: Mô tả ngắn
+ *     security: [{ bearerAuth: [] }]
+ *     responses:
+ *       200:
+ *         description: OK
+ */
 router.get('/my-path', requireAuth, myEndpoint)
 
 // 3. Update wiki: backend.md (thêm vào bảng routes)

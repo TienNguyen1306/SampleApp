@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
+import swaggerUi from 'swagger-ui-express'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
 import authRoutes from './routes/auth.js'
@@ -9,6 +10,7 @@ import orderRoutes from './routes/orders.js'
 import cartRoutes from './routes/cart.js'
 import userRoutes from './routes/users.js'
 import profileRoutes from './routes/profile.js'
+import { swaggerSpec } from './swagger.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -49,6 +51,25 @@ app.use('/api/cart', cartRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/profile', profileRoutes)
 
+// Swagger UI — API documentation, enabled in all environments
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+app.get('/api-docs.json', (_req, res) => res.json(swaggerSpec))
+
+/**
+ * @swagger
+ * /health:
+ *   get:
+ *     tags: [Health]
+ *     summary: Health check
+ *     responses:
+ *       200:
+ *         description: Server is running
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties: { status: { type: string, example: ok } }
+ */
 app.get('/api/health', (_, res) => res.json({ status: 'ok' }))
 
 // Serve built frontend static files (production)

@@ -124,6 +124,8 @@ curl http://localhost:3001/api/health
 # {"status":"ok"}
 ```
 
+📚 **API Documentation (Swagger)**: http://localhost:3001/api-docs — interactive UI cho toàn bộ API. Raw OpenAPI JSON tại `/api-docs.json`.
+
 ---
 
 ### Terminal 2 — Chạy Frontend
@@ -407,6 +409,8 @@ SampleApp/
 ---
 
 ## API Endpoints
+
+> 📚 Xem đầy đủ request/response schema, thử trực tiếp tại **Swagger UI**: `http://localhost:3001/api-docs` (khi backend đang chạy).
 
 ### Health
 | Method | Endpoint | Auth | Mô tả |
