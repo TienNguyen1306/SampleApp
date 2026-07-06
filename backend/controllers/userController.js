@@ -14,8 +14,12 @@ export async function getUsers(req, res) {
   if (role) filter.role = role
 
   const sortOrder = sortDir === 'asc' ? 1 : -1
+  // Map createdAt/updatedAt → _id/_id since Cosmos DB requires explicit indexes for sorting.
+  // _id is always indexed and ObjectId encodes insertion time, giving equivalent ordering.
+  const sortFieldMap = { createdAt: '_id', updatedAt: '_id', username: 'username', name: 'name', role: 'role' }
   const allowedSortFields = ['username', 'name', 'role', 'createdAt']
-  const sortField = allowedSortFields.includes(sortBy) ? sortBy : 'createdAt'
+  const rawField = allowedSortFields.includes(sortBy) ? sortBy : 'createdAt'
+  const sortField = sortFieldMap[rawField] ?? '_id'
 
   const skip = (Number(page) - 1) * Number(limit)
   const total = await User.countDocuments(filter)
