@@ -20,6 +20,7 @@
 SampleApp/
 ├── backend/
 │   ├── app.js              # Express app setup
+│   ├── swagger.js          # OpenAPI 3.0 config (swagger-jsdoc) — /api-docs UI
 │   ├── config.js           # Env vars exports
 │   ├── db.js               # MongoDB connect (auto in-memory nếu MONGODB_URI rỗng)
 │   ├── seed.js             # Seed 3 users + 6 products khi khởi động

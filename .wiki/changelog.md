@@ -1,5 +1,15 @@
 # Wiki Changelog
 
+## 2026-07-06 — Swagger API documentation
+
+- `backend/app.js`, `backend/routes/*.js`: Dịch phần text human-readable trong Swagger JSDoc (`summary`, `description`, field descriptions) sang tiếng Anh; giữ nguyên structure OpenAPI/YAML
+
+- `backend/swagger.js` (mới): OpenAPI 3.0 config qua `swagger-jsdoc` — security schemes `bearerAuth` + `appKeyAuth`, schemas dùng chung (User, Product, Order, OrderItem, CartItem, Error, Pagination)
+- `backend/routes/*.js`: Thêm JSDoc `@swagger` annotation cho tất cả endpoint hiện có (auth, products, orders, cart, users, profile)
+- `backend/app.js`: Mount `GET /api-docs` (Swagger UI) + `GET /api-docs.json` (raw spec), thêm `@swagger` annotation cho health check; bật ở mọi môi trường
+- `package.json`: Thêm dependency `swagger-jsdoc`, `swagger-ui-express`
+- `backend.md`: Thêm mục "API Documentation / Swagger"; `overview.md`: cập nhật cấu trúc thư mục
+
 ## 2026-07-06 — Azure full-stack deployment
 
 - `backend/app.js`: Thêm `express.static('dist')` và SPA fallback (`GET *`) sau tất cả API routes để serve built frontend trên production
