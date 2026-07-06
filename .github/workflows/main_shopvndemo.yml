@@ -60,7 +60,6 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'ShopVNDemo'
-          slot-name: 'Production'
           package: .
           startup-command: 'node server.js'
           
