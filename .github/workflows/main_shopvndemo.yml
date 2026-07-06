@@ -24,6 +24,9 @@ jobs:
           node-version: '24.x'
 
       - name: npm install, build, and test
+        env:
+          NODE_ENV: production
+          VITE_APP_SECRET: ${{ secrets.VITE_APP_SECRET }}
         run: |
           npm install --include=dev
           NODE_ENV=production npm run build --if-present
