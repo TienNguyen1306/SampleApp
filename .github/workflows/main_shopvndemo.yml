@@ -50,26 +50,12 @@ jobs:
         with:
           name: node-app
 
-      - name: Set startup command via Kudu API
-        run: |
-          curl -s -X POST \
-            -u "${{ secrets.AZURE_KUDU_USER }}:${{ secrets.AZURE_KUDU_PASS }}" \
-            -H "Content-Type: application/json" \
-            -d '{"startupCommand":"node server.js"}' \
-            "https://shopdemo-e3gwg9hqaygghmbv.scm.canadacentral-01.azurewebsites.net/api/settings"
-
-      - name: Zip and deploy via Kudu ZipDeploy
-        run: |
-          zip -r app.zip . \
-            --exclude "*.git*" \
-            --exclude "*.github*" \
-            --exclude "automation/*" \
-            --exclude "logs*" \
-            --exclude "*.zip"
-          curl -s -X POST \
-            -u "${{ secrets.AZURE_KUDU_USER }}:${{ secrets.AZURE_KUDU_PASS }}" \
-            -H "Content-Type: application/zip" \
-            --data-binary @app.zip \
-            "https://shopdemo-e3gwg9hqaygghmbv.scm.canadacentral-01.azurewebsites.net/api/zipdeploy?isAsync=false" \
-            -w "\nHTTP Status: %{http_code}\n"
+      - name: 'Deploy to Azure Web App'
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'shopdemo'
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: .
+          startup-command: 'node server.js'
           
