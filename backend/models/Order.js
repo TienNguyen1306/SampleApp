@@ -20,4 +20,10 @@ const orderSchema = new mongoose.Schema({
   status:          { type: String, enum: ['pending', 'confirmed', 'shipped', 'delivered'], default: 'confirmed' },
 }, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } })
 
+orderSchema.index({ userId: 1 })
+orderSchema.index({ status: 1 })
+orderSchema.index({ paymentMethod: 1 })
+
 export const Order = mongoose.model('Order', orderSchema)
+
+Order.createIndexes().catch(() => {})

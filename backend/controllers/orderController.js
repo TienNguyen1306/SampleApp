@@ -65,7 +65,7 @@ export async function getOrders(req, res) {
 
   const [orders, total] = await Promise.all([
     Order.find(query)
-      .sort({ createdAt: -1 })
+      .sort({ _id: -1 })
       .skip((page - 1) * limit)
       .limit(limit),
     Order.countDocuments(query),
