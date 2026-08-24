@@ -64,7 +64,9 @@ SampleApp/
 | `APP_SECRET` | `shopvn-dev-app-secret` | Phải khớp `VITE_APP_SECRET` |
 | `STRIPE_SECRET_KEY` | `sk_test_YOUR_KEY_HERE` | Mock mode nếu để default |
 | `PORT` | `3001` | Backend port |
+| `FRONTEND_URL` | `http://localhost:5173` | Các origin frontend được CORS cho phép; ngăn cách bằng dấu phẩy |
 | `VITE_APP_SECRET` | `shopvn-dev-app-secret` | Phải khớp `APP_SECRET` |
+| `VITE_API_URL` | *(rỗng)* | URL API production; rỗng = dùng Vite proxy local |
 | `NODE_ENV` | `test` | Bypass rate limiter (max 1000 thay vì 10) |
 
 ### `automation/.env`

@@ -1,11 +1,11 @@
-const BASE_URL = ''
+import { API_URL } from './client'
 
 function getToken() {
   return sessionStorage.getItem('token')
 }
 
 export async function createPaymentIntent(amount) {
-  const res = await fetch(`${BASE_URL}/api/orders/payment-intent`, {
+  const res = await fetch(`${API_URL}/api/orders/payment-intent`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
     body: JSON.stringify({ amount }),
@@ -16,7 +16,7 @@ export async function createPaymentIntent(amount) {
 }
 
 export async function placeOrder(orderData) {
-  const res = await fetch(`${BASE_URL}/api/orders`, {
+  const res = await fetch(`${API_URL}/api/orders`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
     body: JSON.stringify(orderData),
@@ -32,7 +32,7 @@ export async function fetchOrders({ page = 1, limit = 10, search = '', status = 
   if (status) params.set('status', status)
   if (paymentMethod) params.set('paymentMethod', paymentMethod)
 
-  const res = await fetch(`${BASE_URL}/api/orders?${params.toString()}`, {
+  const res = await fetch(`${API_URL}/api/orders?${params.toString()}`, {
     headers: { Authorization: `Bearer ${getToken()}` },
   })
   const data = await res.json()
@@ -41,7 +41,7 @@ export async function fetchOrders({ page = 1, limit = 10, search = '', status = 
 }
 
 export async function deleteOrder(id) {
-  const res = await fetch(`${BASE_URL}/api/orders/${id}`, {
+  const res = await fetch(`${API_URL}/api/orders/${id}`, {
     method: 'DELETE',
     headers: { Authorization: `Bearer ${getToken()}` },
   })
@@ -57,7 +57,7 @@ export async function deleteAllOrders({ search = '', status = '', paymentMethod 
   if (paymentMethod) params.set('paymentMethod', paymentMethod)
 
   const query = params.toString() ? `?${params.toString()}` : ''
-  const res = await fetch(`${BASE_URL}/api/orders${query}`, {
+  const res = await fetch(`${API_URL}/api/orders${query}`, {
     method: 'DELETE',
     headers: { Authorization: `Bearer ${getToken()}` },
   })

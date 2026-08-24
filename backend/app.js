@@ -11,6 +11,7 @@ import cartRoutes from './routes/cart.js'
 import userRoutes from './routes/users.js'
 import profileRoutes from './routes/profile.js'
 import { swaggerSpec } from './swagger.js'
+import { FRONTEND_URLS } from './config.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -21,7 +22,10 @@ const app = express()
 app.use(helmet())
 
 app.use(cors({
-  origin: /^http:\/\/(localhost|127\.0\.0\.1|(10|192\.168|172\.(1[6-9]|2\d|3[01]))\.\d{1,3}\.\d{1,3}):\d+$/,
+  origin: [
+    /^http:\/\/(localhost|127\.0\.0\.1|(10|192\.168|172\.(1[6-9]|2\d|3[01]))\.\d{1,3}\.\d{1,3}):\d+$/,
+    ...FRONTEND_URLS,
+  ],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-App-Key'],
 }))
 app.use(express.json())

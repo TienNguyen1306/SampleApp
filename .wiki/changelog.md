@@ -1,5 +1,13 @@
 # Wiki Changelog
 
+## 2026-08-24 — Render + Vercel deployment
+
+- `render.yaml`: Thêm Render Blueprint cho Express API, kèm biến môi trường production cần cấu hình.
+- `vercel.json`: Thêm cấu hình Vercel static build và SPA fallback cho React Router.
+- `frontend/api/client.js`, `frontend/api/*.js`, `frontend/context/CartContext.jsx`: Dùng `VITE_API_URL` để frontend Vercel gọi API Render; rỗng vẫn dùng Vite proxy trong local development.
+- `backend/app.js`, `backend/config.js`: CORS nhận các production origin từ `FRONTEND_URL`.
+- `.env.example`, `overview.md`: Bổ sung hướng dẫn `FRONTEND_URL` và `VITE_API_URL`.
+
 ## 2026-07-06 — Swagger API documentation
 
 - `backend/app.js`, `backend/routes/*.js`: Dịch phần text human-readable trong Swagger JSDoc (`summary`, `description`, field descriptions) sang tiếng Anh; giữ nguyên structure OpenAPI/YAML

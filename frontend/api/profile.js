@@ -1,4 +1,4 @@
-const BASE_URL = ''
+import { API_URL } from './client'
 
 function getToken() {
   return sessionStorage.getItem('token')
@@ -15,7 +15,7 @@ function throwApiError(data, fallbackCode = 'UNKNOWN') {
 }
 
 export async function fetchProfile() {
-  const res = await fetch(`${BASE_URL}/api/profile`, {
+  const res = await fetch(`${API_URL}/api/profile`, {
     headers: getAuthHeaders(),
   })
   const data = await res.json()
@@ -28,7 +28,7 @@ export async function updateProfile(name, avatarFile) {
   if (name !== undefined) formData.append('name', name)
   if (avatarFile) formData.append('avatar', avatarFile)
 
-  const res = await fetch(`${BASE_URL}/api/profile`, {
+  const res = await fetch(`${API_URL}/api/profile`, {
     method: 'PATCH',
     headers: getAuthHeaders(), // Do NOT set Content-Type — browser sets multipart boundary
     body: formData,

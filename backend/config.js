@@ -14,3 +14,7 @@ export const JWT_EXPIRES_IN = '7d'
 export const PORT          = process.env.PORT          || 3001
 export const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || 'sk_test_YOUR_SECRET_KEY'
 export const MONGODB_URI   = process.env.MONGODB_URI   || 'local'
+export const FRONTEND_URLS = (process.env.FRONTEND_URL || '')
+  .split(',')
+  .map((url) => url.trim())
+  .filter(Boolean)

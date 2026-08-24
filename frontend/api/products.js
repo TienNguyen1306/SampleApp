@@ -1,4 +1,4 @@
-const BASE_URL = ''
+import { API_URL } from './client'
 
 function getToken() {
   return sessionStorage.getItem('token')
@@ -6,7 +6,7 @@ function getToken() {
 
 export async function fetchProducts(params = {}) {
   const query = new URLSearchParams(params).toString()
-  const res = await fetch(`${BASE_URL}/api/products${query ? `?${query}` : ''}`, {
+  const res = await fetch(`${API_URL}/api/products${query ? `?${query}` : ''}`, {
     headers: { Authorization: `Bearer ${getToken()}` },
   })
 
@@ -20,7 +20,7 @@ export async function fetchProducts(params = {}) {
 }
 
 export async function createProductRequest(productData) {
-  const res = await fetch(`${BASE_URL}/api/products`, {
+  const res = await fetch(`${API_URL}/api/products`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
     body: JSON.stringify(productData),
@@ -36,7 +36,7 @@ export async function createProductRequest(productData) {
 }
 
 export async function deleteProductRequest(id) {
-  const res = await fetch(`${BASE_URL}/api/products/${id}`, {
+  const res = await fetch(`${API_URL}/api/products/${id}`, {
     method: 'DELETE',
     headers: { Authorization: `Bearer ${getToken()}` },
   })

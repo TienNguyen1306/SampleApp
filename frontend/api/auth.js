@@ -1,7 +1,7 @@
-const BASE_URL = ''
+import { API_URL } from './client'
 
 export async function loginRequest(username, password) {
-  const res = await fetch(`${BASE_URL}/api/auth/login`, {
+  const res = await fetch(`${API_URL}/api/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password }),
@@ -23,7 +23,7 @@ export async function registerRequest(username, password, name, avatarFile = nul
   formData.append('name', name)
   if (avatarFile) formData.append('avatar', avatarFile)
 
-  const res = await fetch(`${BASE_URL}/api/auth/register`, {
+  const res = await fetch(`${API_URL}/api/auth/register`, {
     method: 'POST',
     // Do NOT set Content-Type — browser sets multipart/form-data with boundary automatically
     body: formData,

@@ -1,7 +1,8 @@
 import { createContext, useContext, useState, useEffect } from 'react'
+import { API_URL } from '../api/client'
 
 const CART_KEY = 'shopvn_cart'
-const CART_API = '/api/cart'
+const CART_API = `${API_URL}/api/cart`
 
 const CartContext = createContext(null)
 

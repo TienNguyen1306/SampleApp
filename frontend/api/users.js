@@ -1,4 +1,4 @@
-const BASE_URL = ''
+import { API_URL } from './client'
 
 // Đọc từ .env (VITE_APP_SECRET) — phải khớp với APP_SECRET bên backend
 const APP_KEY = import.meta.env.VITE_APP_SECRET
@@ -24,7 +24,7 @@ function throwApiError(data, fallbackCode = 'UNKNOWN') {
 
 export async function fetchUsers(params = {}) {
   const query = new URLSearchParams(params).toString()
-  const res = await fetch(`${BASE_URL}/api/users${query ? `?${query}` : ''}`, {
+  const res = await fetch(`${API_URL}/api/users${query ? `?${query}` : ''}`, {
     headers: getHeaders(),
   })
   const data = await res.json()
@@ -33,7 +33,7 @@ export async function fetchUsers(params = {}) {
 }
 
 export async function createUserRequest(userData) {
-  const res = await fetch(`${BASE_URL}/api/users`, {
+  const res = await fetch(`${API_URL}/api/users`, {
     method: 'POST',
     headers: getHeaders({ 'Content-Type': 'application/json' }),
     body: JSON.stringify(userData),
@@ -44,7 +44,7 @@ export async function createUserRequest(userData) {
 }
 
 export async function deleteUsersRequest(ids) {
-  const res = await fetch(`${BASE_URL}/api/users`, {
+  const res = await fetch(`${API_URL}/api/users`, {
     method: 'DELETE',
     headers: getHeaders({ 'Content-Type': 'application/json' }),
     body: JSON.stringify({ ids }),
@@ -55,7 +55,7 @@ export async function deleteUsersRequest(ids) {
 }
 
 export async function updateUserRoleRequest(id, role) {
-  const res = await fetch(`${BASE_URL}/api/users/${id}/role`, {
+  const res = await fetch(`${API_URL}/api/users/${id}/role`, {
     method: 'PATCH',
     headers: getHeaders({ 'Content-Type': 'application/json' }),
     body: JSON.stringify({ role }),
